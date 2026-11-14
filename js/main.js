@@ -3,7 +3,7 @@ import { registra, vai } from './nav.js';
 import { dispositivo, loc, nomeBambina, scollegaDispositivo } from './state.js';
 import { inizializza, caricaTutto, sincronizza } from './data.js';
 import { esc, attendi } from './ui.js';
-import { installaMusica } from './musica.js';
+import { installaMusica, musica } from './musica.js';
 import * as setup from './screens/setup.js';
 import { home } from './screens/home.js';
 import { gioco } from './screens/gioco.js';
@@ -45,6 +45,13 @@ function splash() {
   let tolto = false;
   const togli = () => { if (tolto) return; tolto = true; s.classList.add('via'); setTimeout(() => s.remove(), 600); };
   s.addEventListener('click', togli);
+  // Se il browser non permette di far partire l'audio da solo, chiediamo un tocco per iniziare.
+  togli.chiediTocco = () => new Promise((ok) => {
+    s.querySelector('.caricamento').outerHTML = '<button class="btn grande arancio" id="via">Tocca per giocare!</button>';
+    const b = s.querySelector('#via');
+    b.focus();
+    s.addEventListener('click', () => { musica.sblocca(); ok(); }, { once: true });
+  });
   return togli;
 }
 
@@ -78,6 +85,13 @@ async function avvio() {
   await attesa;
   if (errore) vai('errore', { messaggio: errore });
   else vai(dest);
+  // Proviamo ad avviare la musica da soli (nell'app installata spesso è consentito);
+  // se il browser la blocca, la schermata iniziale chiede un tocco.
+  if (!errore && musica.richiesto) {
+    musica.sblocca();
+    await attendi(150);
+    if (!musica.ctx || musica.ctx.state !== 'running') await togliSplash.chiediTocco();
+  }
   togliSplash();
 }
 

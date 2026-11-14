@@ -49,10 +49,11 @@ class Musica {
 
   // Il browser permette l'audio solo dopo un tocco: si avvia al primo gesto.
   sblocca() {
-    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
+    if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {}); return; }
     const C = window.AudioContext || window.webkitAudioContext;
     if (!C) return;
     this.ctx = new C();
+    if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
     this.master = this.ctx.createGain();
     this.master.gain.value = 0;
     this.filtro = this.ctx.createBiquadFilter();
