@@ -10,9 +10,9 @@ import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria, editorRacconto } from './editor.js';
 import { musica } from '../musica.js';
 import { report } from './report.js';
-import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
+import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE, MOBILE } from '../tts.js';
 
-const VERSIONE = '1.7.0';
+const VERSIONE = '1.7.1';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['report', 'Report logopedista'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -214,8 +214,8 @@ async function impostazioniScheda(cont) {
     </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Voce di Virgola (su questo dispositivo)</h3>
       <div class="campo"><label for="voce-nome">Voce</label><select id="voce-nome"></select>
-        <span class="aiuto">Le voci dipendono dal dispositivo. Su Chromebook la più naturale di solito è “Google italiano”; su Edge le voci “Natural”.</span></div>
-      <div class="campo"><label for="voce-tono">Tono (più alto = più allegro)</label><input id="voce-tono" type="range" min="0.9" max="1.5" step="0.02"></div>
+        <span class="aiuto">Le voci dipendono dal dispositivo. Su Chromebook la più naturale di solito è “Google italiano”; su Edge le voci “Natural”.${MOBILE ? ' Su telefoni e tablet Android il browser mostra quasi sempre una sola voce italiana, quella del sistema: per cambiarla vai in Impostazioni di Android › Sintesi vocale (Text-to-speech) › Motore di sintesi Google › Italiano e scegli un’altra voce.' : ''}</span></div>
+      <div class="campo"><label for="voce-tono">Tono (più alto = più allegro)</label><input id="voce-tono" type="range" min="0.9" max="${MOBILE ? 1.1 : 1.5}" step="0.02"></div>
       <div class="campo"><label for="voce-vel">Velocità</label><input id="voce-vel" type="range" min="0.75" max="1.15" step="0.01"></div>
       <div class="riga-pulsanti"><button type="button" class="btn secondario piccolo" id="voce-prova">${ICONE.altoparlante} Prova la voce</button>
         <button type="button" class="link" id="voce-reset">Valori consigliati</button></div>

@@ -60,7 +60,12 @@ class Musica {
     this.filtro.type = 'lowpass';
     this.filtro.frequency.value = 5200;
     this.master.connect(this.filtro);
-    this.filtro.connect(this.ctx.destination);
+    // limitatore: sugli altoparlanti piccoli dei telefoni evita che i bassi "gracchino"
+    this.limite = this.ctx.createDynamicsCompressor();
+    this.limite.threshold.value = -14; this.limite.knee.value = 6; this.limite.ratio.value = 12;
+    this.limite.attack.value = 0.003; this.limite.release.value = 0.2;
+    this.filtro.connect(this.limite);
+    this.limite.connect(this.ctx.destination);
     this.avvia(this.richiesto);
   }
 

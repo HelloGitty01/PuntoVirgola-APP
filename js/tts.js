@@ -4,7 +4,17 @@ import { loc } from './state.js';
 const MASCHILI = ['giuseppe', 'diego', 'cosimo', 'luca', 'pietro', 'lorenzo', 'rinaldo', 'benigno', 'calimero', 'gianni', 'andrea', 'marcello', 'giorgio', 'male'];
 const FEMMINILI = ['isabella', 'elsa', 'alice', 'federica', 'paola', 'carla', 'silvia', 'bianca', 'chiara', 'elena', 'fiamma', 'palmira', 'imelda', 'irma', 'pierina', 'female'];
 
-export const PREDEFINITE = { tono: 1.18, velocita: 0.95 };
+// Su telefoni e tablet (Android, iOS) la sintesi vocale con il tono alzato suona distorta:
+// lì usiamo il tono naturale e niente variazioni tra le frasi.
+export const MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.userAgentData && navigator.userAgentData.mobile);
+export const PREDEFINITE = MOBILE ? { tono: 1, velocita: 1 } : { tono: 1.18, velocita: 0.95 };
+const TONO_MAX = MOBILE ? 1.1 : 2;
+// le preferenze salvate prima di questa versione su un telefono avevano il tono alto: le azzero (resta la voce scelta)
+if (MOBILE && !loc.get('voce.mobile')) {
+  const v = loc.get('voce', {});
+  delete v.tono; delete v.velocita;
+  loc.set('voce', v); loc.set('voce.mobile', true);
+}
 
 export function vociItaliane() {
   if (!('speechSynthesis' in window)) return [];
@@ -69,8 +79,8 @@ export function parla(testo, opz = {}) {
       if (voce) u.voice = voce;
       const esclama = t.endsWith('!');
       const domanda = t.endsWith('?');
-      u.pitch = Math.min(2, pref.tono + (esclama ? 0.12 : domanda ? 0.08 : 0));
-      u.rate = pref.velocita * (esclama ? 1.04 : 1);
+      u.pitch = Math.min(TONO_MAX, pref.tono + (MOBILE ? 0 : esclama ? 0.12 : domanda ? 0.08 : 0));
+      u.rate = pref.velocita * (esclama && !MOBILE ? 1.04 : 1);
       if (i === pulite.length - 1) { u.onend = fine; u.onerror = fine; }
       speechSynthesis.speak(u);
     });

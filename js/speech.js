@@ -76,10 +76,15 @@ export function preparaVosk(progresso) {
   return promessaModello;
 }
 
+const ANDROID = /Android/i.test(navigator.userAgent);
+
 async function microfono() {
   try {
     return await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
+      // Su Android l'eliminazione dell'eco mette l'audio in "modalità chiamata": voce e musica
+      // diventano metalliche e distorte finché il microfono è aperto. Lì la togliamo
+      // (quando la bambina parla, Virgola e la musica sono comunque zitte).
+      audio: { echoCancellation: !ANDROID, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
     });
   } catch (e) {
     throw new Error('microfono');
