@@ -9,7 +9,7 @@ Nome tecnico del progetto: `PuntoVirgola`.
 
 - **14 attività**, ognuna attivabile o disattivabile dall'area genitori (scheda **Attività**):
   - *Costruisco le frasi*: Componi la scena (livelli 1–5), Dillo tu (1–5), Racconta la storia, Descrivi la scena, Frase scombinata, Unisci le frasi (perché, ma, quindi, quando, mentre), Finisci tu, Trasforma (ieri/domani, singolare/plurale), Cosa succede dopo?
-  - *Suoni e parole*: Orecchie attente (coppie minime come cane/pane), Battiamo le sillabe, Come comincia? (sillaba iniziale), Le rime di Punto, Ripeti con Virgola.
+  - *Suoni e parole*: Orecchie attente (coppie minime come cane/pane), Battiamo le sillabe, Come comincia? (sillaba iniziale), Le rime di Punto, Ripeti con Virgola, Pronuncia con Virgola (SC, Z, TR, STR, C dura e dolce: il riconoscitore sceglie tra la parola giusta e le sostituzioni tipiche, es. treno/reno, cane/tane).
 - I contenuti delle nuove attività si modificano nella scheda **Altri esercizi** (una voce per riga).
 - **34 scene e 5 storie iniziali**, modificabili e ampliabili dall'area genitori (pittogrammi ARASAAC o foto vostre).
 - **Caramelle e personaggi**: le caramelle si accumulano e sbloccano nuovi personaggi.

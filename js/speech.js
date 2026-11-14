@@ -105,8 +105,11 @@ function registratore(stream) {
 
 // Un ascolto: avvia() → la bambina parla → ferma() restituisce { testo, audio }.
 export class Ascolto {
-  constructor({ onTesto } = {}) {
+  // grammatica: elenco di parole tra cui il riconoscitore deve scegliere (solo Vosk), es. ['treno', 'teno', '[unk]']
+  constructor({ onTesto, grammatica } = {}) {
     this.onTesto = onTesto || (() => {});
+    this.grammatica = grammatica || null;
+    this.paroleConf = [];
     this.motore = motoreScelto();
     this.attivo = false;
   }
@@ -124,9 +127,14 @@ export class Ascolto {
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     this.testi = [];
     this.parziale = '';
-    this.rec = new modello.KaldiRecognizer(this.ctx.sampleRate);
+    this.rec = this.grammatica
+      ? new modello.KaldiRecognizer(this.ctx.sampleRate, JSON.stringify(this.grammatica))
+      : new modello.KaldiRecognizer(this.ctx.sampleRate);
+    try { this.rec.setWords(true); } catch {}
     this.rec.on('result', (m) => {
-      const t = m.result && m.result.text;
+      if (m.result && Array.isArray(m.result.result)) this.paroleConf.push(...m.result.result);
+      // a volte il risultato finale arriva vuoto anche se il parziale conteneva la parola: in quel caso teniamo il parziale
+      const t = (m.result && m.result.text) || this.parziale;
       if (t) this.testi.push(t);
       this.parziale = '';
       this.onTesto(this.testi.join(' '));
@@ -203,7 +211,7 @@ export class Ascolto {
     }
     const audio = this.reg ? await this.reg.ferma() : null;
     this.stream.getTracks().forEach((t) => t.stop());
-    return { testo: testo.trim(), audio };
+    return { testo: testo.trim(), audio, parole: this.paroleConf };
   }
 
   annulla() {

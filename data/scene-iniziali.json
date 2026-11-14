@@ -3859,5 +3859,365 @@
     "voliamo"
    ]
   }
+ ],
+ "pronuncia": [
+  {
+   "suono": "sc",
+   "parola": "sci",
+   "varianti": [
+    "si",
+    "ci"
+   ]
+  },
+  {
+   "suono": "sc",
+   "parola": "scimmia",
+   "varianti": []
+  },
+  {
+   "suono": "sc",
+   "parola": "pesce",
+   "varianti": []
+  },
+  {
+   "suono": "sc",
+   "parola": "scena",
+   "varianti": [
+    "cena"
+   ]
+  },
+  {
+   "suono": "sc",
+   "parola": "sciarpa",
+   "varianti": []
+  },
+  {
+   "suono": "sc",
+   "parola": "scivolo",
+   "varianti": []
+  },
+  {
+   "suono": "sc",
+   "parola": "cuscino",
+   "varianti": []
+  },
+  {
+   "suono": "sc",
+   "parola": "ascensore",
+   "varianti": []
+  },
+  {
+   "suono": "sk",
+   "parola": "scala",
+   "varianti": [
+    "sala",
+    "cala",
+    "tala"
+   ]
+  },
+  {
+   "suono": "sk",
+   "parola": "scarpa",
+   "varianti": []
+  },
+  {
+   "suono": "sk",
+   "parola": "scuola",
+   "varianti": []
+  },
+  {
+   "suono": "sk",
+   "parola": "scopa",
+   "varianti": [
+    "copa"
+   ]
+  },
+  {
+   "suono": "sk",
+   "parola": "tasca",
+   "varianti": [
+    "tata"
+   ]
+  },
+  {
+   "suono": "sk",
+   "parola": "pesca",
+   "varianti": [
+    "pesa",
+    "peta"
+   ]
+  },
+  {
+   "suono": "sk",
+   "parola": "scatola",
+   "varianti": []
+  },
+  {
+   "suono": "sk",
+   "parola": "bosco",
+   "varianti": []
+  },
+  {
+   "suono": "z",
+   "parola": "zio",
+   "varianti": [
+    "sio"
+   ]
+  },
+  {
+   "suono": "z",
+   "parola": "zucca",
+   "varianti": []
+  },
+  {
+   "suono": "z",
+   "parola": "zaino",
+   "varianti": []
+  },
+  {
+   "suono": "z",
+   "parola": "pizza",
+   "varianti": [
+    "pisa"
+   ]
+  },
+  {
+   "suono": "z",
+   "parola": "tazza",
+   "varianti": [
+    "tassa"
+   ]
+  },
+  {
+   "suono": "z",
+   "parola": "pozzo",
+   "varianti": [
+    "posso"
+   ]
+  },
+  {
+   "suono": "z",
+   "parola": "zanzara",
+   "varianti": []
+  },
+  {
+   "suono": "z",
+   "parola": "zero",
+   "varianti": [
+    "sero"
+   ]
+  },
+  {
+   "suono": "tr",
+   "parola": "tre",
+   "varianti": [
+    "te",
+    "re",
+    "ce",
+    "pre"
+   ]
+  },
+  {
+   "suono": "tr",
+   "parola": "treno",
+   "varianti": [
+    "reno"
+   ]
+  },
+  {
+   "suono": "tr",
+   "parola": "trono",
+   "varianti": [
+    "tono",
+    "rono",
+    "cono"
+   ]
+  },
+  {
+   "suono": "tr",
+   "parola": "tromba",
+   "varianti": [
+    "tomba",
+    "comba"
+   ]
+  },
+  {
+   "suono": "tr",
+   "parola": "trattore",
+   "varianti": []
+  },
+  {
+   "suono": "tr",
+   "parola": "quattro",
+   "varianti": []
+  },
+  {
+   "suono": "tr",
+   "parola": "tram",
+   "varianti": [
+    "tam",
+    "ram",
+    "cam"
+   ]
+  },
+  {
+   "suono": "tr",
+   "parola": "trave",
+   "varianti": [
+    "rave",
+    "cave"
+   ]
+  },
+  {
+   "suono": "str",
+   "parola": "strada",
+   "varianti": []
+  },
+  {
+   "suono": "str",
+   "parola": "strano",
+   "varianti": [
+    "stano",
+    "sano"
+   ]
+  },
+  {
+   "suono": "str",
+   "parola": "strega",
+   "varianti": []
+  },
+  {
+   "suono": "str",
+   "parola": "struzzo",
+   "varianti": []
+  },
+  {
+   "suono": "str",
+   "parola": "finestra",
+   "varianti": []
+  },
+  {
+   "suono": "str",
+   "parola": "mostro",
+   "varianti": [
+    "mosto",
+    "moso",
+    "mosso"
+   ]
+  },
+  {
+   "suono": "str",
+   "parola": "stretto",
+   "varianti": [
+    "setto"
+   ]
+  },
+  {
+   "suono": "str",
+   "parola": "destra",
+   "varianti": [
+    "desta",
+    "desa"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "cane",
+   "varianti": [
+    "tane",
+    "pane"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "casa",
+   "varianti": [
+    "pasa"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "coda",
+   "varianti": [
+    "toda",
+    "goda"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "cuore",
+   "varianti": []
+  },
+  {
+   "suono": "k",
+   "parola": "cubo",
+   "varianti": [
+    "tubo"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "collo",
+   "varianti": [
+    "pollo"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "cono",
+   "varianti": [
+    "tono"
+   ]
+  },
+  {
+   "suono": "k",
+   "parola": "cavallo",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "cena",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "ciao",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "cielo",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "cipolla",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "bacio",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "dolce",
+   "varianti": []
+  },
+  {
+   "suono": "ci",
+   "parola": "cervo",
+   "varianti": [
+    "servo"
+   ]
+  },
+  {
+   "suono": "ci",
+   "parola": "cesto",
+   "varianti": [
+    "sesto",
+    "testo"
+   ]
+  }
  ]
 }

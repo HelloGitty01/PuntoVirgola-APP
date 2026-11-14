@@ -3,14 +3,14 @@ import { vai } from '../nav.js';
 import { S, loc, dispositivo, impostazioni, scollegaDispositivo, idDispositivo } from '../state.js';
 import { conGitHub, leggiPartite, salvaConfig, salvaScene, aggiornaDaRemoto, sincronizza } from '../data.js';
 import { esc, ICONE, toast, finestra, riquadroImmagine, riempiImmagini } from '../ui.js';
-import { TIPI, GIOCHI, GRUPPI, attivaGioco } from '../punteggi.js';
+import { TIPI, GIOCHI, GRUPPI, SUONI, attivaGioco } from '../punteggi.js';
 import { normalizza } from '../match.js';
 import { CREDITI_ARASAAC } from '../arasaac.js';
 import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria } from './editor.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
 
-const VERSIONE = '1.2.0';
+const VERSIONE = '1.3.0';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -85,6 +85,15 @@ async function riepilogo(cont) {
         const perc = Math.round((conteggio[t] / Math.max(1, dilloTutti.length)) * 100);
         return `<div class="riga" data-tipo="${t}"><span>${TIPI[t].nome}</span><div class="traccia"><div style="width:${perc}%;background:var(--c)"></div></div><b>${perc}%</b></div>`;
       }).join('') || '<p>Ancora nessun dato.</p>'}</div></div>
+    ${(() => {
+      const pr = esercizi(partite).filter((e) => e.gioco === 'pronuncia');
+      if (!pr.length) return '';
+      const per = {};
+      pr.forEach((e) => { const x = per[e.suono] = per[e.suono] || { tot: 0, primo: 0, ok: 0, sentite: {} }; x.tot++; if (e.riuscita) x.ok++; if (e.riuscita && e.tentativi === 1) x.primo++; (e.sentite || []).filter((w) => w && w !== '?' && w !== String(e.parola).toLowerCase()).forEach((w) => { x.sentite[w] = (x.sentite[w] || 0) + 1; }); });
+      return `<div class="card morbida"><h3 style="margin-bottom:6px">Pronuncia</h3><p class="aiuto" style="margin-top:0">Parole dette bene (al primo colpo / in totale) e sostituzioni sentite più spesso.</p>
+        <div class="barre">${Object.entries(per).map(([k, x]) => `<div class="riga" style="grid-template-columns:90px 1fr 70px"><span>${esc((SUONI[k] || {}).nome || k)}</span><div class="traccia"><div style="width:${Math.round((x.ok / x.tot) * 100)}%;background:var(--verde)"></div></div><b>${x.primo}/${x.ok}/${x.tot}</b></div>
+          ${Object.keys(x.sentite).length ? `<small style="color:var(--tenue);margin:-4px 0 6px 100px">sentito: ${Object.entries(x.sentite).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([w, n]) => `${esc(w)} (${n})`).join(', ')}</small>` : ''}`).join('')}</div></div>`;
+    })()}
     <div class="card morbida"><h3 style="margin-bottom:10px">Frasi dette di recente</h3>
       ${frasi.length ? `<div class="elenco">${frasi.map((e) => `<div class="voce"><div class="testo">«${esc(e.frasi[e.frasi.length - 1])}»<small>${new Date(e.quando).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })} · ${e.punteggio} caramelle</small></div></div>`).join('')}</div>` : '<p>Ancora nessuna frase.</p>'}</div>
     <div class="card morbida"><h3 style="margin-bottom:10px">Ultime partite</h3>
@@ -277,6 +286,10 @@ function attivita(cont) {
         ${g.livelli ? `<select id="lv-${id}" aria-label="Livello di ${esc(g.titolo)}" style="width:120px">${Array.from({ length: g.livelli }, (_, i) => i + 1).map((l) => `<option value="${l}" ${(imp.livelli[id] || 1) === l ? 'selected' : ''}>Livello ${l}</option>`).join('')}</select>` : ''}
         <span class="switch"><input type="checkbox" id="att-${id}" ${attivaGioco(S.config, id) ? 'checked' : ''}><span></span></span>
       </div>`).join('')}</div>`).join('')}
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:10px"><h3>Suoni per “Pronuncia con Virgola”</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">${Object.entries(SUONI).map(([k, x]) => `<label style="display:flex;align-items:center;gap:8px;padding:8px 14px;border:2px solid #E7E1D6;border-radius:14px;background:#fff">
+        <input type="checkbox" data-suono="${k}" style="width:22px;height:22px" ${!S.config.suoniPronuncia || S.config.suoniPronuncia.includes(k) ? 'checked' : ''}> <b>${esc(x.nome)}</b> <small style="color:var(--tenue)">${esc(x.esempio)}</small></label>`).join('')}</div>
+      <span class="aiuto">Virgola riconosce la parola giusta e le sostituzioni più comuni (es. treno → “teno”, cane → “tane”). È un allenamento: con la voce di una bambina può sbagliare, e le registrazioni restano da riascoltare.</span></div>
     <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe.</p>
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" id="salva" style="align-self:flex-start">Salva</button>`;
@@ -289,6 +302,9 @@ function attivita(cont) {
     });
     if (!Object.values(att).some(Boolean)) { cont.querySelector('#err').textContent = 'Lascia attiva almeno un’attività.'; return; }
     S.config.attivita = att;
+    const suoni = [...cont.querySelectorAll('[data-suono]')].filter((x) => x.checked).map((x) => x.dataset.suono);
+    if (!suoni.length) { cont.querySelector('#err').textContent = 'Scegli almeno un suono per la pronuncia.'; return; }
+    S.config.suoniPronuncia = suoni;
     S.config.impostazioni = { ...(S.config.impostazioni || {}), livelli };
     e.target.disabled = true;
     try { await salvaConfig(); toast('Attività salvate'); } catch (ex) { cont.querySelector('#err').textContent = ex.message; }
@@ -312,6 +328,8 @@ const ELENCHI = [
     a: (x) => `${x.a} | ${x.b} | ${x.giusto} | ${(x.altre || []).join(', ')}`, da: (r) => { const [a, b, g, o] = r.split('|').map((t) => (t || '').trim()); return { a, b, giusto: g, altre: (o || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 4 },
   { k: 'finisci', titolo: 'Frasi da finire', uso: 'Finisci tu', aiuto: 'L’inizio della frase, una per riga: Sono contenta quando…',
     a: (x) => x, da: (r) => r, ok: (r) => r.length > 3 },
+  { k: 'pronuncia', titolo: 'Parole per la pronuncia', uso: 'Pronuncia con Virgola', aiuto: 'Suono | parola | sostituzioni tipiche (parole vere): tr | treno | reno — suoni: sc, sk, z, tr, str, k, ci',
+    a: (x) => `${x.suono} | ${x.parola} | ${(x.varianti || []).join(', ')}`, da: (r) => { const [su, p, v] = r.split('|').map((t) => (t || '').trim()); return { suono: su, parola: p, varianti: (v || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 2 && Object.keys(SUONI).includes(r.split('|')[0].trim()) },
   { k: 'trasforma', titolo: 'Frasi da trasformare', uso: 'Trasforma', aiuto: 'Frase | frase nuova con ___ | parola giusta | altre: Il gatto dorme | I gatti ___ | dormono | dorme, dormiamo',
     a: (x) => `${x.frase} | ${x.modello} | ${x.giusto} | ${(x.altre || []).join(', ')}`, da: (r) => { const [f, m, g, o] = r.split('|').map((t) => (t || '').trim()); return { frase: f, modello: m, giusto: g, altre: (o || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 4 && r.includes('___') }
 ];

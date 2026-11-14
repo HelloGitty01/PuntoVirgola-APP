@@ -24,7 +24,17 @@ export const GIOCHI = {
   sillabe: { titolo: 'Battiamo le sillabe', sotto: 'Un colpo per ogni pezzetto', tipo: 'chi', gruppo: 'suoni', livelli: 0 },
   iniziale: { titolo: 'Come comincia?', sotto: 'Trova il suono iniziale', tipo: 'quando', gruppo: 'suoni', livelli: 0 },
   rime: { titolo: 'Le rime di Punto', sotto: 'Gatto fa rima con…', tipo: 'perche', gruppo: 'suoni', livelli: 0 },
-  ripeti: { titolo: 'Ripeti con Virgola', sotto: 'Ascolta e ripeti', tipo: 'fa', gruppo: 'suoni', livelli: 4 }
+  ripeti: { titolo: 'Ripeti con Virgola', sotto: 'Ascolta e ripeti', tipo: 'fa', gruppo: 'suoni', livelli: 4 },
+  pronuncia: { titolo: 'Pronuncia con Virgola', sotto: 'TR, STR, Z, C, SC: diciamole bene!', tipo: 'chi', gruppo: 'suoni', livelli: 0 }
+};
+export const SUONI = {
+  sc: { nome: 'SC dolce', esempio: 'sci, pesce', segno: /sc(?=[ei])/i },
+  sk: { nome: 'SC duro', esempio: 'scala, scarpa', segno: /sch?/i },
+  z: { nome: 'Z', esempio: 'zio, pizza', segno: /z+/i },
+  tr: { nome: 'TR', esempio: 'treno, tromba', segno: /tr/i },
+  str: { nome: 'STR', esempio: 'strada, mostro', segno: /str/i },
+  k: { nome: 'C dura', esempio: 'cane, casa', segno: /c+(?=[aouh])/i },
+  ci: { nome: 'C dolce', esempio: 'cena, ciao', segno: /c(?=[ei])/i }
 };
 export const GRUPPI = { frasi: 'Costruisco le frasi', suoni: 'Suoni e parole' };
 

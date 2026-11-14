@@ -9,10 +9,10 @@ import { componi } from './componi.js';
 import { dillo } from './dillo.js';
 import { racconta } from './racconta.js';
 import { descrivi } from './descrivi.js';
-import { coppie, sillabe, iniziale, rime, ripeti } from './suoni.js';
+import { coppie, sillabe, iniziale, rime, ripeti, pronuncia } from './suoni.js';
 import { scombinata, unisci, finisci, trasforma, dopo } from './frasi2.js';
 
-const ESERCIZI = { componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
+const ESERCIZI = { pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
 
 // Identificativo stabile ricavato dal contenuto (per non ripetere sempre gli stessi esercizi).
 function idDa(testo) {
@@ -34,6 +34,10 @@ function fonte(gioco) {
     case 'rime': return (sc.rime || []).map((c) => ({ id: idDa('r' + c.join('/')), coppia: c }));
     case 'sillabe': case 'iniziale': return conId(sc.parole, (x) => gioco + x.sillabe);
     case 'ripeti': return conId(sc.ripeti, (x) => x.frase);
+    case 'pronuncia': {
+      const scelti = (S.config && S.config.suoniPronuncia) || null;
+      return conId(sc.pronuncia, (x) => 'p' + x.suono + x.parola).filter((x) => !scelti || scelti.includes(x.suono));
+    }
     case 'scombinata': return (sc.scombinate || []).map((f) => {
       const n = f.split(/\s+/).length;
       return { id: idDa(f), frase: f, livello: n <= 5 ? 1 : n <= 7 ? 2 : 3 };

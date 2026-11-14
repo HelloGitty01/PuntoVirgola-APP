@@ -1,7 +1,7 @@
 // Attività "Suoni e parole": orecchie attente, sillabe, suono iniziale, rime, ripeti con Virgola.
 import { S, impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, mescola, attendi } from '../ui.js';
-import { puntiScelta, INCORAGGIAMENTI } from '../punteggi.js';
+import { puntiScelta, INCORAGGIAMENTI, SUONI } from '../punteggi.js';
 import { parole, normalizza } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
@@ -222,6 +222,75 @@ export function ripeti(area, { voce, fine }) {
     if (migliore < 0.9) await parla(voce.frase, { velocita: 0.85 });
     await attendi(400);
     fine({ punteggio: punti, tentativi, frasi: [area.querySelector('#trascr').textContent] });
+  }
+  return () => { fermaMic(); reg.libera(); };
+}
+
+// ---------- Pronuncia con Virgola ----------
+// Il riconoscitore sceglie solo tra la parola giusta e le sue sostituzioni tipiche (es. treno / teno),
+// così Virgola può dire "ho sentito teno". È un allenamento: non è una valutazione clinica.
+export function pronuncia(area, { voce, fine }) {
+  const suono = SUONI[voce.suono] || { nome: voce.suono, segno: null };
+  const varianti = (voce.varianti || []).map((v) => v.toLowerCase());
+  const target = voce.parola.toLowerCase();
+  let tentativi = 0, nonCapito = 0, finito = false;
+  const sentite = [];
+  const leggi = impostazioni().letturaAutomatica;
+  const evid = suono.segno ? esc(voce.parola).replace(suono.segno, (m) => `<span style="color:var(--arancio);text-decoration:underline;text-decoration-thickness:4px">${m}</span>`) : esc(voce.parola);
+  const intro = `Allenamento ${suono.nome}! Ascolta bene e poi dì con me: ${voce.parola}.`;
+  area.innerHTML = `<div class="due-colonne">
+    <div class="colonna">${riquadroImmagine(img(voce.parola), 'scena-img figura-grande')}
+      <div class="parola-grande" style="font-size:clamp(44px,6vw,72px)">${evid}</div></div>
+    <div class="colonna">${virgolaDice(intro)}
+      <button class="btn secondario" id="ascolta" style="align-self:flex-start">${ICONE.altoparlante} Ascolta Virgola</button>
+      <div class="card morbida" style="text-align:center"><span style="color:var(--tenue)">Virgola ha sentito:</span><div class="trascrizione" id="trascr" style="font-size:30px"></div></div>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px;align-items:center">${htmlMic()}${htmlRegistrazione()}</div>
+    </div></div>`;
+  riempiImmagini(area);
+  collegaFumetti(area);
+  const reg = collegaRegistrazione(area);
+  const dici = () => parla(voce.parola, { velocita: 0.75 });
+  setTimeout(() => (leggi ? parla(intro) : dici()), 400);
+  area.querySelector('#ascolta').onclick = dici;
+
+  const fermaMic = collegaMicrofono(area, {
+    grammatica: () => [target, ...varianti],
+    suTesto: (t) => { area.querySelector('#trascr').textContent = t.replace('[unk]', '…'); },
+    suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
+    suFine: async ({ testo, audio, parole: pc }) => {
+      reg.imposta(audio);
+      const toks = parole(testo);
+      const conf = (pc || []).filter((w) => normalizza(w.word) === normalizza(target)).map((w) => w.conf);
+      const detto = toks.includes(normalizza(target));
+      const sostituto = varianti.find((v) => toks.includes(normalizza(v)));
+      if (!detto && !sostituto) {
+        nonCapito++;
+        area.querySelector('#trascr').textContent = '…';
+        if (nonCapito < 3) { aggiornaFumetto(area, 'Non ho capito bene. Avvicinati e riprova un po’ più forte!', { leggi }); return; }
+      }
+      tentativi++;
+      const sicuro = detto && (!conf.length || Math.max(...conf) >= 0.55);
+      sentite.push(detto ? target : sostituto || '?');
+      area.querySelector('#trascr').textContent = detto ? voce.parola : sostituto || '…';
+      if (sicuro) return concludi(true);
+      if (tentativi >= 3) return concludi(false);
+      let msg;
+      if (sostituto) msg = `Mi è sembrato di sentire "${sostituto}". Ascolta bene la ${suono.nome}: ${voce.parola}. Riprova!`;
+      else if (detto) msg = `Quasi! Ripetiamo piano piano: ${voce.parola}.`;
+      else msg = `Riproviamo insieme: ${voce.parola}.`;
+      aggiornaFumetto(area, msg, { leggi: false });
+      await parla(msg);
+    }
+  });
+
+  async function concludi(riuscita) {
+    if (finito) return;
+    finito = true;
+    const punti = riuscita ? [10, 8, 6][tentativi - 1] ?? 6 : 3;
+    const msg = riuscita ? `${caso(INCORAGGIAMENTI)} Hai detto proprio ${voce.parola}!` : `Brava, ci hai provato tanto! Ci alleniamo ancora la prossima volta: ${voce.parola}.`;
+    aggiornaFumetto(area, msg, { leggi: false, allegro: riuscita });
+    await parla(msg);
+    fine({ punteggio: punti, suono: voce.suono, parola: voce.parola, riuscita, tentativi, sentite });
   }
   return () => { fermaMic(); reg.libera(); };
 }

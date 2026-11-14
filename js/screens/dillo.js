@@ -16,7 +16,7 @@ export function messaggioErroreVoce(e) {
 }
 
 // Tasto microfono riutilizzabile: gestisce preparazione del modello, ascolto e stop.
-export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscoltare }) {
+export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscoltare, grammatica }) {
   const bt = area.querySelector('#mic');
   const etich = area.querySelector('#mic-testo');
   let ascolto = null;
@@ -42,7 +42,7 @@ export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscol
         await preparaVosk((p) => { etich.textContent = `Virgola prepara le orecchie… ${Math.round(p * 100)}%`; });
         bt.disabled = false;
       }
-      ascolto = new Ascolto({ onTesto: suTesto });
+      ascolto = new Ascolto({ onTesto: suTesto, grammatica: typeof grammatica === 'function' ? grammatica() : grammatica });
       await ascolto.avvia();
       bt.classList.add('ascolta');
       bt.innerHTML = ICONE.stop;
