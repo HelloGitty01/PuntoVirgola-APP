@@ -12,7 +12,7 @@ import { musica } from '../musica.js';
 import { report } from './report.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE, MOBILE } from '../tts.js';
 
-const VERSIONE = '1.7.2';
+const VERSIONE = '1.7.3';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['report', 'Report logopedista'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -202,7 +202,7 @@ async function rivedere(cont) {
 async function impostazioniScheda(cont) {
   const imp = impostazioni();
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  cont.innerHTML = `<form id="f" style="display:flex;flex-direction:column;gap:16px">
+  cont.innerHTML = `<p class="aiuto" style="margin:0">Versione dell’app: <b>${VERSIONE}</b></p><form id="f" style="display:flex;flex-direction:column;gap:16px">
     <div class="card morbida" style="display:flex;flex-direction:column;gap:14px">
       <div class="campo"><label for="nome">Nome della bambina</label><input id="nome" type="text" value="${esc(S.config.nome || '')}"></div>
       <div class="campo"><label for="spp">Esercizi per partita</label><input id="spp" type="number" min="1" max="15" value="${imp.scenePerPartita}"></div>

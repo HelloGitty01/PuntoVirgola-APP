@@ -33,6 +33,8 @@ const BRANI = {
   }
 };
 
+const MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.userAgentData && navigator.userAgentData.mobile);
+
 class Musica {
   constructor() {
     this.ctx = null;
@@ -52,7 +54,8 @@ class Musica {
     if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {}); return; }
     const C = window.AudioContext || window.webkitAudioContext;
     if (!C) return;
-    this.ctx = new C();
+    // su telefoni e tablet un buffer più ampio evita i crepitii
+    this.ctx = MOBILE ? new C({ latencyHint: 'playback' }) : new C();
     if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
     this.master = this.ctx.createGain();
     this.master.gain.value = 0;
@@ -114,7 +117,8 @@ class Musica {
   livello() {
     if (!this.brano || this.muto || this.ascolta) return 0;
     const base = BRANI[this.brano].volume * this.volume * 0.5;
-    return this.parla ? base * 0.3 : base;
+    if (this.parla) return MOBILE ? 0 : base * 0.3;
+    return base;
   }
 
   aggiornaVolume() {
@@ -126,7 +130,16 @@ class Musica {
 
   setMuto(v) { this.muto = v; loc.set('musicaMuta', v); this.aggiornaVolume(); aggiornaPulsante(); }
   setVolume(v) { this.volume = v; loc.set('musicaVolume', v); this.aggiornaVolume(); }
-  setParla(v) { this.parla = v; this.aggiornaVolume(); }
+  setParla(v) {
+    this.parla = v;
+    this.aggiornaVolume();
+    // Su telefoni e tablet, mentre Virgola parla, la musica si ferma del tutto (anche il flusso audio):
+    // mescolare la sintesi vocale con l'audio della pagina la fa gracchiare.
+    if (!MOBILE || !this.ctx) return;
+    clearTimeout(this.tSospendi);
+    if (v) this.tSospendi = setTimeout(() => { if (this.parla && this.ctx.state === 'running') this.ctx.suspend().catch(() => {}); }, 250);
+    else if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+  }
   setAscolta(v) { this.ascolta = v; this.aggiornaVolume(); }
 
   // ---------- strumenti ----------

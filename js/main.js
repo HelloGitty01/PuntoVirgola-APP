@@ -71,6 +71,11 @@ async function avvio() {
   const togliSplash = splash();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW', e));
+    // quando arriva una versione nuova dell'app, la pagina si ricarica da sola (una volta)
+    if (navigator.serviceWorker.controller) {
+      let ricaricata = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => { if (!ricaricata) { ricaricata = true; location.reload(); } });
+    }
   }
   const attesa = attendi(1800);
   let dest = 'benvenuto';
