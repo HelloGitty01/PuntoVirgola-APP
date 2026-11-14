@@ -1,0 +1,2654 @@
+{
+ "versione": 1,
+ "scene": [
+  {
+   "id": "l1-cane",
+   "livello": 1,
+   "frase": "Il cane corre",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "cane",
+     "correre"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il cane",
+     "accettate": [
+      "cane",
+      "cagnolino",
+      "cagnetto"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "corre",
+     "accettate": [
+      "corr*"
+     ],
+     "domanda": "Cosa fa il cane?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il gatto"
+    }
+   ],
+   "vocabolario": [
+    "cane",
+    "correre",
+    "prato",
+    "coda",
+    "zampe",
+    "veloce",
+    "felice",
+    "giocare"
+   ],
+   "parolaSegreta": [
+    "coda",
+    "zampe"
+   ]
+  },
+  {
+   "id": "l1-bambina-dorme",
+   "livello": 1,
+   "frase": "La bambina dorme",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "dormire"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza",
+      "ragazzina"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "dorme",
+     "accettate": [
+      "dorm*"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "mangia"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il nonno"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "dormire",
+    "letto",
+    "cuscino",
+    "coperta",
+    "notte",
+    "sogno",
+    "stanca"
+   ],
+   "parolaSegreta": [
+    "cuscino",
+    "coperta"
+   ]
+  },
+  {
+   "id": "l1-gatto",
+   "livello": 1,
+   "frase": "Il gatto mangia",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "gatto",
+     "mangiare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il gatto",
+     "accettate": [
+      "gatto",
+      "micio",
+      "gattino",
+      "gatta",
+      "micino"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia",
+     "accettate": [
+      "mangi*"
+     ],
+     "domanda": "Cosa fa il gatto?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "salta"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il cane"
+    }
+   ],
+   "vocabolario": [
+    "gatto",
+    "mangiare",
+    "ciotola",
+    "cibo",
+    "fame",
+    "baffi",
+    "coda",
+    "croccantini"
+   ],
+   "parolaSegreta": [
+    "ciotola",
+    "baffi"
+   ]
+  },
+  {
+   "id": "l1-bambino-legge",
+   "livello": 1,
+   "frase": "Il bambino legge",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambino",
+     "leggere"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il bambino",
+     "accettate": [
+      "bambino",
+      "bimbo",
+      "ragazzo",
+      "ragazzino"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "legge",
+     "accettate": [
+      "legg*"
+     ],
+     "domanda": "Cosa fa il bambino?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "canta"
+    },
+    {
+     "tipo": "chi",
+     "testo": "La mamma"
+    }
+   ],
+   "vocabolario": [
+    "bambino",
+    "leggere",
+    "libro",
+    "pagine",
+    "storia",
+    "seduto",
+    "figure"
+   ],
+   "parolaSegreta": [
+    "libro",
+    "pagine"
+   ]
+  },
+  {
+   "id": "l1-mamma-cucina",
+   "livello": 1,
+   "frase": "La mamma cucina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mamma",
+     "cucinare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La mamma",
+     "accettate": [
+      "mamma",
+      "madre",
+      "signora",
+      "donna"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "cucina",
+     "accettate": [
+      "cucin*",
+      "prepar*"
+     ],
+     "domanda": "Cosa fa la mamma?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il papà"
+    }
+   ],
+   "vocabolario": [
+    "mamma",
+    "cucinare",
+    "pentola",
+    "fornello",
+    "cucina",
+    "pranzo",
+    "cena",
+    "cuoca"
+   ],
+   "parolaSegreta": [
+    "pentola"
+   ]
+  },
+  {
+   "id": "l1-papa-guida",
+   "livello": 1,
+   "frase": "Il papà guida",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "papà",
+     "guidare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il papà",
+     "accettate": [
+      "papa",
+      "padre",
+      "uomo",
+      "signore",
+      "babbo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "guida",
+     "accettate": [
+      "guid*"
+     ],
+     "domanda": "Cosa fa il papà?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "nuota"
+    },
+    {
+     "tipo": "chi",
+     "testo": "La bambina"
+    }
+   ],
+   "vocabolario": [
+    "papa",
+    "guidare",
+    "macchina",
+    "auto",
+    "volante",
+    "strada",
+    "viaggio"
+   ],
+   "parolaSegreta": [
+    "volante",
+    "macchina"
+   ]
+  },
+  {
+   "id": "l1-uccello",
+   "livello": 1,
+   "frase": "L’uccellino vola",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "uccello",
+     "volare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "L’uccellino",
+     "accettate": [
+      "uccello",
+      "uccellino",
+      "passero",
+      "uccelli"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "vola",
+     "accettate": [
+      "vol*"
+     ],
+     "domanda": "Cosa fa l’uccellino?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "corre"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il pesce"
+    }
+   ],
+   "vocabolario": [
+    "uccellino",
+    "volare",
+    "ali",
+    "cielo",
+    "piume",
+    "becco",
+    "nido",
+    "albero"
+   ],
+   "parolaSegreta": [
+    "ali",
+    "becco"
+   ]
+  },
+  {
+   "id": "l1-pesce",
+   "livello": 1,
+   "frase": "Il pesce nuota",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "pesce",
+     "nuotare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il pesce",
+     "accettate": [
+      "pesce",
+      "pesciolino",
+      "pesci"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "nuota",
+     "accettate": [
+      "nuot*"
+     ],
+     "domanda": "Cosa fa il pesce?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "vola"
+    },
+    {
+     "tipo": "chi",
+     "testo": "L’uccellino"
+    }
+   ],
+   "vocabolario": [
+    "pesce",
+    "nuotare",
+    "acqua",
+    "mare",
+    "pinne",
+    "bolle",
+    "coda"
+   ],
+   "parolaSegreta": [
+    "pinne",
+    "bolle"
+   ]
+  },
+  {
+   "id": "l1-bambina-canta",
+   "livello": 1,
+   "frase": "La bambina canta",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "cantare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "canta",
+     "accettate": [
+      "cant*"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "piange"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il cane"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "cantare",
+    "canzone",
+    "musica",
+    "note",
+    "voce",
+    "felice"
+   ],
+   "parolaSegreta": [
+    "canzone",
+    "musica"
+   ]
+  },
+  {
+   "id": "l1-nonno",
+   "livello": 1,
+   "frase": "Il nonno cammina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "nonno",
+     "camminare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il nonno",
+     "accettate": [
+      "nonno",
+      "anziano",
+      "vecchio",
+      "signore",
+      "vecchietto"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "cammina",
+     "accettate": [
+      "cammin*",
+      "passeggi*"
+     ],
+     "domanda": "Cosa fa il nonno?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "salta"
+    },
+    {
+     "tipo": "chi",
+     "testo": "La maestra"
+    }
+   ],
+   "vocabolario": [
+    "nonno",
+    "camminare",
+    "bastone",
+    "strada",
+    "passeggiata",
+    "cappello",
+    "lento"
+   ],
+   "parolaSegreta": [
+    "bastone",
+    "cappello"
+   ]
+  },
+  {
+   "id": "l1-bambino-beve",
+   "livello": 1,
+   "frase": "Il bambino beve",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambino",
+     "bere"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il bambino",
+     "accettate": [
+      "bambino",
+      "bimbo",
+      "ragazzo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "beve",
+     "accettate": [
+      "bev*",
+      "bere"
+     ],
+     "domanda": "Cosa fa il bambino?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    },
+    {
+     "tipo": "chi",
+     "testo": "La rana"
+    }
+   ],
+   "vocabolario": [
+    "bambino",
+    "bere",
+    "acqua",
+    "bicchiere",
+    "sete",
+    "fresca"
+   ],
+   "parolaSegreta": [
+    "bicchiere",
+    "sete"
+   ]
+  },
+  {
+   "id": "l1-rana",
+   "livello": 1,
+   "frase": "La rana salta",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "rana",
+     "saltare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La rana",
+     "accettate": [
+      "rana",
+      "ranocchia",
+      "ranocchio",
+      "rospo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "salta",
+     "accettate": [
+      "salt*"
+     ],
+     "domanda": "Cosa fa la rana?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "vola"
+    },
+    {
+     "tipo": "chi",
+     "testo": "Il pesce"
+    }
+   ],
+   "vocabolario": [
+    "rana",
+    "saltare",
+    "verde",
+    "stagno",
+    "zampe",
+    "foglia",
+    "acqua"
+   ],
+   "parolaSegreta": [
+    "stagno",
+    "verde"
+   ]
+  },
+  {
+   "id": "l2-gatto-cucina",
+   "livello": 2,
+   "frase": "Il gatto mangia in cucina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "gatto",
+     "mangiare",
+     "cucina"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il gatto",
+     "accettate": [
+      "gatto",
+      "micio",
+      "gattino",
+      "gatta"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia",
+     "accettate": [
+      "mangi*"
+     ],
+     "domanda": "Cosa fa il gatto?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina",
+     "accettate": [
+      "cucina"
+     ],
+     "domanda": "Dove mangia il gatto?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in giardino"
+    }
+   ],
+   "vocabolario": [
+    "gatto",
+    "mangiare",
+    "cucina",
+    "ciotola",
+    "cibo",
+    "pavimento",
+    "tavolo",
+    "sedia"
+   ],
+   "parolaSegreta": [
+    "ciotola",
+    "tavolo"
+   ]
+  },
+  {
+   "id": "l2-palla",
+   "livello": 2,
+   "frase": "La bambina gioca a palla",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "giocare",
+     "palla"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "gioca",
+     "accettate": [
+      "gioc*"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "a palla",
+     "accettate": [
+      "palla",
+      "pallone"
+     ],
+     "domanda": "Con che cosa gioca?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "con la bambola"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "giocare",
+    "palla",
+    "pallone",
+    "tirare",
+    "prendere",
+    "parco",
+    "prato"
+   ],
+   "parolaSegreta": [
+    "pallone",
+    "prato"
+   ]
+  },
+  {
+   "id": "l2-mela",
+   "livello": 2,
+   "frase": "Il bambino mangia la mela",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambino",
+     "mangiare",
+     "mela"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il bambino",
+     "accettate": [
+      "bambino",
+      "bimbo",
+      "ragazzo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia",
+     "accettate": [
+      "mangi*",
+      "morde",
+      "mordere"
+     ],
+     "domanda": "Cosa fa il bambino?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la mela",
+     "accettate": [
+      "mela",
+      "mele"
+     ],
+     "domanda": "Che cosa mangia?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "la pizza"
+    },
+    {
+     "tipo": "fa",
+     "testo": "beve"
+    }
+   ],
+   "vocabolario": [
+    "bambino",
+    "mangiare",
+    "mela",
+    "frutta",
+    "rossa",
+    "buona",
+    "merenda",
+    "succosa"
+   ],
+   "parolaSegreta": [
+    "frutta",
+    "merenda"
+   ]
+  },
+  {
+   "id": "l2-libro",
+   "livello": 2,
+   "frase": "La mamma legge un libro",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mamma",
+     "leggere",
+     "libro"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La mamma",
+     "accettate": [
+      "mamma",
+      "madre",
+      "signora",
+      "donna"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "legge",
+     "accettate": [
+      "legg*"
+     ],
+     "domanda": "Cosa fa la mamma?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un libro",
+     "accettate": [
+      "libro",
+      "libri",
+      "storia",
+      "favola"
+     ],
+     "domanda": "Che cosa legge?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "una lettera"
+    },
+    {
+     "tipo": "fa",
+     "testo": "scrive"
+    }
+   ],
+   "vocabolario": [
+    "mamma",
+    "leggere",
+    "libro",
+    "pagine",
+    "storia",
+    "divano",
+    "occhiali"
+   ],
+   "parolaSegreta": [
+    "pagine",
+    "occhiali"
+   ]
+  },
+  {
+   "id": "l2-cuccia",
+   "livello": 2,
+   "frase": "Il cane dorme nella cuccia",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "cane",
+     "dormire",
+     "cuccia"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il cane",
+     "accettate": [
+      "cane",
+      "cagnolino",
+      "cagnetto"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "dorme",
+     "accettate": [
+      "dorm*",
+      "riposa*"
+     ],
+     "domanda": "Cosa fa il cane?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "nella cuccia",
+     "accettate": [
+      "cuccia",
+      "casetta",
+      "cuccetta"
+     ],
+     "domanda": "Dove dorme il cane?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "sul divano"
+    },
+    {
+     "tipo": "fa",
+     "testo": "corre"
+    }
+   ],
+   "vocabolario": [
+    "cane",
+    "dormire",
+    "cuccia",
+    "casetta",
+    "notte",
+    "stanco",
+    "cuscino",
+    "osso"
+   ],
+   "parolaSegreta": [
+    "osso",
+    "casetta"
+   ]
+  },
+  {
+   "id": "l2-mare",
+   "livello": 2,
+   "frase": "Il pesce nuota nel mare",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "pesce",
+     "nuotare",
+     "mare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il pesce",
+     "accettate": [
+      "pesce",
+      "pesciolino",
+      "pesci"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "nuota",
+     "accettate": [
+      "nuot*"
+     ],
+     "domanda": "Cosa fa il pesce?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "nel mare",
+     "accettate": [
+      "mare",
+      "acqua",
+      "oceano"
+     ],
+     "domanda": "Dove nuota il pesce?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "nel cielo"
+    },
+    {
+     "tipo": "fa",
+     "testo": "vola"
+    }
+   ],
+   "vocabolario": [
+    "pesce",
+    "nuotare",
+    "mare",
+    "acqua",
+    "onde",
+    "alghe",
+    "sabbia",
+    "conchiglia"
+   ],
+   "parolaSegreta": [
+    "onde",
+    "conchiglia"
+   ]
+  },
+  {
+   "id": "l2-macchina",
+   "livello": 2,
+   "frase": "Il papà lava la macchina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "papà",
+     "lavare",
+     "macchina"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il papà",
+     "accettate": [
+      "papa",
+      "padre",
+      "uomo",
+      "signore",
+      "babbo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "lava",
+     "accettate": [
+      "lav*",
+      "pulisc*"
+     ],
+     "domanda": "Cosa fa il papà?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la macchina",
+     "accettate": [
+      "macchina",
+      "auto",
+      "automobile",
+      "macchinina"
+     ],
+     "domanda": "Che cosa lava?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "il cane"
+    },
+    {
+     "tipo": "fa",
+     "testo": "guida"
+    }
+   ],
+   "vocabolario": [
+    "papa",
+    "lavare",
+    "macchina",
+    "acqua",
+    "spugna",
+    "sapone",
+    "schiuma",
+    "secchio"
+   ],
+   "parolaSegreta": [
+    "spugna",
+    "secchio"
+   ]
+  },
+  {
+   "id": "l2-latte",
+   "livello": 2,
+   "frase": "La bambina beve il latte",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "bere",
+     "latte"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "beve",
+     "accettate": [
+      "bev*",
+      "bere"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il latte",
+     "accettate": [
+      "latte"
+     ],
+     "domanda": "Che cosa beve?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "l’aranciata"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "bere",
+    "latte",
+    "tazza",
+    "colazione",
+    "biscotti",
+    "mattina",
+    "bianco"
+   ],
+   "parolaSegreta": [
+    "tazza",
+    "biscotti"
+   ]
+  },
+  {
+   "id": "l2-parco",
+   "livello": 2,
+   "frase": "Il bambino va in bicicletta al parco",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambino",
+     "bicicletta",
+     "parco"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il bambino",
+     "accettate": [
+      "bambino",
+      "bimbo",
+      "ragazzo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "va in bicicletta",
+     "accettate": [
+      "bicicletta",
+      "bici",
+      "pedal*"
+     ],
+     "domanda": "Cosa fa il bambino?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "al parco",
+     "accettate": [
+      "parco",
+      "giardino",
+      "prato"
+     ],
+     "domanda": "Dove va in bicicletta?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "in cucina"
+    },
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    }
+   ],
+   "vocabolario": [
+    "bambino",
+    "bicicletta",
+    "bici",
+    "parco",
+    "casco",
+    "ruote",
+    "pedali",
+    "alberi"
+   ],
+   "parolaSegreta": [
+    "casco",
+    "ruote"
+   ]
+  },
+  {
+   "id": "l2-lavagna",
+   "livello": 2,
+   "frase": "La maestra scrive alla lavagna",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "maestra",
+     "scrivere",
+     "lavagna"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La maestra",
+     "accettate": [
+      "maestra",
+      "insegnante",
+      "professoressa"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "scrive",
+     "accettate": [
+      "scriv*"
+     ],
+     "domanda": "Cosa fa la maestra?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "alla lavagna",
+     "accettate": [
+      "lavagna"
+     ],
+     "domanda": "Dove scrive?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "sul muro"
+    },
+    {
+     "tipo": "fa",
+     "testo": "canta"
+    }
+   ],
+   "vocabolario": [
+    "maestra",
+    "scrivere",
+    "lavagna",
+    "gesso",
+    "scuola",
+    "classe",
+    "lettere",
+    "parole"
+   ],
+   "parolaSegreta": [
+    "gesso",
+    "classe"
+   ]
+  },
+  {
+   "id": "l2-divano",
+   "livello": 2,
+   "frase": "Il nonno dorme sul divano",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "nonno",
+     "dormire",
+     "divano"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il nonno",
+     "accettate": [
+      "nonno",
+      "anziano",
+      "vecchio",
+      "signore"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "dorme",
+     "accettate": [
+      "dorm*",
+      "riposa*"
+     ],
+     "domanda": "Cosa fa il nonno?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "sul divano",
+     "accettate": [
+      "divano",
+      "sofa",
+      "poltrona"
+     ],
+     "domanda": "Dove dorme il nonno?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "nel letto"
+    },
+    {
+     "tipo": "fa",
+     "testo": "corre"
+    }
+   ],
+   "vocabolario": [
+    "nonno",
+    "dormire",
+    "divano",
+    "cuscino",
+    "salotto",
+    "russa",
+    "stanco",
+    "coperta"
+   ],
+   "parolaSegreta": [
+    "salotto",
+    "cuscino"
+   ]
+  },
+  {
+   "id": "l2-fiore",
+   "livello": 2,
+   "frase": "La bambina disegna un fiore",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "disegnare",
+     "fiore"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "disegna",
+     "accettate": [
+      "disegn*",
+      "color*"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un fiore",
+     "accettate": [
+      "fiore",
+      "fiori",
+      "margherita"
+     ],
+     "domanda": "Che cosa disegna?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "una casa"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "disegnare",
+    "fiore",
+    "foglio",
+    "matite",
+    "colori",
+    "petali",
+    "tavolo"
+   ],
+   "parolaSegreta": [
+    "matite",
+    "petali"
+   ]
+  },
+  {
+   "id": "l3-gatto-latte",
+   "livello": 3,
+   "frase": "Il gatto beve il latte in cucina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "gatto",
+     "bere",
+     "latte",
+     "cucina"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il gatto",
+     "accettate": [
+      "gatto",
+      "micio",
+      "gattino",
+      "gatta"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "beve",
+     "accettate": [
+      "bev*",
+      "bere",
+      "lecca"
+     ],
+     "domanda": "Cosa fa il gatto?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il latte",
+     "accettate": [
+      "latte"
+     ],
+     "domanda": "Che cosa beve?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina",
+     "accettate": [
+      "cucina"
+     ],
+     "domanda": "Dove beve il latte?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "l’acqua"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in giardino"
+    },
+    {
+     "tipo": "fa",
+     "testo": "dorme"
+    }
+   ],
+   "vocabolario": [
+    "gatto",
+    "bere",
+    "latte",
+    "cucina",
+    "ciotola",
+    "lingua",
+    "baffi",
+    "pavimento"
+   ],
+   "parolaSegreta": [
+    "lingua",
+    "ciotola"
+   ]
+  },
+  {
+   "id": "l3-torta",
+   "livello": 3,
+   "frase": "La mamma prepara la torta in cucina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mamma",
+     "torta",
+     "cucina"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La mamma",
+     "accettate": [
+      "mamma",
+      "madre",
+      "signora",
+      "donna"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "prepara",
+     "accettate": [
+      "prepar*",
+      "cucin*",
+      "inforn*"
+     ],
+     "domanda": "Cosa fa la mamma?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la torta",
+     "accettate": [
+      "torta",
+      "dolce"
+     ],
+     "domanda": "Che cosa prepara?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina",
+     "accettate": [
+      "cucina"
+     ],
+     "domanda": "Dove prepara la torta?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "la pizza"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in bagno"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia"
+    }
+   ],
+   "vocabolario": [
+    "mamma",
+    "torta",
+    "cucina",
+    "forno",
+    "farina",
+    "uova",
+    "zucchero",
+    "compleanno"
+   ],
+   "parolaSegreta": [
+    "forno",
+    "farina"
+   ]
+  },
+  {
+   "id": "l3-calcio",
+   "livello": 3,
+   "frase": "Il bambino gioca a calcio al parco",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambino",
+     "calcio",
+     "parco"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il bambino",
+     "accettate": [
+      "bambino",
+      "bimbo",
+      "ragazzo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "gioca",
+     "accettate": [
+      "gioc*",
+      "calci*"
+     ],
+     "domanda": "Cosa fa il bambino?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "a calcio",
+     "accettate": [
+      "calcio",
+      "pallone",
+      "palla"
+     ],
+     "domanda": "A che cosa gioca?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "al parco",
+     "accettate": [
+      "parco",
+      "giardino",
+      "campo",
+      "prato"
+     ],
+     "domanda": "Dove gioca?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "a carte"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in camera"
+    },
+    {
+     "tipo": "fa",
+     "testo": "legge"
+    }
+   ],
+   "vocabolario": [
+    "bambino",
+    "calcio",
+    "pallone",
+    "parco",
+    "porta",
+    "goal",
+    "squadra",
+    "prato"
+   ],
+   "parolaSegreta": [
+    "porta",
+    "squadra"
+   ]
+  },
+  {
+   "id": "l3-estate",
+   "livello": 3,
+   "frase": "D’estate i bambini nuotano nel mare",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "estate",
+     "bambini",
+     "nuotare",
+     "mare"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "D’estate",
+     "accettate": [
+      "estate",
+      "vacanza",
+      "vacanze"
+     ],
+     "domanda": "Quando succede?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "i bambini",
+     "accettate": [
+      "bambini",
+      "bimbi",
+      "ragazzi",
+      "bambino",
+      "bambina"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "nuotano",
+     "accettate": [
+      "nuot*",
+      "fanno il bagno",
+      "bagno"
+     ],
+     "domanda": "Cosa fanno i bambini?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "nel mare",
+     "accettate": [
+      "mare",
+      "acqua",
+      "spiaggia"
+     ],
+     "domanda": "Dove nuotano?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "quando",
+     "testo": "D’inverno"
+    },
+    {
+     "tipo": "dove",
+     "testo": "nella neve"
+    },
+    {
+     "tipo": "fa",
+     "testo": "dormono"
+    }
+   ],
+   "vocabolario": [
+    "estate",
+    "bambini",
+    "nuotare",
+    "mare",
+    "spiaggia",
+    "sole",
+    "onde",
+    "costume",
+    "ombrellone",
+    "sabbia"
+   ],
+   "parolaSegreta": [
+    "ombrellone",
+    "costume"
+   ]
+  },
+  {
+   "id": "l3-sera",
+   "livello": 3,
+   "frase": "La sera la bambina legge un libro",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "sera",
+     "bambina",
+     "leggere",
+     "libro"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "La sera",
+     "accettate": [
+      "sera",
+      "notte",
+      "dopocena"
+     ],
+     "domanda": "Quando succede?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "la bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "legge",
+     "accettate": [
+      "legg*"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un libro",
+     "accettate": [
+      "libro",
+      "storia",
+      "favola",
+      "fiaba"
+     ],
+     "domanda": "Che cosa legge?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "quando",
+     "testo": "Al mattino"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un giornale"
+    },
+    {
+     "tipo": "fa",
+     "testo": "canta"
+    }
+   ],
+   "vocabolario": [
+    "sera",
+    "bambina",
+    "leggere",
+    "libro",
+    "letto",
+    "lampada",
+    "pigiama",
+    "luna",
+    "storia"
+   ],
+   "parolaSegreta": [
+    "lampada",
+    "pigiama"
+   ]
+  },
+  {
+   "id": "l3-ombrello",
+   "livello": 3,
+   "frase": "Il papà apre l’ombrello perché piove",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "papà",
+     "ombrello",
+     "pioggia"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il papà",
+     "accettate": [
+      "papa",
+      "padre",
+      "uomo",
+      "signore",
+      "babbo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "apre",
+     "accettate": [
+      "apr*",
+      "usa",
+      "tiene",
+      "prend*"
+     ],
+     "domanda": "Cosa fa il papà?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "l’ombrello",
+     "accettate": [
+      "ombrello"
+     ],
+     "domanda": "Che cosa apre?"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché piove",
+     "accettate": [
+      "piove",
+      "pioggia",
+      "piovere",
+      "pioveva"
+     ],
+     "domanda": "Perché apre l’ombrello?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "perche",
+     "testo": "perché fa caldo"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la porta"
+    }
+   ],
+   "vocabolario": [
+    "papa",
+    "ombrello",
+    "pioggia",
+    "piove",
+    "gocce",
+    "nuvole",
+    "stivali",
+    "bagnato"
+   ],
+   "parolaSegreta": [
+    "gocce",
+    "stivali"
+   ]
+  },
+  {
+   "id": "l3-gelato",
+   "livello": 3,
+   "frase": "La bambina mangia il gelato perché fa caldo",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "gelato",
+     "caldo"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mangia",
+     "accettate": [
+      "mangi*",
+      "lecca"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il gelato",
+     "accettate": [
+      "gelato",
+      "cono",
+      "ghiacciolo"
+     ],
+     "domanda": "Che cosa mangia?"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché fa caldo",
+     "accettate": [
+      "caldo",
+      "estate",
+      "sole"
+     ],
+     "domanda": "Perché mangia il gelato?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "perche",
+     "testo": "perché ha sonno"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la minestra"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "gelato",
+    "cono",
+    "caldo",
+    "estate",
+    "sole",
+    "fragola",
+    "cioccolato"
+   ],
+   "parolaSegreta": [
+    "cono",
+    "cioccolato"
+   ]
+  },
+  {
+   "id": "l3-albero",
+   "livello": 3,
+   "frase": "Il nonno pianta un albero in giardino",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "nonno",
+     "piantare",
+     "albero",
+     "giardino"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il nonno",
+     "accettate": [
+      "nonno",
+      "anziano",
+      "vecchio",
+      "signore"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "pianta",
+     "accettate": [
+      "piant*",
+      "mette"
+     ],
+     "domanda": "Cosa fa il nonno?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un albero",
+     "accettate": [
+      "albero",
+      "alberello",
+      "pianta"
+     ],
+     "domanda": "Che cosa pianta?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in giardino",
+     "accettate": [
+      "giardino",
+      "orto",
+      "prato"
+     ],
+     "domanda": "Dove pianta l’albero?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "una sedia"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina"
+    }
+   ],
+   "vocabolario": [
+    "nonno",
+    "piantare",
+    "albero",
+    "giardino",
+    "terra",
+    "pala",
+    "buca",
+    "foglie"
+   ],
+   "parolaSegreta": [
+    "pala",
+    "buca"
+   ]
+  },
+  {
+   "id": "l3-denti",
+   "livello": 3,
+   "frase": "Al mattino il bambino si lava i denti in bagno",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mattina",
+     "bambino",
+     "lavarsi i denti",
+     "bagno"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "Al mattino",
+     "accettate": [
+      "mattino",
+      "mattina",
+      "colazione"
+     ],
+     "domanda": "Quando succede?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "il bambino",
+     "accettate": [
+      "bambino",
+      "bimbo",
+      "ragazzo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "si lava",
+     "accettate": [
+      "lav*",
+      "spazzol*"
+     ],
+     "domanda": "Cosa fa il bambino?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "i denti",
+     "accettate": [
+      "denti",
+      "dente"
+     ],
+     "domanda": "Che cosa si lava?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in bagno",
+     "accettate": [
+      "bagno",
+      "lavandino"
+     ],
+     "domanda": "Dove si lava i denti?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "in giardino"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la macchina"
+    }
+   ],
+   "vocabolario": [
+    "mattino",
+    "bambino",
+    "denti",
+    "spazzolino",
+    "dentifricio",
+    "bagno",
+    "lavandino",
+    "specchio",
+    "acqua"
+   ],
+   "parolaSegreta": [
+    "spazzolino",
+    "dentifricio"
+   ]
+  },
+  {
+   "id": "l3-cappotto",
+   "livello": 3,
+   "frase": "La bambina mette il cappotto perché fa freddo",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bambina",
+     "cappotto",
+     "freddo"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mette",
+     "accettate": [
+      "mett*",
+      "indoss*",
+      "veste"
+     ],
+     "domanda": "Cosa fa la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il cappotto",
+     "accettate": [
+      "cappotto",
+      "giacca",
+      "giubbotto",
+      "giaccone"
+     ],
+     "domanda": "Che cosa mette?"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché fa freddo",
+     "accettate": [
+      "freddo",
+      "inverno",
+      "neve"
+     ],
+     "domanda": "Perché mette il cappotto?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "perche",
+     "testo": "perché ha fame"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il costume"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "cappotto",
+    "freddo",
+    "inverno",
+    "sciarpa",
+    "cappello",
+    "guanti",
+    "neve"
+   ],
+   "parolaSegreta": [
+    "sciarpa",
+    "guanti"
+   ]
+  }
+ ],
+ "storie": [
+  {
+   "id": "st-seme",
+   "livello": 1,
+   "titolo": "Il seme",
+   "connettivi": [
+    "prima",
+    "poi",
+    "dopo",
+    "alla fine"
+   ],
+   "vignette": [
+    {
+     "testo": "La bambina pianta un seme",
+     "parole": [
+      "seme",
+      "piantare"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "seme"
+      ]
+     }
+    },
+    {
+     "testo": "La bambina annaffia la terra",
+     "parole": [
+      "annaffiare",
+      "acqua",
+      "terra"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "annaffiare"
+      ]
+     }
+    },
+    {
+     "testo": "Spunta una piantina",
+     "parole": [
+      "germoglio",
+      "piantina",
+      "pianta"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "germoglio"
+      ]
+     }
+    },
+    {
+     "testo": "Nasce un bel fiore",
+     "parole": [
+      "fiore"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "fiore"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "st-scuola",
+   "livello": 1,
+   "titolo": "Si va a scuola",
+   "connettivi": [
+    "prima",
+    "poi",
+    "dopo",
+    "alla fine"
+   ],
+   "vignette": [
+    {
+     "testo": "Il bambino si sveglia",
+     "parole": [
+      "svegliarsi",
+      "sveglia",
+      "letto"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "svegliarsi"
+      ]
+     }
+    },
+    {
+     "testo": "Si lava la faccia",
+     "parole": [
+      "lavarsi",
+      "faccia",
+      "lavare"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "lavarsi"
+      ]
+     }
+    },
+    {
+     "testo": "Fa colazione",
+     "parole": [
+      "colazione",
+      "latte",
+      "biscotti"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "colazione"
+      ]
+     }
+    },
+    {
+     "testo": "Va a scuola",
+     "parole": [
+      "scuola",
+      "zaino"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "scuola"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "st-torta",
+   "livello": 2,
+   "titolo": "La torta",
+   "connettivi": [
+    "prima",
+    "poi",
+    "dopo",
+    "alla fine",
+    "quindi"
+   ],
+   "vignette": [
+    {
+     "testo": "La mamma mescola la farina e le uova",
+     "parole": [
+      "mescolare",
+      "farina",
+      "uova"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "mescolare"
+      ]
+     }
+    },
+    {
+     "testo": "Mette la torta nel forno",
+     "parole": [
+      "forno",
+      "cuocere"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "forno"
+      ]
+     }
+    },
+    {
+     "testo": "La torta è pronta",
+     "parole": [
+      "torta",
+      "pronta"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "torta"
+      ]
+     }
+    },
+    {
+     "testo": "Tutti mangiano la torta alla festa",
+     "parole": [
+      "festa",
+      "mangiare",
+      "compleanno"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "festa"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "st-temporale",
+   "livello": 2,
+   "titolo": "Il temporale",
+   "connettivi": [
+    "prima",
+    "poi",
+    "dopo",
+    "alla fine",
+    "ma"
+   ],
+   "vignette": [
+    {
+     "testo": "Splende il sole",
+     "parole": [
+      "sole"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "sole"
+      ]
+     }
+    },
+    {
+     "testo": "Arrivano le nuvole",
+     "parole": [
+      "nuvola",
+      "nuvole"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "nuvola"
+      ]
+     }
+    },
+    {
+     "testo": "Piove forte",
+     "parole": [
+      "pioggia",
+      "piove"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "pioggia"
+      ]
+     }
+    },
+    {
+     "testo": "Esce l’arcobaleno",
+     "parole": [
+      "arcobaleno"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "arcobaleno"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "st-gelato",
+   "livello": 3,
+   "titolo": "Il gelato caduto",
+   "connettivi": [
+    "prima",
+    "poi",
+    "ma",
+    "perché",
+    "alla fine"
+   ],
+   "vignette": [
+    {
+     "testo": "La bambina va in gelateria con il papà",
+     "parole": [
+      "gelateria",
+      "papa"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "gelateria"
+      ]
+     }
+    },
+    {
+     "testo": "Sceglie un gelato al cioccolato",
+     "parole": [
+      "gelato",
+      "cioccolato",
+      "scegliere"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "gelato"
+      ]
+     }
+    },
+    {
+     "testo": "Il gelato cade per terra e lei piange",
+     "parole": [
+      "cadere",
+      "piangere",
+      "terra"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "cadere"
+      ]
+     }
+    },
+    {
+     "testo": "Il papà le compra un altro gelato",
+     "parole": [
+      "comprare",
+      "gelato",
+      "felice"
+     ],
+     "immagine": {
+      "tipo": "arasaac",
+      "parole": [
+       "comprare"
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

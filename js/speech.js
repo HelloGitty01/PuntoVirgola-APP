@@ -1,0 +1,213 @@
+// Riconoscimento vocale: Vosk in locale (predefinito) oppure quello del browser.
+import { impostazioni } from './state.js';
+
+export const PERCORSO_MODELLO = 'models/vosk-model-small-it.tar.gz';
+const CACHE_MODELLO = 'pv-modello';
+let modelloVosk = null;
+let promessaModello = null;
+
+function urlModello() { return new URL(PERCORSO_MODELLO, location.href).href; }
+
+function caricaScript(src) {
+  return new Promise((ok, ko) => {
+    if (document.querySelector(`script[data-src="${src}"]`)) return ok();
+    const s = document.createElement('script');
+    s.src = src; s.dataset.src = src;
+    s.onload = () => ok(); s.onerror = () => ko(new Error('Script non caricato: ' + src));
+    document.head.appendChild(s);
+  });
+}
+
+export function motoreScelto() {
+  const m = impostazioni().motoreVoce || 'vosk';
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (m !== 'vosk' && !SR) return 'vosk';
+  return m;
+}
+
+export async function modelloInCache() {
+  try { return !!(await (await caches.open(CACHE_MODELLO)).match(urlModello())); } catch { return false; }
+}
+
+async function blobModello(progresso) {
+  const c = await caches.open(CACHE_MODELLO);
+  const hit = await c.match(urlModello());
+  if (hit) return hit.blob();
+  const res = await fetch(urlModello());
+  if (!res.ok) throw new Error('modello-mancante');
+  const totale = Number(res.headers.get('content-length')) || 0;
+  const lettore = res.body.getReader();
+  const parti = [];
+  let ricevuti = 0;
+  for (;;) {
+    const { done, value } = await lettore.read();
+    if (done) break;
+    parti.push(value);
+    ricevuti += value.length;
+    if (progresso && totale) progresso(ricevuti / totale);
+  }
+  const blob = new Blob(parti, { type: 'application/gzip' });
+  await c.put(urlModello(), new Response(blob, { headers: { 'Content-Type': 'application/gzip' } }));
+  return blob;
+}
+
+function conTempoMassimo(p, ms, msg) {
+  return Promise.race([p, new Promise((_, ko) => setTimeout(() => ko(new Error(msg)), ms))]);
+}
+
+export function voskPronto() { return !!modelloVosk; }
+
+export function preparaVosk(progresso) {
+  if (modelloVosk) return Promise.resolve(modelloVosk);
+  if (!promessaModello) {
+    promessaModello = (async () => {
+      await caricaScript('vendor/vosk.js');
+      const blob = await blobModello(progresso);
+      const u = URL.createObjectURL(blob);
+      try {
+        modelloVosk = await conTempoMassimo(window.Vosk.createModel(u), 120000, 'modello-lento');
+      } catch (e) {
+        console.warn('Modello da blob non caricato, provo dall’indirizzo', e);
+        modelloVosk = await conTempoMassimo(window.Vosk.createModel(urlModello()), 120000, 'modello-lento');
+      }
+      return modelloVosk;
+    })().catch((e) => { promessaModello = null; throw e; });
+  }
+  return promessaModello;
+}
+
+async function microfono() {
+  try {
+    return await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
+    });
+  } catch (e) {
+    throw new Error('microfono');
+  }
+}
+
+function registratore(stream) {
+  if (!window.MediaRecorder) return null;
+  const tipi = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'];
+  const tipo = tipi.find((t) => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t));
+  const r = new MediaRecorder(stream, tipo ? { mimeType: tipo } : undefined);
+  const pezzi = [];
+  r.ondataavailable = (e) => { if (e.data && e.data.size) pezzi.push(e.data); };
+  r.start();
+  return {
+    ferma: () => new Promise((ok) => {
+      if (r.state === 'inactive') return ok(pezzi.length ? new Blob(pezzi, { type: r.mimeType }) : null);
+      r.onstop = () => ok(pezzi.length ? new Blob(pezzi, { type: r.mimeType }) : null);
+      r.stop();
+    })
+  };
+}
+
+// Un ascolto: avvia() → la bambina parla → ferma() restituisce { testo, audio }.
+export class Ascolto {
+  constructor({ onTesto } = {}) {
+    this.onTesto = onTesto || (() => {});
+    this.motore = motoreScelto();
+    this.attivo = false;
+  }
+
+  async avvia() {
+    this.stream = await microfono();
+    this.reg = registratore(this.stream);
+    this.attivo = true;
+    if (this.motore === 'vosk') await this.avviaVosk();
+    else await this.avviaBrowser(this.motore === 'browser-locale');
+  }
+
+  async avviaVosk() {
+    const modello = await preparaVosk();
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.testi = [];
+    this.parziale = '';
+    this.rec = new modello.KaldiRecognizer(this.ctx.sampleRate);
+    this.rec.on('result', (m) => {
+      const t = m.result && m.result.text;
+      if (t) this.testi.push(t);
+      this.parziale = '';
+      this.onTesto(this.testi.join(' '));
+      if (this.attendiFinale) this.attendiFinale();
+    });
+    this.rec.on('partialresult', (m) => {
+      this.parziale = (m.result && m.result.partial) || '';
+      this.onTesto((this.testi.join(' ') + ' ' + this.parziale).trim());
+    });
+    this.nodo = this.ctx.createScriptProcessor(4096, 1, 1);
+    this.nodo.onaudioprocess = (e) => { try { this.rec.acceptWaveform(e.inputBuffer); } catch {} };
+    this.sorgente = this.ctx.createMediaStreamSource(this.stream);
+    this.sorgente.connect(this.nodo);
+    this.nodo.connect(this.ctx.destination);
+  }
+
+  async avviaBrowser(locale) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (locale && SR.available) {
+      try {
+        const opz = { langs: ['it-IT'], processLocally: true };
+        const stato = await SR.available(opz);
+        if (stato === 'downloadable' || stato === 'downloading') await SR.install(opz);
+        else if (stato === 'unavailable') throw new Error('locale-non-disponibile');
+      } catch (e) { throw new Error('locale-non-disponibile'); }
+    }
+    this.finali = [];
+    const rec = new SR();
+    rec.lang = 'it-IT';
+    rec.continuous = true;
+    rec.interimResults = true;
+    if (locale) rec.processLocally = true;
+    rec.onresult = (e) => {
+      let provvisorio = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) this.finali.push(r[0].transcript);
+        else provvisorio += r[0].transcript;
+      }
+      this.onTesto((this.finali.join(' ') + ' ' + provvisorio).trim());
+    };
+    rec.onend = () => {
+      if (this.attivo) { try { rec.start(); } catch {} }
+      else if (this.attendiFinale) this.attendiFinale();
+    };
+    rec.onerror = (e) => { console.warn('Riconoscimento:', e.error); if (e.error === 'not-allowed') this.attivo = false; };
+    this.sr = rec;
+    rec.start();
+  }
+
+  async ferma() {
+    if (!this.attivo) return { testo: '', audio: null };
+    this.attivo = false;
+    let testo = '';
+    if (this.motore === 'vosk' && this.rec) {
+      try { this.sorgente.disconnect(); this.nodo.disconnect(); } catch {}
+      await new Promise((ok) => {
+        this.attendiFinale = ok;
+        try { this.rec.retrieveFinalResult(); } catch { ok(); }
+        setTimeout(ok, 1500);
+      });
+      this.attendiFinale = null;
+      testo = this.testi.join(' ');
+      if (this.parziale) testo = (testo + ' ' + this.parziale).trim();
+      try { this.rec.remove(); } catch {}
+      try { await this.ctx.close(); } catch {}
+    } else if (this.sr) {
+      await new Promise((ok) => {
+        this.attendiFinale = ok;
+        try { this.sr.stop(); } catch { ok(); }
+        setTimeout(ok, 2000);
+      });
+      testo = this.finali.join(' ');
+    }
+    const audio = this.reg ? await this.reg.ferma() : null;
+    this.stream.getTracks().forEach((t) => t.stop());
+    return { testo: testo.trim(), audio };
+  }
+
+  annulla() {
+    if (!this.attivo) return;
+    this.ferma().catch(() => {});
+  }
+}

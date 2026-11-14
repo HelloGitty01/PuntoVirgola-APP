@@ -1,0 +1,5 @@
+Librerie incluse in questa cartella:
+- vosk.js: vosk-browser 0.0.8 (https://github.com/ccoreilly/vosk-browser) - Apache License 2.0
+- qrcode.js: qrcode-generator 2.0.4 (Kazuhiko Arase) - MIT License
+- jsQR.js: jsQR 1.4.0 (https://github.com/cozmo/jsQR) - Apache License 2.0
+- fonts/: Fredoka e Andika tramite Fontsource - SIL Open Font License 1.1

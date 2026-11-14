@@ -1,0 +1,302 @@
+// Area genitori: riepilogo, scene, storie, frasi da rivedere, impostazioni, dispositivi.
+import { vai } from '../nav.js';
+import { S, loc, dispositivo, impostazioni, scollegaDispositivo, idDispositivo } from '../state.js';
+import { conGitHub, leggiPartite, salvaConfig, salvaScene, aggiornaDaRemoto, sincronizza } from '../data.js';
+import { esc, ICONE, toast, finestra, riquadroImmagine, riempiImmagini } from '../ui.js';
+import { TIPI, GIOCHI } from '../punteggi.js';
+import { normalizza } from '../match.js';
+import { CREDITI_ARASAAC } from '../arasaac.js';
+import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
+import { editorScena, editorStoria } from './editor.js';
+
+const VERSIONE = '1.0.0';
+const SCHEDE = [
+  ['riepilogo', 'Riepilogo'], ['scene', 'Scene'], ['storie', 'Storie'], ['rivedere', 'Da rivedere'],
+  ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
+];
+
+async function sha256(testo) {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('pv:' + testo));
+  return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
+}
+export async function verificaPin(pin) { return S.config && S.config.pin && (await sha256(pin)) === S.config.pin; }
+
+export function editor(app, { tipo, voce, scheda }) {
+  const torna = () => vai('genitori', { scheda });
+  if (tipo === 'storia') editorStoria(app, voce, torna);
+  else editorScena(app, voce, torna);
+}
+
+export function genitori(app, { scheda = 'riepilogo' } = {}) {
+  const d = dispositivo() || {};
+  const suGenitore = d.ruolo === 'genitore';
+  app.innerHTML = `<main class="schermata pa">
+    <div class="barra">
+      <button class="btn-tondo" id="esci" aria-label="${suGenitore ? 'Prova come bambina' : 'Torna ai giochi'}">${ICONE.indietro}</button>
+      <img src="img/wordmark.png" alt="" style="height:44px">
+      <h1>Area genitori</h1>
+      <div class="destra">${conGitHub() ? `<button class="btn-tondo" id="ricarica" aria-label="Ricarica dai dati su GitHub">${ICONE.ricarica}</button>` : ''}</div>
+    </div>
+    <div class="schede" role="tablist">${SCHEDE.map(([k, t]) => `<button role="tab" data-scheda="${k}" aria-selected="${k === scheda}">${t}</button>`).join('')}</div>
+    <section id="contenuto" style="display:flex;flex-direction:column;gap:16px"></section>
+  </main>`;
+  const cont = app.querySelector('#contenuto');
+  app.querySelector('#esci').onclick = () => vai('home');
+  const ric = app.querySelector('#ricarica');
+  if (ric) ric.onclick = async () => {
+    try { await aggiornaDaRemoto(); toast('Dati aggiornati'); vai('genitori', { scheda }); } catch (e) { toast(e.message); }
+  };
+  app.querySelectorAll('[data-scheda]').forEach((b) => { b.onclick = () => vai('genitori', { scheda: b.dataset.scheda }); });
+  const fn = { riepilogo, scene, storie, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
+  fn(cont, scheda);
+}
+
+// ---------------- Riepilogo ----------------
+async function riepilogo(cont) {
+  cont.innerHTML = '<p>Carico i progressi…</p>';
+  let partite = [];
+  try { partite = await leggiPartite(80); } catch (e) { cont.innerHTML = `<p class="errore">${esc(e.message)}</p>`; return; }
+  const settimana = Date.now() - 7 * 864e5;
+  const recenti = partite.filter((p) => new Date(p.fine || p.inizio).getTime() >= settimana);
+  const esercizi = (lista) => lista.flatMap((p) => p.esercizi || []);
+  const media = (es) => (es.length ? (es.reduce((t, e) => t + (e.punteggio || 0), 0) / es.length).toFixed(1) : '–');
+  const esSett = esercizi(recenti);
+  const perGioco = Object.keys(GIOCHI).map((g) => ({ g, es: esSett.filter((e) => e.gioco === g) }));
+  const dilloTutti = esercizi(partite).filter((e) => e.gioco === 'dillo');
+  const conteggio = {};
+  dilloTutti.forEach((e) => (e.mancanti || []).forEach((t) => { conteggio[t] = (conteggio[t] || 0) + 1; }));
+  const frasi = dilloTutti.filter((e) => e.frasi && e.frasi.length).slice(0, 10);
+  cont.innerHTML = `
+    <div class="griglia-stat">
+      <div class="stat"><small>Partite (7 giorni)</small><b>${recenti.length}</b></div>
+      <div class="stat"><small>Esercizi (7 giorni)</small><b>${esSett.length}</b></div>
+      <div class="stat"><small>Media caramelle</small><b>${media(esSett)}</b></div>
+      <div class="stat"><small>Caramelle (questo disp.)</small><b>${loc.get('caramelleLocali', 0)}</b></div>
+    </div>
+    <div class="card morbida"><h3 style="margin-bottom:12px">Media per gioco (7 giorni)</h3>
+      <div class="barre">${perGioco.map(({ g, es }) => {
+        const m = es.length ? es.reduce((t, e) => t + e.punteggio, 0) / es.length : 0;
+        return `<div class="riga" data-tipo="${GIOCHI[g].tipo}" style="--c:var(--c)"><span>${esc(GIOCHI[g].titolo)}</span><div class="traccia"><div style="width:${m * 10}%;background:var(--c)"></div></div><b>${es.length ? m.toFixed(1) : '–'}</b></div>`;
+      }).join('')}</div></div>
+    <div class="card morbida"><h3 style="margin-bottom:6px">Elementi che mancano più spesso in “Dillo tu”</h3>
+      <p class="aiuto" style="margin-top:0">Al primo tentativo, su ${dilloTutti.length} esercizi.</p>
+      <div class="barre">${Object.keys(TIPI).filter((t) => conteggio[t]).map((t) => {
+        const perc = Math.round((conteggio[t] / Math.max(1, dilloTutti.length)) * 100);
+        return `<div class="riga" data-tipo="${t}"><span>${TIPI[t].nome}</span><div class="traccia"><div style="width:${perc}%;background:var(--c)"></div></div><b>${perc}%</b></div>`;
+      }).join('') || '<p>Ancora nessun dato.</p>'}</div></div>
+    <div class="card morbida"><h3 style="margin-bottom:10px">Frasi dette di recente</h3>
+      ${frasi.length ? `<div class="elenco">${frasi.map((e) => `<div class="voce"><div class="testo">«${esc(e.frasi[e.frasi.length - 1])}»<small>${new Date(e.quando).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })} · ${e.punteggio} caramelle</small></div></div>`).join('')}</div>` : '<p>Ancora nessuna frase.</p>'}</div>
+    <div class="card morbida"><h3 style="margin-bottom:10px">Ultime partite</h3>
+      ${partite.length ? `<div class="elenco">${partite.slice(0, 12).map((p) => `<div class="voce"><div class="testo">${esc((GIOCHI[p.gioco] || {}).titolo || p.gioco)} · livello ${p.livello}<small>${new Date(p.fine || p.inizio).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })} · ${esc(p.nomeDispositivo || '')}${p.interrotta ? ' · interrotta' : ''}</small></div><b>${(p.esercizi || []).reduce((t, e) => t + e.punteggio, 0)}</b></div>`).join('')}</div>` : '<p>Ancora nessuna partita.</p>'}</div>`;
+}
+
+// ---------------- Scene ----------------
+function scene(cont, scheda) {
+  const lista = (S.scene.scene || []).slice().sort((a, b) => (a.livello || 1) - (b.livello || 1));
+  cont.innerHTML = `<div class="riga-pulsanti"><button class="btn" id="nuova">${ICONE.piu} Nuova scena</button><span>${lista.length} scene</span></div>
+    <div class="elenco">${lista.map((s) => `<div class="voce">
+      ${riquadroImmagine(s.immagine, 'miniatura')}
+      <div class="testo"><b>${esc(s.frase)}</b><small>Livello ${s.livello || 1} · ${(s.elementi || []).map((e) => `<span class="etichetta-tipo" data-tipo="${e.tipo}">${TIPI[e.tipo].nome}</span>`).join(' ')}</small></div>
+      <button class="btn-tondo" data-mod="${esc(s.id)}" aria-label="Modifica">${ICONE.matita}</button></div>`).join('')}</div>`;
+  riempiImmagini(cont);
+  cont.querySelector('#nuova').onclick = () => vai('editor', { tipo: 'scena', voce: null, scheda });
+  cont.querySelectorAll('[data-mod]').forEach((b) => { b.onclick = () => vai('editor', { tipo: 'scena', voce: S.scene.scene.find((x) => x.id === b.dataset.mod), scheda }); });
+}
+
+function storie(cont, scheda) {
+  const lista = S.scene.storie || [];
+  cont.innerHTML = `<div class="riga-pulsanti"><button class="btn" id="nuova">${ICONE.piu} Nuova storia</button><span>${lista.length} storie</span></div>
+    <div class="elenco">${lista.map((s) => `<div class="voce">
+      ${riquadroImmagine(s.vignette && s.vignette[0] && s.vignette[0].immagine, 'miniatura')}
+      <div class="testo"><b>${esc(s.titolo)}</b><small>Livello ${s.livello || 1} · ${(s.vignette || []).length} vignette</small></div>
+      <button class="btn-tondo" data-mod="${esc(s.id)}" aria-label="Modifica">${ICONE.matita}</button></div>`).join('')}</div>`;
+  riempiImmagini(cont);
+  cont.querySelector('#nuova').onclick = () => vai('editor', { tipo: 'storia', voce: null, scheda });
+  cont.querySelectorAll('[data-mod]').forEach((b) => { b.onclick = () => vai('editor', { tipo: 'storia', voce: lista.find((x) => x.id === b.dataset.mod), scheda }); });
+}
+
+// ---------------- Da rivedere ----------------
+async function rivedere(cont) {
+  cont.innerHTML = '<p>Carico…</p>';
+  let partite = [];
+  try { partite = await leggiPartite(80); } catch (e) { cont.innerHTML = `<p class="errore">${esc(e.message)}</p>`; return; }
+  const ignorate = new Set((S.config.ignorate || []).map(normalizza));
+  const voci = new Map();
+  partite.flatMap((p) => p.esercizi || []).filter((e) => e.gioco === 'dillo').forEach((e) => {
+    const sc = S.scene.scene.find((x) => x.id === e.id);
+    if (!sc) return;
+    const note = new Set([...(sc.vocabolario || []), ...sc.elementi.flatMap((x) => x.accettate || [])].map(normalizza));
+    (e.nonPreviste || []).forEach((p) => {
+      const k = normalizza(p);
+      if (ignorate.has(k) || note.has(k)) return;
+      const chiave = sc.id + '|' + k;
+      if (!voci.has(chiave)) voci.set(chiave, { scena: sc, parola: p, frase: (e.frasi || []).slice(-1)[0] || '' });
+    });
+  });
+  const elenco = [...voci.values()];
+  cont.innerHTML = `<p>Parole dette da tua figlia che l’app non conosceva. Se erano giuste, aggiungile come risposta accettata: la prossima volta verranno riconosciute.</p>
+    ${elenco.length ? `<div class="elenco">${elenco.map((v, i) => `<div class="voce" style="flex-wrap:wrap">
+      <div class="testo"><b>«${esc(v.parola)}»</b><small>Scena: ${esc(v.scena.frase)}${v.frase ? ` · ha detto: «${esc(v.frase)}»` : ''}</small></div>
+      <select data-el="${i}" style="width:auto"><option value="">Aggiungi a…</option>${v.scena.elementi.map((e, k) => `<option value="${k}">${TIPI[e.tipo].nome}: ${esc(e.testo)}</option>`).join('')}<option value="voc">Vocabolario della scena</option></select>
+      <button class="btn piccolo" data-agg="${i}">Aggiungi</button>
+      <button class="btn piccolo secondario" data-ign="${i}">Ignora</button></div>`).join('')}</div>` : '<p class="ok-testo">Niente da rivedere!</p>'}`;
+  cont.addEventListener('click', async (e) => {
+    const a = e.target.closest('[data-agg]');
+    const ig = e.target.closest('[data-ign]');
+    try {
+      if (a) {
+        const v = elenco[+a.dataset.agg];
+        const dove = cont.querySelector(`[data-el="${a.dataset.agg}"]`).value;
+        if (!dove) { toast('Scegli dove aggiungerla'); return; }
+        const sc = S.scene.scene.find((x) => x.id === v.scena.id);
+        if (dove === 'voc') sc.vocabolario = [...(sc.vocabolario || []), v.parola];
+        else sc.elementi[+dove].accettate = [...(sc.elementi[+dove].accettate || []), v.parola];
+        await salvaScene();
+        a.closest('.voce').remove();
+        toast('Aggiunta!');
+      }
+      if (ig) {
+        const v = elenco[+ig.dataset.ign];
+        S.config.ignorate = [...(S.config.ignorate || []), v.parola];
+        await salvaConfig();
+        ig.closest('.voce').remove();
+      }
+    } catch (ex) { toast(ex.message); }
+  });
+}
+
+// ---------------- Impostazioni ----------------
+async function impostazioniScheda(cont) {
+  const imp = impostazioni();
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  cont.innerHTML = `<form id="f" style="display:flex;flex-direction:column;gap:16px">
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:14px">
+      <div class="campo"><label for="nome">Nome della bambina</label><input id="nome" type="text" value="${esc(S.config.nome || '')}"></div>
+      <div class="campo"><label for="spp">Esercizi per partita</label><input id="spp" type="number" min="1" max="15" value="${imp.scenePerPartita}"></div>
+      <div class="campo"><label><input type="checkbox" id="lett" ${imp.letturaAutomatica ? 'checked' : ''}> Virgola legge ad alta voce le istruzioni</label></div>
+    </div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Livello di ogni gioco</h3>
+      ${Object.entries(GIOCHI).map(([g, t]) => `<div class="campo" style="flex-direction:row;align-items:center;justify-content:space-between"><label for="lv-${g}">${t.titolo}</label>
+        <select id="lv-${g}" style="width:140px">${[1, 2, 3].map((l) => `<option value="${l}" ${imp.livelli[g] === l ? 'selected' : ''}>Livello ${l}</option>`).join('')}</select></div>`).join('')}
+      <p class="aiuto">Livello 1: frasi di 2 elementi (chi, fa cosa). Livello 2: 3 elementi. Livello 3: 4 o più elementi.</p>
+    </div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>“Descrivi la scena”: parole minime</h3>
+      <div style="display:flex;gap:12px">${[1, 2, 3].map((l) => `<div class="campo"><label for="pd-${l}">Livello ${l}</label><input id="pd-${l}" type="number" min="2" max="20" value="${imp.paroleDescrivi[l]}"></div>`).join('')}</div>
+    </div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Riconoscimento vocale</h3>
+      <div class="campo"><label for="motore">Motore</label><select id="motore">
+        <option value="vosk" ${imp.motoreVoce === 'vosk' ? 'selected' : ''}>Vosk, sul dispositivo (consigliato, l’audio non esce)</option>
+        <option value="browser-locale" ${imp.motoreVoce === 'browser-locale' ? 'selected' : ''} ${SR ? '' : 'disabled'}>Browser, sul dispositivo (se supportato)</option>
+        <option value="browser" ${imp.motoreVoce === 'browser' ? 'selected' : ''} ${SR ? '' : 'disabled'}>Browser online (l’audio va ai server di Google)</option>
+      </select></div>
+      <div id="stato-modello" class="aiuto">Controllo il modello vocale…</div>
+      <button type="button" class="btn secondario piccolo" id="scarica-modello" style="align-self:flex-start">Scarica ora il modello vocale su questo dispositivo</button>
+    </div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>PIN dell’area genitori</h3>
+      <p class="aiuto" style="margin:0">${S.config.pin ? 'Il PIN è impostato.' : 'Senza PIN, per entrare si risponde a una moltiplicazione.'}</p>
+      <div class="campo"><label for="pin">Nuovo PIN (4-6 cifre, vuoto = non cambiare)</label><input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6"></div>
+      ${S.config.pin ? '<label><input type="checkbox" id="togli-pin"> Togli il PIN</label>' : ''}
+    </div>
+    <p class="errore" id="err" role="alert"></p>
+    <button class="btn" type="submit" id="salva" style="align-self:flex-start">Salva impostazioni</button>
+  </form>`;
+  const statoModello = async () => {
+    const box = cont.querySelector('#stato-modello');
+    if (await modelloInCache()) { box.innerHTML = '<span class="ok-testo">Modello vocale pronto su questo dispositivo.</span>'; return; }
+    try {
+      const r = await fetch(PERCORSO_MODELLO, { method: 'HEAD' });
+      box.textContent = r.ok ? 'Il modello verrà scaricato (circa 50 MB) la prima volta che si usa il microfono.' : 'Modello vocale non trovato sul sito: segui le istruzioni del README (cartella models).';
+    } catch { box.textContent = 'Non riesco a controllare il modello (offline?).'; }
+  };
+  statoModello();
+  cont.querySelector('#scarica-modello').onclick = async (e) => {
+    const b = e.target; b.disabled = true;
+    try { await preparaVosk((p) => { b.textContent = `Scarico… ${Math.round(p * 100)}%`; }); toast('Modello vocale pronto'); }
+    catch (ex) { toast(ex.message === 'modello-mancante' ? 'Modello non trovato: vedi README' : ex.message); }
+    b.disabled = false; b.textContent = 'Scarica ora il modello vocale su questo dispositivo';
+    statoModello();
+  };
+  cont.querySelector('#f').onsubmit = async (e) => {
+    e.preventDefault();
+    const v = (id) => cont.querySelector('#' + id);
+    const pin = v('pin').value.trim();
+    if (pin && !/^\d{4,6}$/.test(pin)) { v('err').textContent = 'Il PIN deve avere da 4 a 6 cifre.'; return; }
+    S.config.nome = v('nome').value.trim();
+    S.config.impostazioni = {
+      scenePerPartita: Math.max(1, Math.min(15, Number(v('spp').value) || 5)),
+      livelli: Object.fromEntries(Object.keys(GIOCHI).map((g) => [g, Number(v('lv-' + g).value)])),
+      paroleDescrivi: { 1: Number(v('pd-1').value) || 4, 2: Number(v('pd-2').value) || 6, 3: Number(v('pd-3').value) || 8 },
+      letturaAutomatica: v('lett').checked,
+      motoreVoce: v('motore').value
+    };
+    if (pin) S.config.pin = await sha256(pin);
+    if (v('togli-pin') && v('togli-pin').checked) S.config.pin = null;
+    const b = v('salva'); b.disabled = true;
+    try { await salvaConfig(); toast('Impostazioni salvate'); vai('genitori', { scheda: 'impostazioni' }); }
+    catch (ex) { v('err').textContent = ex.message; b.disabled = false; }
+  };
+}
+
+// ---------------- Dispositivi ----------------
+function dispositivi(cont) {
+  const d = dispositivo() || {};
+  const gh = conGitHub();
+  cont.innerHTML = `
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:8px"><h3>Questo dispositivo</h3>
+      <p style="margin:0">${esc(d.nomeDispositivo || '')} · ${d.ruolo === 'genitore' ? 'genitore' : 'bambina'} · ${gh ? `dati su GitHub (${esc(d.owner)}/${esc(d.repo)})` : 'dati solo su questo dispositivo'}</p>
+      <p class="aiuto" style="margin:0">Codice interno: ${esc(idDispositivo())}</p>
+      <div class="riga-pulsanti">
+        ${d.ruolo === 'genitore' ? '<button class="btn secondario piccolo" id="prova">Prova i giochi come bambina</button>' : ''}
+        <button class="btn secondario piccolo" id="sync">Sincronizza ora</button>
+        <button class="btn secondario piccolo" id="scollega">Scollega questo dispositivo</button>
+      </div></div>
+    ${gh ? `<div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Aggiungi un dispositivo di tua figlia</h3>
+      <p style="margin:0">Crea su GitHub un token fine-grained solo per quel dispositivo (vedi README), poi generane il codice.</p>
+      <div class="campo"><label for="tok">Token del dispositivo</label><input id="tok" type="password" autocomplete="off"><span class="aiuto">Puoi usare anche il tuo token, ma uno separato si può revocare da solo.</span></div>
+      <div class="campo"><label for="etich">Nome del dispositivo</label><input id="etich" type="text" placeholder="Chromebook"></div>
+      <button class="btn" id="genera" style="align-self:flex-start">Genera QR code</button>
+      <div id="qr-box"></div></div>` : `<div class="card morbida"><p style="margin:0">Questo dispositivo usa solo dati locali. Per usare più dispositivi serve la configurazione con GitHub (vedi README).</p></div>`}`;
+  const prova = cont.querySelector('#prova');
+  if (prova) prova.onclick = () => vai('home');
+  cont.querySelector('#sync').onclick = async () => { await sincronizza(); toast('Sincronizzazione fatta'); };
+  cont.querySelector('#scollega').onclick = async () => {
+    const ok = await finestra({ titolo: 'Scollegare questo dispositivo?', html: '<p>Verranno tolti token e dati salvati qui. I dati su GitHub restano.</p>', pulsanti: [{ testo: 'Annulla', valore: false, classe: 'secondario' }, { testo: 'Scollega', valore: true }] });
+    if (!ok) return;
+    scollegaDispositivo();
+    location.reload();
+  };
+  const gen = cont.querySelector('#genera');
+  if (gen) gen.onclick = async () => {
+    const tok = cont.querySelector('#tok').value.trim() || d.token;
+    const etich = cont.querySelector('#etich').value.trim() || 'Dispositivo';
+    const json = JSON.stringify({ o: d.owner, r: d.repo, t: tok, e: etich });
+    const codice = 'PV1:' + btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_');
+    if (!window.qrcode) {
+      await new Promise((ok, ko) => { const s = document.createElement('script'); s.src = 'vendor/qrcode.js'; s.onload = ok; s.onerror = ko; document.head.appendChild(s); });
+    }
+    const qr = window.qrcode(0, 'L');
+    qr.addData(codice);
+    qr.make();
+    cont.querySelector('#qr-box').innerHTML = `<div class="qr">${qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true })}</div>
+      <p class="aiuto">Sul dispositivo di tua figlia scegli “È il dispositivo di mia figlia” e inquadra il QR, oppure incolla questo codice:</p>
+      <div class="codice" id="codice">${esc(codice)}</div>
+      <button class="btn secondario piccolo" id="copia" style="align-self:flex-start">Copia il codice</button>
+      <p class="errore">Il codice contiene il token: non condividerlo con altri.</p>`;
+    cont.querySelector('#copia').onclick = async () => { try { await navigator.clipboard.writeText(codice); toast('Codice copiato'); } catch { toast('Copia non riuscita: selezionalo a mano'); } };
+  };
+}
+
+// ---------------- Info ----------------
+function info(cont) {
+  cont.innerHTML = `<div class="card morbida" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+      <img src="img/logo-completo.png" alt="Punto e Virgola" style="width:180px">
+      <div style="flex:1;min-width:240px">
+        <h3>Punto e Virgola ${VERSIONE}</h3>
+        <p>Punto è lo studente, Virgola è la maestra: spiega gli esercizi e assegna le caramelle (da 0 a 10 per esercizio).</p>
+        <p class="aiuto">Uso personale e familiare. Non è un dispositivo medico e non sostituisce la logopedista.</p>
+      </div></div>
+    <div class="card morbida crediti">
+      <p>${esc(CREDITI_ARASAAC)}</p>
+      <p>Riconoscimento vocale: Vosk (Alpha Cephei, licenza Apache 2.0) tramite vosk-browser. Font: Fredoka e Andika (SIL Open Font License). QR: qrcode-generator e jsQR (licenze MIT/Apache).</p>
+    </div>`;
+}

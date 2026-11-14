@@ -1,0 +1,17 @@
+{
+  "name": "Punto e Virgola",
+  "short_name": "Punto e Virgola",
+  "description": "Giochi per imparare a costruire le frasi, con Punto e Virgola",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFFDF8",
+  "theme_color": "#FFFDF8",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
