@@ -33,7 +33,8 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
+html, body { margin: 0; min-height: 100%; }
+html { background: #E3F2FF; }
 body {
   background-color: #D4ECFF;
   background-image:
@@ -114,7 +115,10 @@ h1, h2, h3 { font-family: var(--font-titoli); margin: 0; line-height: 1.15; }
 .due-colonne { flex: 1; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(18px, 3vw, 36px); align-items: stretch; }
 .colonna { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 @media (max-width: 820px), (orientation: portrait) and (max-width: 1000px) {
-  .due-colonne { grid-template-columns: 1fr; }
+  /* una colonna sola: Virgola (le istruzioni) sempre in alto, poi l'esercizio */
+  .due-colonne { display: flex; flex-direction: column; gap: 16px; grid-template-columns: none !important; }
+  .due-colonne > .colonna { display: contents; }
+  .due-colonne .virgola-dice { order: -1; }
 }
 
 /* ---------- Splash ---------- */
@@ -590,4 +594,70 @@ body.oops img[src$="punto.png"]:not(.fermo) { animation: noNo .3s ease-in-out 3;
   .report .non-stampare { display: none !important; }
   .report h2 { break-after: avoid; } .report table, .report blockquote { break-inside: avoid; }
   .virgola-dice img, img { animation: none !important; }
+}
+
+/* ---------- Smartphone ---------- */
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  .schermata { gap: 14px; padding-left: 12px; padding-right: 12px; padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+  .barra { gap: 10px; min-height: 52px; flex-wrap: nowrap; }
+  .barra h1, .pa .barra h1 { font-size: 21px; line-height: 1.1; min-width: 0; overflow-wrap: anywhere; }
+  .barra .btn-tondo { width: 46px; height: 46px; flex: none; }
+  .barra .destra { gap: 6px; flex: none; }
+  .barra .puntini { display: none; }
+  .pa .barra img { display: none; }
+  .virgola-dice { gap: 6px; }
+  .virgola-dice img { width: 62px; }
+  .fumetto { font-size: 17px; padding: 12px 44px 12px 14px; }
+  .card { padding: 14px; border-radius: 20px; }
+  .scena-img { min-height: 180px; max-height: 240px; }
+  .scena-img.piccola { min-height: 110px; max-height: 150px; }
+  .mic { width: 96px; height: 96px; }
+  .riga-pulsanti { gap: 8px; }
+  .btn.grande { font-size: 22px; padding: 14px 24px; }
+  .barra-fine { right: 12px; bottom: calc(14px + env(safe-area-inset-bottom)); }
+  .opzione.testo { min-height: 72px; font-size: 24px; }
+  .parola-grande { font-size: 40px; }
+  .personaggi { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .personaggio .faccia { font-size: 44px; }
+  .home .wordmark { width: min(70%, 240px); }
+  .gioco { min-height: 110px; padding: 14px; }
+  .griglia-indovina { gap: 10px; }
+  .scelta-figura .scena-img { min-height: 110px; }
+  .quaderno { font-size: 18px; min-height: 200px; padding: 12px 14px; }
+  .frase-lunga { font-size: 21px; }
+  .domanda-riga { font-size: 17px; padding: 8px 10px; }
+  .racconto { max-height: none; }
+  .racconto p { font-size: 19px; }
+  .conta-grande { font-size: 18px; } .conta-grande b { font-size: 32px; }
+  .giorno-bar .vaso { height: 90px; }
+  .pagina-giorno .data { font-size: 18px; }
+  .piu-caramelle { font-size: 22px; }
+  .griglia-stat { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .barre .riga { grid-template-columns: 110px 1fr 40px; font-size: 15px; }
+  .report { padding: 14px; }
+  .report .cifre { grid-template-columns: repeat(2, 1fr); }
+  .report .intesta img { height: 48px; }
+  .report table { font-size: 14px; }
+  .finestra { padding: 18px; }
+  .btn-musica { width: 46px; height: 46px; }
+  .due-colonne img[src$="punto.png"] { width: 120px !important; align-self: center; }
+  .risultato img[src$="punto.png"], main > img[src$="punto.png"] { max-width: 160px; }
+}
+@media (max-width: 820px), (orientation: portrait) and (max-width: 1000px) {
+  .home { position: relative; }
+  .angolo-genitori { position: absolute; top: 0; right: 0; }
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .home .lato:first-child .virgola-dice { display: none; }
+}
+/* smartphone in orizzontale: poca altezza */
+@media (max-height: 500px) and (orientation: landscape) {
+  .schermata { padding-top: 10px; padding-bottom: 70px; gap: 10px; }
+  .barra { min-height: 46px; } .barra h1 { font-size: 22px; }
+  .scena-img { min-height: 150px; max-height: 200px; }
+  .mic { width: 84px; height: 84px; }
+  .virgola-dice img { width: 60px; }
+  .fumetto { font-size: 16px; }
+  .racconto { max-height: none; }
 }

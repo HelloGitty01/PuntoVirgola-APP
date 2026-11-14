@@ -51,7 +51,7 @@ export function home(app) {
         </div>
       </div>
       <div class="lato">
-        <div style="display:flex;justify-content:flex-end;gap:12px">
+        <div class="angolo-genitori" style="display:flex;justify-content:flex-end;gap:12px">
           <button class="btn-tondo" id="genitori" aria-label="Area genitori">${ICONE.lucchetto}</button>
         </div>
         ${giochi || '<p class="card">Nessuna attività attiva: chiedi a mamma o papà.</p>'}
