@@ -12,7 +12,7 @@ import { musica } from '../musica.js';
 import { report } from './report.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE, MOBILE } from '../tts.js';
 
-const VERSIONE = '1.7.1';
+const VERSIONE = '1.7.2';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['report', 'Report logopedista'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']

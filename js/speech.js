@@ -76,15 +76,15 @@ export function preparaVosk(progresso) {
   return promessaModello;
 }
 
-const ANDROID = /Android/i.test(navigator.userAgent);
+// Su telefoni e tablet, finché il microfono è aperto, il sistema mette tutto l'audio in "modalità
+// chiamata": la voce di Virgola e la musica diventano metalliche. Lì il microfono si apre solo
+// durante l'ascolto e si chiude subito dopo (sul Chromebook invece resta pronto).
+const MIC_CALDO = !(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.userAgentData && navigator.userAgentData.mobile));
 
 async function microfono() {
   try {
     return await navigator.mediaDevices.getUserMedia({
-      // Su Android l'eliminazione dell'eco mette l'audio in "modalità chiamata": voce e musica
-      // diventano metalliche e distorte finché il microfono è aperto. Lì la togliamo
-      // (quando la bambina parla, Virgola e la musica sono comunque zitte).
-      audio: { echoCancellation: !ANDROID, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
     });
   } catch (e) {
     throw new Error('microfono');
@@ -152,7 +152,7 @@ export async function preparaAscolto() {
   try {
     if (!voskPronto() && await modelloInCache()) await preparaVosk();
     const p = navigator.permissions ? await navigator.permissions.query({ name: 'microphone' }) : null;
-    if (p && p.state === 'granted') await apriMicrofono();
+    if (MIC_CALDO && p && p.state === 'granted') await apriMicrofono();
   } catch { /* si aprirà al primo tocco */ }
 }
 
@@ -262,8 +262,9 @@ export class Ascolto {
       testo = this.finali.join(' ');
     }
     const audio = this.reg ? await this.reg.ferma() : null;
-    // con Vosk il microfono resta aperto e pronto per il prossimo tocco; con il browser si chiude
+    // con Vosk (su Chromebook/computer) il microfono resta aperto e pronto per il prossimo tocco
     if (this.motore !== 'vosk') this.stream.getTracks().forEach((t) => t.stop());
+    else if (!MIC_CALDO) chiudiMicrofono();
     window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false }));
     return { testo: testo.trim(), audio, parole: this.paroleConf };
   }
