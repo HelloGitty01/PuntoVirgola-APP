@@ -45,6 +45,7 @@ export function home(app) {
             ${prossimo ? `<div class="barra-progresso" aria-hidden="true"><div style="width:${Math.min(100, percentuale)}%"></div></div>
             <span style="font-size:16px;color:var(--tenue)">Ancora ${prossimo.costo - tot} per sbloccare ${esc(prossimo.nome)} ${prossimo.faccia}</span>`
             : '<span style="font-size:16px;color:var(--tenue)">Hai sbloccato tutti i personaggi!</span>'}
+            <button class="btn secondario piccolo btn-diario" id="diario-giorni">${ICONE.calendario} Il mio diario</button>
           </div>
           <img src="img/punto.png" alt="Punto">
         </div>
@@ -59,6 +60,7 @@ export function home(app) {
 
   collegaFumetti(app);
   app.querySelector('#avatar').onclick = () => vai('personaggio');
+  app.querySelector('#diario-giorni').onclick = () => vai('mieiGiorni');
   app.querySelectorAll('[data-gioco]').forEach((b) => { b.onclick = () => vai('gioco', { gioco: b.dataset.gioco }); });
   app.querySelector('#genitori').onclick = async () => {
     const d = dispositivo();

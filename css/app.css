@@ -222,8 +222,9 @@ h1, h2, h3 { font-family: var(--font-titoli); margin: 0; line-height: 1.15; }
 }
 .saluto h1 { font-size: clamp(28px, 3vw, 40px); color: var(--navy); overflow-wrap: anywhere; }
 .saluto p { margin: 2px 0 0; color: var(--tenue); font-size: 20px; }
-.barattolo { margin-top: auto; display: flex; align-items: flex-end; gap: 10px; border-radius: 28px; box-shadow: 0 5px 0 var(--inchiostro); }
+.barattolo { margin-top: 0; display: flex; align-items: flex-end; gap: 10px; border-radius: 28px; box-shadow: 0 5px 0 var(--inchiostro); }
 .barattolo .info { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.barattolo .btn-diario { align-self: flex-start; margin-top: 4px; }
 .barattolo .info b { font-family: var(--font-titoli); font-size: 24px; }
 .barattolo img { width: clamp(110px, 11vw, 150px); }
 .barra-progresso { height: 18px; border-radius: 9px; background: #F3EBDD; border: 2px solid var(--inchiostro); overflow: hidden; }
@@ -470,3 +471,123 @@ video.scanner { width: min(100%, 420px); border-radius: 16px; border: 3px solid 
 .conta-grande .mancano.fatto { color: #335A14; background: var(--verde-chiaro); }
 .parole-contate { display: flex; flex-wrap: wrap; gap: 6px; min-height: 8px; }
 .parole-contate span { padding: 4px 10px; border-radius: 10px; background: var(--viola-chiaro); color: #4E2A93; font-weight: 700; font-size: 16px; animation: entra .25s; }
+
+/* ---------- Nuove attività ---------- */
+.frase-lunga { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: clamp(22px, 2.4vw, 30px); font-family: var(--font-titoli); }
+.pezzo-frase { background: var(--cc); border: 3px solid var(--c); color: var(--ct); border-radius: 14px; padding: 6px 14px; }
+.pezzo-frase.nuovo { animation: entra .45s; }
+.pezzo-frase.vuoto { background: transparent; border-style: dashed; font-size: .7em; padding: 10px 14px; animation: pulsa 1.6s infinite; }
+.lista-domande { display: flex; flex-direction: column; gap: 8px; }
+.domanda-riga { display: flex; gap: 12px; align-items: center; background: #fff; border: 2px solid var(--bordo); border-left: 8px solid var(--c); border-radius: 14px; padding: 10px 14px; font-size: 19px; opacity: .7; }
+.domanda-riga.ora { opacity: 1; border-color: var(--c); box-shadow: 0 0 0 4px var(--cc); }
+.domanda-riga .stato { width: 30px; height: 30px; flex: none; border-radius: 50%; border: 2px solid var(--bordo); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.domanda-riga.ok { opacity: 1; } .domanda-riga.ok .stato { background: var(--verde); border-color: var(--verde); color: #fff; }
+.domanda-riga.quasi .stato { background: var(--giallo); border-color: var(--giallo); }
+.griglia-indovina { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.scelta-figura { background: #fff; border: 3px solid var(--inchiostro); border-radius: 22px; padding: 8px; box-shadow: var(--ombra); cursor: pointer; }
+.scelta-figura .scena-img { border: none; box-shadow: none; min-height: 150px; }
+.scelta-figura.giusta { background: var(--verde-chiaro); border-color: var(--verde); }
+.scelta-figura.sbagliata { opacity: .4; }
+.scelta-figura.no { animation: no .4s; }
+.indizi { margin: 8px 0 0; padding-left: 26px; display: flex; flex-direction: column; gap: 6px; font-size: 20px; }
+.indizi li { animation: entra .35s; }
+.ripeti-mini { border: none; background: var(--azzurro-chiaro); border-radius: 50%; width: 32px; height: 32px; vertical-align: middle; cursor: pointer; padding: 5px; }
+.ripeti-mini svg { width: 100%; height: 100%; }
+.segreto { font-family: var(--font-titoli); background: var(--rosa-chiaro); color: #8E1D47; border-radius: 999px; padding: 4px 14px; }
+.quaderno { background: repeating-linear-gradient(#fff 0 35px, #CFE6FF 35px 37px); border: 3px solid var(--inchiostro); border-left: 14px solid var(--rosa); border-radius: 18px; padding: 16px 22px; min-height: 320px; box-shadow: var(--ombra); font-size: 21px; line-height: 37px; }
+.quaderno p { margin: 0 0 10px; } .quaderno small { color: var(--tenue); font-size: 16px; }
+.quaderno .in-corso { opacity: .6; }
+.data-quaderno { font-family: var(--font-titoli); color: var(--navy); text-transform: capitalize; }
+
+/* ---------- Il mio diario ---------- */
+.diario-giorni { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(16px, 2.5vw, 32px); flex: 1; }
+@media (max-width: 820px) { .diario-giorni { grid-template-columns: 1fr; } }
+.settimana { display: flex; flex-direction: column; gap: 12px; }
+.barattoli { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; }
+.giorno-bar { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.giorno-bar .num { font-family: var(--font-titoli); font-size: 18px; min-height: 22px; }
+.giorno-bar .vaso { width: 100%; max-width: 46px; height: 120px; border: 3px solid var(--inchiostro); border-radius: 10px 10px 14px 14px; background: #fff; display: flex; align-items: flex-end; overflow: hidden; }
+.giorno-bar .riempi { width: 100%; background: repeating-linear-gradient(135deg, var(--rosa) 0 8px, var(--giallo) 8px 16px); transition: height .8s; }
+.giorno-bar small { text-transform: capitalize; color: var(--tenue); }
+.giorno-bar.oggi small { color: var(--arancio); font-weight: 700; }
+.pagine-diario { display: flex; flex-direction: column; gap: 14px; overflow: auto; }
+.pagina-giorno { background: #fff; border: 3px solid var(--inchiostro); border-radius: 20px; padding: 14px 18px; box-shadow: var(--ombra); display: flex; flex-direction: column; gap: 10px; }
+.pagina-giorno.oggi { border-color: var(--arancio); box-shadow: 0 4px 0 var(--arancio); }
+.pagina-giorno.prima { opacity: .75; }
+.pagina-giorno header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.pagina-giorno .data { font-family: var(--font-titoli); font-size: 21px; color: var(--navy); }
+.piu-caramelle { font-family: var(--font-titoli); font-size: 26px; color: var(--rosa); display: inline-flex; align-items: center; gap: 4px; }
+.giochi-giorno { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-gioco { display: inline-flex; align-items: center; gap: 6px; background: var(--cc); border: 2px solid var(--c); color: var(--ct); border-radius: 999px; padding: 3px 10px 3px 6px; font-size: 15px; }
+.chip-gioco svg { width: 20px; height: 20px; }
+.racconto-giorno { margin: 0; font-size: 17px; background: var(--giallo-chiaro); border-radius: 12px; padding: 8px 12px; }
+.pagina-giorno footer { color: var(--tenue); }
+
+/* ---------- Mascotte vive ---------- */
+.virgola-dice img { transform-origin: 50% 100%; animation: ondeggia 3.4s ease-in-out infinite; }
+body.parla .virgola-dice img { animation: chiacchiera .42s ease-in-out infinite; }
+img[src$="punto.png"]:not(.fermo) { transform-origin: 50% 100%; animation: respira 2.8s ease-in-out infinite; }
+body.gioia img[src$="punto.png"]:not(.fermo) { animation: salta .65s ease-out 2; }
+body.gioia .virgola-dice img { animation: applaude .5s ease-in-out 2; }
+body.oops img[src$="punto.png"]:not(.fermo) { animation: noNo .3s ease-in-out 3; }
+@keyframes ondeggia { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2.5deg) translateY(-4px); } }
+@keyframes chiacchiera { 0%, 100% { transform: scale(1, 1) rotate(-1deg); } 50% { transform: scale(1.04, .96) rotate(2deg) translateY(-3px); } }
+@keyframes respira { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.02, 1.045); } }
+@keyframes salta { 0% { transform: scale(1, 1); } 15% { transform: scale(1.12, .86); } 45% { transform: translateY(-28px) scale(.94, 1.08); } 75% { transform: translateY(0) scale(1.08, .92); } 100% { transform: scale(1, 1); } }
+@keyframes applaude { 0%, 100% { transform: rotate(0) scale(1); } 30% { transform: rotate(-8deg) scale(1.06); } 70% { transform: rotate(8deg) scale(1.06); } }
+@keyframes noNo { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-7deg); } 75% { transform: rotate(7deg); } }
+
+/* ---------- Sorprese ---------- */
+#sorprese { position: fixed; inset: 0; pointer-events: none; z-index: 35; overflow: hidden; }
+.sorpresa { position: absolute; left: 0; top: 0; pointer-events: auto; cursor: pointer; will-change: transform; filter: drop-shadow(0 4px 4px rgba(18, 26, 50, .18)); }
+.sorpresa svg, .sorpresa img { display: block; }
+.uccellino .ala { transform-origin: 40px 32px; animation: battito .22s ease-in-out infinite alternate; }
+.uccellino .ala-su { transform-origin: 40px 30px; animation: battito .22s ease-in-out infinite alternate-reverse; }
+@keyframes battito { from { transform: scaleY(1); } to { transform: scaleY(-.6); } }
+.farfalla .ali-sx { transform-origin: 39px 36px; animation: aliSx .18s ease-in-out infinite alternate; }
+.farfalla .ali-dx { transform-origin: 41px 36px; animation: aliDx .18s ease-in-out infinite alternate; }
+@keyframes aliSx { to { transform: scaleX(.25); } }
+@keyframes aliDx { to { transform: scaleX(.25); } }
+.passeggia img { width: 92px; animation: passo .45s ease-in-out infinite alternate; }
+@keyframes passo { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-10px) rotate(6deg); } }
+.cucu img { width: 110px; }
+.cucu .nuvola-ciao { position: absolute; top: -18px; left: -30px; background: #fff; border: 2px solid var(--inchiostro); border-radius: 14px; padding: 2px 10px; font-family: var(--font-titoli); }
+.coccinella .zampe { animation: zampette .2s steps(2) infinite; }
+@keyframes zampette { to { transform: translateX(2px); } }
+.aereo { display: flex; align-items: center; }
+.aereo .elica { transform-origin: 84px 28px; animation: elica .12s linear infinite alternate; }
+@keyframes elica { to { transform: scaleY(.1); } }
+.striscione { order: 2; background: var(--giallo-chiaro); border: 2px solid var(--inchiostro); border-radius: 6px 18px 18px 6px; padding: 6px 16px; font-family: var(--font-titoli); font-size: 22px; color: var(--navy); white-space: nowrap; margin-left: 4px; animation: sventola .5s ease-in-out infinite alternate; }
+@keyframes sventola { to { transform: skewY(-3deg); } }
+.aereo svg { order: 1; }
+.scintilla { position: fixed; pointer-events: none; font-size: 22px; z-index: 36; }
+@media (prefers-reduced-motion: reduce) { .virgola-dice img, img[src$="punto.png"] { animation: none !important; } }
+
+/* ---------- Report per la logopedista ---------- */
+.report { background: #fff; color: #1b1b1b; border: 1px solid var(--bordo); border-radius: 12px; padding: 28px 32px; font-family: var(--font-testo); font-size: 15px; line-height: 1.45; }
+.report h1 { font-size: 24px; color: var(--navy); margin: 0; }
+.report h2 { font-size: 18px; color: var(--navy); margin: 22px 0 8px; border-bottom: 2px solid var(--azzurro-chiaro); padding-bottom: 4px; }
+.report .intesta { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; border-bottom: 3px solid var(--navy); padding-bottom: 12px; }
+.report table { width: 100%; border-collapse: collapse; margin: 6px 0; }
+.report th, .report td { text-align: left; padding: 5px 8px; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+.report th { background: #F3F7FC; font-weight: 700; }
+.report .num { text-align: right; white-space: nowrap; }
+.report .cifre { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.report .cifre div { border: 1px solid #dde6f0; border-radius: 10px; padding: 8px 10px; }
+.report .cifre b { display: block; font-size: 22px; color: var(--navy); }
+.report blockquote { margin: 4px 0 8px; padding: 4px 10px; border-left: 3px solid var(--azzurro); background: #F7FAFD; }
+@media screen { .solo-stampa { display: none; } }
+.report .note-stampa { white-space: pre-wrap; border: 1px solid #ccc; border-radius: 8px; min-height: 80px; padding: 8px; }
+.report small { color: #666; }
+.trend-su { color: #2E7D32; } .trend-giu { color: #C62828; }
+@media print {
+  @page { size: A4; margin: 14mm; }
+  body { background: #fff !important; }
+  body > *:not(#app) { display: none !important; }
+  #app * { visibility: hidden; }
+  #app .report, #app .report * { visibility: visible; }
+  #app .report { position: absolute; left: 0; top: 0; width: 100%; border: none; padding: 0; }
+  .report .non-stampare { display: none !important; }
+  .report h2 { break-after: avoid; } .report table, .report blockquote { break-inside: avoid; }
+  .virgola-dice img, img { animation: none !important; }
+}

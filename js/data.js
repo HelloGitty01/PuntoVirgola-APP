@@ -23,7 +23,7 @@ export async function sceneIniziali() {
 }
 
 // Aggiunge ai dati già esistenti i contenuti delle nuove attività (aggiornamento versione 2).
-const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia', 'racconti'];
+const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia', 'racconti', 'indovinelli', 'diario'];
 export async function completaContenuti() {
   if (!S.scene) return;
   const versione = S.scene.versione || 1;
@@ -153,9 +153,11 @@ export function registraPartita(partita) {
   const record = { ...partita, dispositivo: id, nomeDispositivo: d.nomeDispositivo || '', avatar: loc.get('avatar') };
   const tot = partita.esercizi.reduce((t, e) => t + (e.punteggio || 0), 0);
   loc.set('caramelleLocali', loc.get('caramelleLocali', 0) + tot);
+  const path = gh ? `progressi/${id}/${nomeFile()}` : `loc/${partita.inizio || new Date().toISOString()}/${partita.gioco}`;
+  aggiungiStorico(path, record);
   if (gh) {
     const coda = loc.get('coda', []);
-    coda.push({ path: `progressi/${id}/${nomeFile()}`, dati: record });
+    coda.push({ path, dati: record });
     loc.set('coda', coda);
     sincronizza();
   } else {
@@ -237,5 +239,67 @@ export async function leggiPartite(limite = 60) {
     blocco.forEach((r) => r && out.push(r.dati));
   }
   const inCoda = loc.get('coda', []).map((v) => v.dati);
+  return inCoda.reverse().concat(out);
+}
+
+// ---------- Storico per il diario delle caramelle ----------
+// Per ogni partita teniamo un riassunto piccolo: quando, gioco, caramelle (e il racconto del diario).
+function riassuntoPartita(p) {
+  const es = p.esercizi || [];
+  const r = { q: p.fine || p.inizio || (es[0] && es[0].quando), g: p.gioco, c: es.reduce((t, e) => t + (e.punteggio || 0), 0), n: es.length };
+  const dia = es.find((e) => e.gioco === 'diario');
+  if (dia) r.r = (dia.risposte || []).map((x) => x.testo).join(' ');
+  return r;
+}
+function aggiungiStorico(chiave, partita) {
+  const st = loc.get('storico', {});
+  st[chiave] = riassuntoPartita(partita);
+  loc.set('storico', st);
+}
+export function storico() { return loc.get('storico', {}); }
+
+// Recupera le partite non ancora nello storico (anche quelle degli altri dispositivi).
+export async function aggiornaStorico() {
+  const st = loc.get('storico', {});
+  if (!gh) {
+    if (!loc.get('storico.importato')) {
+      loc.get('progressi', []).forEach((p) => { const k = `loc/${p.inizio}/${p.gioco}`; if (!st[k]) st[k] = riassuntoPartita(p); });
+      loc.set('storico', st); loc.set('storico.importato', true);
+    }
+    return st;
+  }
+  const cartelle = (await gh.elenca('progressi')).filter((x) => x.type === 'dir');
+  let mancanti = [];
+  for (const c of cartelle) {
+    const f = await gh.elenca(`progressi/${c.name}`);
+    mancanti = mancanti.concat(f.filter((x) => x.type === 'file' && x.name !== 'riepilogo.json' && !st[x.path]));
+  }
+  for (let i = 0; i < mancanti.length; i += 6) {
+    const blocco = await Promise.all(mancanti.slice(i, i + 6).map((f) => gh.leggiJSON(f.path).then((r) => [f.path, r]).catch(() => [f.path, null])));
+    blocco.forEach(([k, r]) => { if (r) st[k] = riassuntoPartita(r.dati); });
+    loc.set('storico', st);
+  }
+  return st;
+}
+
+// Partite da una certa data in poi (dai nomi dei file, senza leggere quelle più vecchie).
+export async function leggiPartiteDal(dalISO) {
+  const dal = new Date(dalISO).getTime();
+  const dopo = (p) => new Date(p.fine || p.inizio).getTime() >= dal;
+  if (!gh) return loc.get('progressi', []).filter(dopo).reverse();
+  const soglia = new Date(dalISO).toISOString().replace(/[:.]/g, '-');
+  const cartelle = (await gh.elenca('progressi')).filter((x) => x.type === 'dir');
+  let files = [];
+  for (const c of cartelle) {
+    const f = await gh.elenca(`progressi/${c.name}`);
+    files = files.concat(f.filter((x) => x.type === 'file' && x.name !== 'riepilogo.json' && x.name >= soglia));
+  }
+  files.sort((a, b) => b.name.localeCompare(a.name));
+  const out = [];
+  for (let i = 0; i < files.length; i += 8) {
+    const blocco = await Promise.all(files.slice(i, i + 8).map((f) => gh.leggiJSON(f.path).catch(() => null)));
+    blocco.forEach((r) => r && out.push(r.dati));
+  }
+  const inCoda = loc.get('coda', []).map((v) => v.dati).filter(dopo);
   return inCoda.reverse().concat(out);
 }

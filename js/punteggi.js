@@ -26,6 +26,10 @@ export const GIOCHI = {
   rime: { titolo: 'Le rime di Punto', sotto: 'Gatto fa rima con…', tipo: 'perche', gruppo: 'suoni', livelli: 0 },
   ripeti: { titolo: 'Ripeti con Virgola', sotto: 'Ascolta e ripeti', tipo: 'fa', gruppo: 'suoni', livelli: 4 },
   riassunto: { titolo: 'Riassumi la storia', sotto: 'Leggi, ascolta e racconta in breve', tipo: 'quando', gruppo: 'storie', livelli: 3 },
+  allunga: { titolo: 'Allunga la frase', sotto: 'Da corta a lunghissima!', tipo: 'dove', gruppo: 'frasi', livelli: 0 },
+  domande: { titolo: 'Le domande di Virgola', sotto: 'Rispondi con una frase intera', tipo: 'perche', gruppo: 'frasi', livelli: 0 },
+  indovina: { titolo: 'Indovina cosa descrivo', sotto: 'Indizi, figure e indovinelli', tipo: 'chi', gruppo: 'storie', livelli: 3 },
+  diario: { titolo: 'Il diario di Punto', sotto: 'Racconta la tua giornata', tipo: 'quando', gruppo: 'storie', livelli: 0 },
   pronuncia: { titolo: 'Pronuncia con Virgola', sotto: 'TR, STR, Z, C, SC: diciamole bene!', tipo: 'chi', gruppo: 'suoni', livelli: 0 }
 };
 export const SUONI = {
@@ -37,7 +41,7 @@ export const SUONI = {
   k: { nome: 'C dura', esempio: 'cane, casa', segno: /c+(?=[aouh])/i },
   ci: { nome: 'C dolce', esempio: 'cena, ciao', segno: /c(?=[ei])/i }
 };
-export const GRUPPI = { frasi: 'Costruisco le frasi', storie: 'Leggo e riassumo', suoni: 'Suoni e parole' };
+export const GRUPPI = { frasi: 'Costruisco le frasi', storie: 'Racconto e capisco', suoni: 'Suoni e parole' };
 
 export function attivaGioco(config, id) {
   const a = (config && config.attivita) || {};

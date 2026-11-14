@@ -36,6 +36,11 @@ export const ICONE = {
   ripeti: svg('<path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/>'),
   pronuncia: svg('<path d="M3 12c3-4 6-5 9-3 3-2 6-1 9 3-3 4-6 6-9 6s-6-2-9-6z"/><path d="M3 12h18"/>'),
   riassunto: svg('<path d="M4 5a2 2 0 0 1 2-2h5v17H6a2 2 0 0 0-2 2z"/><path d="M20 5a2 2 0 0 0-2-2h-5v17h5a2 2 0 0 1 2 2z"/><path d="M15 8h3M15 11h3"/>'),
+  allunga: svg('<rect x="2" y="9" width="5" height="6" rx="1.5"/><rect x="9" y="9" width="5" height="6" rx="1.5"/><path d="M16 12h6M19 9l3 3-3 3"/>'),
+  domande: svg('<path d="M4 5h16v11H9l-5 4z"/><path d="M10 8.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2"/><path d="M12 13.5v.01"/>'),
+  indovina: svg('<circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20"/><path d="M8.5 8.5a2 2 0 0 1 3 0"/>'),
+  diario: svg('<path d="M6 3h11a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2V4a1 1 0 0 1 1-1z"/><path d="M5 18a2 2 0 0 1 2-2h12"/><path d="M9 7h6M9 10h4"/>'),
+  calendario: svg('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h2M14 14h2M8 17h2"/>'),
   tamburo: svg('<ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8"/>')
 };
 
@@ -65,7 +70,19 @@ export function aggiornaFumetto(root, testo, { leggi = true, allegro = false, id
   if (!f) return;
   f.querySelector('.testo-fumetto').textContent = testo;
   f.classList.toggle('allegro', allegro);
+  if (allegro) reazione('gioia');
   if (leggi) parla(testo);
+}
+
+// Le mascotte reagiscono: 'gioia' (Punto salta) o 'oops' (Punto scuote la testa).
+let tReazione = null;
+export function reazione(tipo, ms = 1300) {
+  const b = document.body;
+  b.classList.remove('gioia', 'oops');
+  void b.offsetWidth;
+  b.classList.add(tipo);
+  clearTimeout(tReazione);
+  tReazione = setTimeout(() => b.classList.remove(tipo), ms);
 }
 
 export function collegaFumetti(root) {

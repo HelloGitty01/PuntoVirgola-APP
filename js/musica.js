@@ -249,7 +249,7 @@ export function installaMusica() {
 
 // Quale musica per quale schermata (null = silenzio, ad esempio nell'area genitori).
 const PER_SCHERMATA = {
-  home: 'home', personaggio: 'home', primoAvvio: 'home', finePartita: 'home', benvenuto: 'home',
+  home: 'home', personaggio: 'home', primoAvvio: 'home', finePartita: 'home', benvenuto: 'home', mieiGiorni: 'home',
   gioco: 'attivita', risultato: 'attivita'
 };
 export function musicaPerSchermata(nome) {

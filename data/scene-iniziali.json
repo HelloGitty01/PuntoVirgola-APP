@@ -5286,5 +5286,539 @@
     }
    ]
   }
+ ],
+ "indovinelli": [
+  {
+   "id": "ind-gatto",
+   "parola": "gatto",
+   "articolo": "il gatto",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "gatto"
+    ]
+   },
+   "indizi": [
+    "È un animale che vive in casa.",
+    "Ha i baffi e una lunga coda.",
+    "Fa le fusa quando è contento.",
+    "Dice miao e beve il latte."
+   ],
+   "chiavi": [
+    "animal*",
+    "baff*",
+    "coda",
+    "fusa",
+    "miao",
+    "latte",
+    "pel*",
+    "zamp*",
+    "casa",
+    "topo*",
+    "graff*",
+    "orecch*"
+   ]
+  },
+  {
+   "id": "ind-cane",
+   "parola": "cane",
+   "articolo": "il cane",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "cane"
+    ]
+   },
+   "indizi": [
+    "È un animale che vive con le persone.",
+    "Ha quattro zampe e muove la coda.",
+    "Gli piace correre e prendere la palla.",
+    "Abbaia: bau bau!"
+   ],
+   "chiavi": [
+    "animal*",
+    "zamp*",
+    "coda",
+    "abbai*",
+    "bau",
+    "osso",
+    "palla",
+    "pel*",
+    "cuccia",
+    "passeggi*",
+    "guinzagli*"
+   ]
+  },
+  {
+   "id": "ind-mela",
+   "parola": "mela",
+   "articolo": "la mela",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mela"
+    ]
+   },
+   "indizi": [
+    "È un frutto.",
+    "È rotonda e cresce sull’albero.",
+    "Può essere rossa, gialla o verde.",
+    "Biancaneve ne ha mangiata una!"
+   ],
+   "chiavi": [
+    "frutt*",
+    "rotond*",
+    "ross*",
+    "verd*",
+    "giall*",
+    "alber*",
+    "mangi*",
+    "dolc*",
+    "buccia",
+    "succos*",
+    "croccant*"
+   ]
+  },
+  {
+   "id": "ind-ombrello",
+   "parola": "ombrello",
+   "articolo": "l’ombrello",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "ombrello"
+    ]
+   },
+   "indizi": [
+    "Si usa quando il tempo è brutto.",
+    "Si apre e si chiude.",
+    "Ha un manico lungo.",
+    "Ci ripara dalla pioggia."
+   ],
+   "chiavi": [
+    "piogg*",
+    "piov*",
+    "apr*",
+    "chiud*",
+    "manic*",
+    "bagn*",
+    "ripar*",
+    "tempo",
+    "acqua"
+   ]
+  },
+  {
+   "id": "ind-sole",
+   "parola": "sole",
+   "articolo": "il sole",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "sole"
+    ]
+   },
+   "indizi": [
+    "È in cielo.",
+    "È giallo e molto caldo.",
+    "Di giorno c’è, di notte no.",
+    "Ci fa abbronzare al mare."
+   ],
+   "chiavi": [
+    "ciel*",
+    "giall*",
+    "cald*",
+    "luce",
+    "giorno",
+    "illumin*",
+    "raggi*",
+    "estate",
+    "splend*",
+    "brill*"
+   ]
+  },
+  {
+   "id": "ind-pesce",
+   "parola": "pesce",
+   "articolo": "il pesce",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "pesce"
+    ]
+   },
+   "indizi": [
+    "È un animale.",
+    "Vive nell’acqua.",
+    "Ha le pinne e le squame.",
+    "Nuota tutto il giorno!"
+   ],
+   "chiavi": [
+    "animal*",
+    "acqua",
+    "mare",
+    "nuot*",
+    "pinn*",
+    "squam*",
+    "bolle",
+    "acquari*",
+    "coda"
+   ]
+  },
+  {
+   "id": "ind-banana",
+   "parola": "banana",
+   "articolo": "la banana",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "banana"
+    ]
+   },
+   "indizi": [
+    "È un frutto.",
+    "È lunga e gialla.",
+    "Prima di mangiarla si toglie la buccia.",
+    "Le scimmie la adorano!"
+   ],
+   "chiavi": [
+    "frutt*",
+    "lung*",
+    "giall*",
+    "buccia",
+    "scimmi*",
+    "dolc*",
+    "mangi*",
+    "curv*"
+   ]
+  },
+  {
+   "id": "ind-bicicletta",
+   "parola": "bicicletta",
+   "articolo": "la bicicletta",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "bicicletta"
+    ]
+   },
+   "indizi": [
+    "Si usa per andare in giro.",
+    "Ha due ruote.",
+    "Ha i pedali e il manubrio.",
+    "Bisogna pedalare per farla andare."
+   ],
+   "chiavi": [
+    "ruot*",
+    "pedal*",
+    "manubri*",
+    "sell*",
+    "campanell*",
+    "freni",
+    "andare",
+    "corr*",
+    "catena"
+   ]
+  },
+  {
+   "id": "ind-libro",
+   "parola": "libro",
+   "articolo": "il libro",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "libro"
+    ]
+   },
+   "indizi": [
+    "Si apre e si legge.",
+    "Ha tante pagine.",
+    "Dentro ci sono parole e storie.",
+    "Si trova in biblioteca."
+   ],
+   "chiavi": [
+    "legg*",
+    "pagin*",
+    "storie",
+    "storia",
+    "parol*",
+    "biblioteca",
+    "scritt*",
+    "copertina",
+    "figure",
+    "apr*"
+   ]
+  },
+  {
+   "id": "ind-gelato",
+   "parola": "gelato",
+   "articolo": "il gelato",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "gelato"
+    ]
+   },
+   "indizi": [
+    "Si mangia quando fa caldo.",
+    "È freddo e dolce.",
+    "Si mette nel cono o nella coppetta.",
+    "Ci sono tanti gusti: cioccolato, fragola…"
+   ],
+   "chiavi": [
+    "freddo",
+    "fredd*",
+    "dolc*",
+    "cono",
+    "coppetta",
+    "gust*",
+    "cioccolat*",
+    "fragol*",
+    "estate",
+    "cald*",
+    "lecc*",
+    "sciogli*"
+   ]
+  },
+  {
+   "id": "ind-mucca",
+   "parola": "mucca",
+   "articolo": "la mucca",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mucca"
+    ]
+   },
+   "indizi": [
+    "È un animale della fattoria.",
+    "È grande, bianca e nera.",
+    "Mangia l’erba nel prato.",
+    "Ci dà il latte e dice muu!"
+   ],
+   "chiavi": [
+    "animal*",
+    "fattoria",
+    "latte",
+    "erba",
+    "prato",
+    "muu",
+    "macchi*",
+    "bianc*",
+    "ner*",
+    "corna",
+    "grand*"
+   ]
+  },
+  {
+   "id": "ind-treno",
+   "parola": "treno",
+   "articolo": "il treno",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "treno"
+    ]
+   },
+   "indizi": [
+    "Serve per viaggiare.",
+    "È lunghissimo e ha tanti vagoni.",
+    "Corre sui binari.",
+    "Parte dalla stazione."
+   ],
+   "chiavi": [
+    "viaggi*",
+    "vagon*",
+    "binari*",
+    "stazione",
+    "lung*",
+    "veloc*",
+    "fischi*",
+    "ciuf*",
+    "rotai*",
+    "passegger*"
+   ]
+  },
+  {
+   "id": "ind-elefante",
+   "parola": "elefante",
+   "articolo": "l’elefante",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "elefante"
+    ]
+   },
+   "indizi": [
+    "È un animale molto grande.",
+    "Ha le orecchie enormi.",
+    "Ha una lunga proboscide.",
+    "Vive nella savana."
+   ],
+   "chiavi": [
+    "animal*",
+    "grand*",
+    "grigi*",
+    "orecch*",
+    "probosc*",
+    "zann*",
+    "savana",
+    "africa",
+    "pesant*",
+    "zamp*"
+   ]
+  },
+  {
+   "id": "ind-orologio",
+   "parola": "orologio",
+   "articolo": "l’orologio",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "orologio"
+    ]
+   },
+   "indizi": [
+    "Ci dice che ore sono.",
+    "Ha le lancette.",
+    "Fa tic tac.",
+    "Si può mettere al polso."
+   ],
+   "chiavi": [
+    "ore",
+    "ora",
+    "lancett*",
+    "tic",
+    "tac",
+    "polso",
+    "tempo",
+    "numer*",
+    "sveglia",
+    "minut*"
+   ]
+  },
+  {
+   "id": "ind-luna",
+   "parola": "luna",
+   "articolo": "la luna",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "luna"
+    ]
+   },
+   "indizi": [
+    "È in cielo.",
+    "Si vede di notte.",
+    "Qualche volta è tonda, qualche volta è sottile.",
+    "È bianca e brilla nel buio."
+   ],
+   "chiavi": [
+    "ciel*",
+    "notte",
+    "bianc*",
+    "tond*",
+    "rotond*",
+    "brill*",
+    "buio",
+    "stell*",
+    "spazio",
+    "astronaut*"
+   ]
+  },
+  {
+   "id": "ind-farfalla",
+   "parola": "farfalla",
+   "articolo": "la farfalla",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "farfalla"
+    ]
+   },
+   "indizi": [
+    "È un piccolo animale che vola.",
+    "Ha le ali colorate.",
+    "Va di fiore in fiore.",
+    "Prima era un bruco!"
+   ],
+   "chiavi": [
+    "animal*",
+    "insett*",
+    "vol*",
+    "ali",
+    "colorat*",
+    "colori",
+    "fior*",
+    "bruco",
+    "antenn*",
+    "legger*"
+   ]
+  },
+  {
+   "id": "ind-pizza",
+   "parola": "pizza",
+   "articolo": "la pizza",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "pizza"
+    ]
+   },
+   "indizi": [
+    "È una cosa buona da mangiare.",
+    "È rotonda.",
+    "Sopra ha il pomodoro e la mozzarella.",
+    "Si cuoce nel forno."
+   ],
+   "chiavi": [
+    "mangi*",
+    "rotond*",
+    "tond*",
+    "pomodor*",
+    "mozzarell*",
+    "forno",
+    "buon*",
+    "fett*",
+    "pizzer*",
+    "formagg*"
+   ]
+  },
+  {
+   "id": "ind-scarpe",
+   "parola": "scarpe",
+   "articolo": "le scarpe",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "scarpe"
+    ]
+   },
+   "indizi": [
+    "Si mettono ai piedi.",
+    "Sono due, una destra e una sinistra.",
+    "Qualche volta hanno i lacci.",
+    "Ci servono per camminare."
+   ],
+   "chiavi": [
+    "pied*",
+    "lacci*",
+    "camminar*",
+    "cammin*",
+    "destra",
+    "sinistra",
+    "due",
+    "corr*",
+    "negozi*",
+    "calz*"
+   ]
+  }
+ ],
+ "diario": [
+  "Cosa hai fatto stamattina?",
+  "Cosa hai mangiato a pranzo?",
+  "Cosa hai fatto oggi pomeriggio?",
+  "Con chi hai giocato oggi? A cosa avete giocato?",
+  "Qual è stata la cosa più bella di oggi? Perché?",
+  "C’è stata una cosa che non ti è piaciuta? Raccontamela."
  ]
 }

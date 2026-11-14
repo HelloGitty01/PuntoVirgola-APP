@@ -9,11 +9,12 @@ import { CREDITI_ARASAAC } from '../arasaac.js';
 import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria, editorRacconto } from './editor.js';
 import { musica } from '../musica.js';
+import { report } from './report.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
 
-const VERSIONE = '1.6.0';
+const VERSIONE = '1.7.0';
 const SCHEDE = [
-  ['riepilogo', 'Riepilogo'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
+  ['riepilogo', 'Riepilogo'], ['report', 'Report logopedista'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
 ];
 
@@ -50,7 +51,7 @@ export function genitori(app, { scheda = 'riepilogo' } = {}) {
     try { await aggiornaDaRemoto(); toast('Dati aggiornati'); vai('genitori', { scheda }); } catch (e) { toast(e.message); }
   };
   app.querySelectorAll('[data-scheda]').forEach((b) => { b.onclick = () => vai('genitori', { scheda: b.dataset.scheda }); });
-  const fn = { riepilogo, attivita, scene, storie, racconti, esercizi, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
+  const fn = { riepilogo, report, attivita, scene, storie, racconti, esercizi, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
   fn(cont, scheda);
 }
 
@@ -206,6 +207,7 @@ async function impostazioniScheda(cont) {
       <div class="campo"><label for="nome">Nome della bambina</label><input id="nome" type="text" value="${esc(S.config.nome || '')}"></div>
       <div class="campo"><label for="spp">Esercizi per partita</label><input id="spp" type="number" min="1" max="15" value="${imp.scenePerPartita}"></div>
       <div class="campo"><label><input type="checkbox" id="lett" ${imp.letturaAutomatica ? 'checked' : ''}> Virgola legge ad alta voce le istruzioni</label></div>
+      <div class="campo"><label><input type="checkbox" id="sorp" ${imp.sorprese !== false ? 'checked' : ''}> Sorprese animate (ogni tanto passano un uccellino, una farfalla, Punto…)</label></div>
     </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>“Descrivi la scena”: parole minime</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap">${[1, 2, 3, 4, 5].map((l) => `<div class="campo"><label for="pd-${l}">Livello ${l}</label><input id="pd-${l}" type="number" min="2" max="25" value="${imp.paroleDescrivi[l]}"></div>`).join('')}</div>
@@ -294,6 +296,7 @@ async function impostazioniScheda(cont) {
       livelli: imp.livelli,
       paroleDescrivi: Object.fromEntries([1, 2, 3, 4, 5].map((l) => [l, Number(v('pd-' + l).value) || imp.paroleDescrivi[l]])),
       letturaAutomatica: v('lett').checked,
+      sorprese: v('sorp').checked,
       motoreVoce: v('motore').value
     };
     if (pin) S.config.pin = await sha256(pin);
@@ -321,7 +324,7 @@ function attivita(cont) {
       <span class="aiuto">Virgola riconosce la parola giusta e le sostituzioni più comuni (es. treno → “teno”, cane → “tane”). È un allenamento: con la voce di una bambina può sbagliare, e le registrazioni restano da riascoltare.</span></div>
     <div class="card morbida"><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="solo-ascolto" style="width:22px;height:22px" ${S.config.riassuntoSoloAscolto ? 'checked' : ''}>
       <span><b>Riassumi la storia: solo ascolto</b><br><small style="color:var(--tenue)">Il racconto non si legge: Virgola lo racconta e basta (più difficile, allena la comprensione all’ascolto).</small></span></label></div>
-    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero.</p>
+    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero. Indovina: 1 = Virgola descrive e lei trova la figura, 2 = un turno a testa, 3 = descrive sempre lei.</p>
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" id="salva" style="align-self:flex-start">Salva</button>`;
   cont.querySelector('#salva').onclick = async (e) => {
@@ -363,7 +366,13 @@ const ELENCHI = [
   { k: 'pronuncia', titolo: 'Parole per la pronuncia', uso: 'Pronuncia con Virgola', aiuto: 'Suono | parola | sostituzioni tipiche (parole vere): tr | treno | reno — suoni: sc, sk, z, tr, str, k, ci',
     a: (x) => `${x.suono} | ${x.parola} | ${(x.varianti || []).join(', ')}`, da: (r) => { const [su, p, v] = r.split('|').map((t) => (t || '').trim()); return { suono: su, parola: p, varianti: (v || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 2 && Object.keys(SUONI).includes(r.split('|')[0].trim()) },
   { k: 'trasforma', titolo: 'Frasi da trasformare', uso: 'Trasforma', aiuto: 'Frase | frase nuova con ___ | parola giusta | altre: Il gatto dorme | I gatti ___ | dormono | dorme, dormiamo',
-    a: (x) => `${x.frase} | ${x.modello} | ${x.giusto} | ${(x.altre || []).join(', ')}`, da: (r) => { const [f, m, g, o] = r.split('|').map((t) => (t || '').trim()); return { frase: f, modello: m, giusto: g, altre: (o || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 4 && r.includes('___') }
+    a: (x) => `${x.frase} | ${x.modello} | ${x.giusto} | ${(x.altre || []).join(', ')}`, da: (r) => { const [f, m, g, o] = r.split('|').map((t) => (t || '').trim()); return { frase: f, modello: m, giusto: g, altre: (o || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 4 && r.includes('___') },
+  { k: 'indovinelli', titolo: 'Indovinelli', uso: 'Indovina cosa descrivo', aiuto: 'Parola | con l’articolo | indizi separati da ; (dal più difficile al più facile) | parole-indizio che può dire lei (* = tutte le forme): gatto | il gatto | È un animale.; Ha i baffi.; Dice miao. | baff*, coda, miao, latte',
+    a: (x) => `${x.parola} | ${x.articolo} | ${(x.indizi || []).join('; ')} | ${(x.chiavi || []).join(', ')}`,
+    da: (r) => { const [p, a, i, k] = r.split('|').map((t) => (t || '').trim()); return { id: 'ind-' + p.toLowerCase(), parola: p, articolo: a || p, immagine: { tipo: 'arasaac', parole: [p] }, indizi: i.split(';').map((t) => t.trim()).filter(Boolean), chiavi: (k || '').split(',').map((t) => t.trim()).filter(Boolean) }; },
+    ok: (r) => r.split('|').length >= 3 && r.split('|')[2].trim().length > 3 },
+  { k: 'diario', titolo: 'Domande del diario', uso: 'Il diario di Punto', aiuto: 'Una domanda per riga, nell’ordine in cui Virgola le fa.',
+    a: (x) => x, da: (r) => r, ok: (r) => r.length > 3 }
 ];
 
 function esercizi(cont) {

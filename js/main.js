@@ -10,6 +10,8 @@ import { gioco } from './screens/gioco.js';
 import { risultato, finePartita } from './screens/risultato.js';
 import { sceltaPersonaggio } from './screens/personaggio.js';
 import { genitori, editor } from './screens/genitori.js';
+import { mieiGiorni } from './screens/giorni.js';
+import { installaSorprese } from './sorprese.js';
 
 registra('benvenuto', setup.benvenuto);
 registra('configGenitore', setup.configGenitore);
@@ -22,6 +24,7 @@ registra('finePartita', finePartita);
 registra('personaggio', sceltaPersonaggio);
 registra('genitori', genitori);
 registra('editor', editor);
+registra('mieiGiorni', mieiGiorni);
 registra('errore', (app, { messaggio }) => {
   app.innerHTML = `<main class="schermata" style="align-items:center;justify-content:center;text-align:center">
     <img src="img/punto.png" alt="" style="width:180px">
@@ -36,6 +39,7 @@ registra('errore', (app, { messaggio }) => {
 });
 
 installaMusica();
+installaSorprese();
 
 function splash() {
   const s = document.createElement('div');

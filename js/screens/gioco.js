@@ -10,8 +10,9 @@ import { descrivi } from './descrivi.js';
 import { coppie, sillabe, iniziale, rime, ripeti, pronuncia } from './suoni.js';
 import { scombinata, unisci, finisci, trasforma, dopo } from './frasi2.js';
 import { riassunto } from './riassunto.js';
+import { allunga, domande, indovina, diario, sceneAllunga } from './frasi3.js';
 
-const ESERCIZI = { riassunto, pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
+const ESERCIZI = { allunga, domande, indovina, diario, riassunto, pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
 
 // Identificativo stabile ricavato dal contenuto (per non ripetere sempre gli stessi esercizi).
 function idDa(testo) {
@@ -34,6 +35,10 @@ function fonte(gioco) {
     case 'sillabe': case 'iniziale': return conId(sc.parole, (x) => gioco + x.sillabe);
     case 'ripeti': return conId(sc.ripeti, (x) => x.frase);
     case 'riassunto': return sc.racconti || [];
+    case 'allunga': return sceneAllunga();
+    case 'domande': return (sc.scene || []).filter((s) => (s.elementi || []).length >= 2);
+    case 'indovina': return sc.indovinelli || [];
+    case 'diario': return [{ id: 'diario', domande: sc.diario || [] }];
     case 'pronuncia': {
       const scelti = (S.config && S.config.suoniPronuncia) || null;
       return conId(sc.pronuncia, (x) => 'p' + x.suono + x.parola).filter((x) => !scelti || scelti.includes(x.suono));
@@ -58,7 +63,7 @@ function scegli(gioco) {
   const livello = conLivelli ? (imp.livelli[gioco] || 1) : 1;
   const tutte = fonte(gioco);
   const fonteL = conLivelli ? tutte : tutte.map((x) => ({ ...x, livello: 1 }));
-  const quanti = gioco === 'riassunto' ? 1 : ['racconta', 'dopo'].includes(gioco) ? Math.min(3, imp.scenePerPartita) : imp.scenePerPartita;
+  const quanti = ['riassunto', 'diario'].includes(gioco) ? 1 : gioco === 'domande' ? Math.min(3, imp.scenePerPartita) : ['racconta', 'dopo'].includes(gioco) ? Math.min(3, imp.scenePerPartita) : imp.scenePerPartita;
   const recenti = new Set(loc.get('recenti.' + gioco, []));
   const ordina = (lista) => {
     const nuovi = mescola(lista.filter((x) => !recenti.has(x.id)));
@@ -128,7 +133,7 @@ export function gioco(app, param = {}) {
     // nel riassunto la bambina ha appena toccato "Fatto!": si va avanti subito
     if (P.gioco === 'riassunto') vai('risultato', { esito, ultimo });
   };
-  pulizia = ESERCIZI[P.gioco](area, { voce: P.elementi[P.i], fine, livello: P.livello });
+  pulizia = ESERCIZI[P.gioco](area, { voce: P.elementi[P.i], fine, livello: P.livello, indice: P.i });
   return () => { if (typeof pulizia === 'function') pulizia(); };
 }
 
