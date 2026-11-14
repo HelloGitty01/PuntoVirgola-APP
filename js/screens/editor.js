@@ -239,3 +239,62 @@ export function editorStoria(app, storia, alTermine) {
     }
   };
 }
+
+// ---------- Racconti per "Riassumi la storia" ----------
+const TIPI_ELEMENTO = { chi: 'Chi', dove: 'Dove', quando: 'Quando', problema: 'Problema', azione: 'Che cosa succede', fine: 'Come finisce' };
+function rigaElementoRacconto(e = { tipo: 'chi', nome: '', parole: [], domanda: '' }) {
+  const base = String(e.tipo || 'chi').replace(/\d+$/, '');
+  return `<div class="card morbida" data-el-racconto style="display:grid;grid-template-columns:170px 1fr;gap:10px">
+    <div class="campo"><label>Tipo</label><select data-f="tipo">${Object.entries(TIPI_ELEMENTO).map(([k, t]) => `<option value="${k}" ${k === base ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+    <div class="campo"><label>Elemento (come lo vedrà la bambina quando l’ha trovato)</label><input type="text" data-f="nome" value="${esc(e.nome)}" placeholder="La volpe Rina"></div>
+    <div class="campo" style="grid-column:1/-1"><label>Parole che lo provano (separate da virgola; * = tutte le forme; a+b = servono entrambe)</label><input type="text" data-f="parole" value="${esc((e.parole || []).join(', '))}" placeholder="volpe, rina"></div>
+    <div class="campo" style="grid-column:1/-1"><label>Domanda di Virgola se manca</label><input type="text" data-f="domanda" value="${esc(e.domanda || '')}" placeholder="Chi è la protagonista della storia?"></div>
+    <div style="grid-column:1/-1;display:flex;justify-content:flex-end"><button type="button" class="link" data-rimuovi-er>Rimuovi elemento</button></div></div>`;
+}
+
+export function editorRacconto(app, racconto, alTermine) {
+  const r = racconto ? JSON.parse(JSON.stringify(racconto)) : { livello: 1, elementi: [{ tipo: 'chi' }, { tipo: 'dove' }, { tipo: 'problema' }, { tipo: 'fine' }] };
+  app.innerHTML = `<main class="schermata pa">
+    <div class="barra"><button class="btn-tondo" id="indietro" aria-label="Indietro">${ICONE.indietro}</button><h1>${racconto ? 'Modifica racconto' : 'Nuovo racconto'}</h1></div>
+    <form id="f" style="display:flex;flex-direction:column;gap:16px">
+      <div class="card morbida" style="display:grid;grid-template-columns:1fr 160px;gap:12px">
+        <div class="campo"><label for="titolo">Titolo</label><input id="titolo" type="text" value="${esc(r.titolo || '')}" required></div>
+        <div class="campo"><label for="livello">Livello</label><select id="livello">${[1, 2, 3].map((l) => `<option ${l === (r.livello || 1) ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+        <div class="campo" style="grid-column:1/-1"><label for="testo">Testo del racconto</label><textarea id="testo" rows="10" required>${esc(r.testo || '')}</textarea>
+          <span class="aiuto">Livello 1: circa 80 parole, riassunto guidato con domande. Livelli 2 e 3: racconti più lunghi, riassunto libero.</span></div>
+      </div>
+      <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Elementi essenziali (nell’ordine della storia)</h3>
+        <div id="elementi" style="display:flex;flex-direction:column;gap:12px">${(r.elementi || []).map(rigaElementoRacconto).join('')}</div>
+        <button type="button" class="btn secondario piccolo" id="add" style="align-self:flex-start">${ICONE.piu} Aggiungi elemento</button></div>
+      <p class="errore" id="err" role="alert"></p>
+      <div class="riga-pulsanti"><button class="btn" type="submit" id="salva">Salva racconto</button>
+        ${racconto ? `<button class="btn secondario" type="button" id="elimina">${ICONE.cestino} Elimina</button>` : ''}</div>
+    </form></main>`;
+  const box = app.querySelector('#elementi');
+  app.querySelector('#indietro').onclick = () => alTermine(false);
+  app.querySelector('#add').onclick = () => box.insertAdjacentHTML('beforeend', rigaElementoRacconto({ tipo: 'azione' }));
+  app.addEventListener('click', (e) => { if (e.target.closest('[data-rimuovi-er]')) e.target.closest('[data-el-racconto]').remove(); });
+  const el = app.querySelector('#elimina');
+  if (el) el.onclick = async () => {
+    if (!confirm('Eliminare il racconto?')) return;
+    S.scene.racconti = (S.scene.racconti || []).filter((x) => x.id !== racconto.id);
+    await salvaScene(); toast('Racconto eliminato'); alTermine(true);
+  };
+  app.querySelector('#f').onsubmit = async (e) => {
+    e.preventDefault();
+    const err = app.querySelector('#err');
+    const elementi = [...box.querySelectorAll('[data-el-racconto]')].map((x) => ({
+      tipo: x.querySelector('[data-f="tipo"]').value,
+      nome: x.querySelector('[data-f="nome"]').value.trim(),
+      parole: lista(x.querySelector('[data-f="parole"]').value),
+      domanda: x.querySelector('[data-f="domanda"]').value.trim()
+    })).filter((x) => x.nome && x.parole.length);
+    if (elementi.length < 3) { err.textContent = 'Servono almeno 3 elementi, ognuno con il nome e almeno una parola.'; return; }
+    const nuovo = { ...r, id: r.id || 'rc' + Date.now().toString(36), titolo: app.querySelector('#titolo').value.trim(), livello: Number(app.querySelector('#livello').value), testo: app.querySelector('#testo').value.trim(), elementi: elementi.map((x) => ({ ...x, domanda: x.domanda || `Nel tuo riassunto manca: ${x.nome}?` })) };
+    S.scene.racconti = S.scene.racconti || [];
+    const i = S.scene.racconti.findIndex((x) => x.id === nuovo.id);
+    if (i >= 0) S.scene.racconti[i] = nuovo; else S.scene.racconti.push(nuovo);
+    const bt = app.querySelector('#salva'); bt.disabled = true;
+    try { await salvaScene(); toast('Racconto salvato'); alTermine(true); } catch (ex) { err.textContent = ex.message; bt.disabled = false; }
+  };
+}

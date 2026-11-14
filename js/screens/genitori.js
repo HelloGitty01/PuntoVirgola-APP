@@ -7,12 +7,12 @@ import { TIPI, GIOCHI, GRUPPI, SUONI, attivaGioco } from '../punteggi.js';
 import { normalizza } from '../match.js';
 import { CREDITI_ARASAAC } from '../arasaac.js';
 import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
-import { editorScena, editorStoria } from './editor.js';
+import { editorScena, editorStoria, editorRacconto } from './editor.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
 
-const VERSIONE = '1.3.0';
+const VERSIONE = '1.4.0';
 const SCHEDE = [
-  ['riepilogo', 'Riepilogo'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
+  ['riepilogo', 'Riepilogo'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
 ];
 
@@ -25,6 +25,7 @@ export async function verificaPin(pin) { return S.config && S.config.pin && (awa
 export function editor(app, { tipo, voce, scheda }) {
   const torna = () => vai('genitori', { scheda });
   if (tipo === 'storia') editorStoria(app, voce, torna);
+  else if (tipo === 'racconto') editorRacconto(app, voce, torna);
   else editorScena(app, voce, torna);
 }
 
@@ -48,7 +49,7 @@ export function genitori(app, { scheda = 'riepilogo' } = {}) {
     try { await aggiornaDaRemoto(); toast('Dati aggiornati'); vai('genitori', { scheda }); } catch (e) { toast(e.message); }
   };
   app.querySelectorAll('[data-scheda]').forEach((b) => { b.onclick = () => vai('genitori', { scheda: b.dataset.scheda }); });
-  const fn = { riepilogo, attivita, scene, storie, esercizi, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
+  const fn = { riepilogo, attivita, scene, storie, racconti, esercizi, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
   fn(cont, scheda);
 }
 
@@ -94,6 +95,16 @@ async function riepilogo(cont) {
         <div class="barre">${Object.entries(per).map(([k, x]) => `<div class="riga" style="grid-template-columns:90px 1fr 70px"><span>${esc((SUONI[k] || {}).nome || k)}</span><div class="traccia"><div style="width:${Math.round((x.ok / x.tot) * 100)}%;background:var(--verde)"></div></div><b>${x.primo}/${x.ok}/${x.tot}</b></div>
           ${Object.keys(x.sentite).length ? `<small style="color:var(--tenue);margin:-4px 0 6px 100px">sentito: ${Object.entries(x.sentite).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([w, n]) => `${esc(w)} (${n})`).join(', ')}</small>` : ''}`).join('')}</div></div>`;
     })()}
+    ${(() => {
+      const ri = esercizi(partite).filter((e) => e.gioco === 'riassunto').slice(0, 6);
+      if (!ri.length) return '';
+      return `<div class="card morbida"><h3 style="margin-bottom:10px">Riassunti recenti</h3><div class="elenco">${ri.map((e) => `<div class="voce" style="align-items:flex-start"><div class="testo">
+        <b>${esc(e.titolo)}</b> · ${e.trovati.length}/${e.trovati.length + e.mancanti.length} elementi · ${e.punteggio} caramelle
+        <small>${new Date(e.quando).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })} · ${e.modalita === 'guidato' ? 'guidato' : 'libero'}${e.ordineOk === false ? ' · ordine da rivedere' : ''}${e.sintesiOk === false ? ' · poco sintetico' : ''}</small>
+        <p style="margin:6px 0">«${esc(e.testo)}»</p>
+        ${e.mancanti.length ? `<small>Mancava: ${esc(e.mancanti.join('; '))}</small>` : '<small class="ok-testo">Tutti gli elementi presenti</small>'}</div></div>`).join('')}</div>
+        <p class="aiuto">Se un elemento risulta mancante ma tua figlia l’aveva detto con altre parole, aggiungi quelle parole nella scheda Racconti.</p></div>`;
+    })()}
     <div class="card morbida"><h3 style="margin-bottom:10px">Frasi dette di recente</h3>
       ${frasi.length ? `<div class="elenco">${frasi.map((e) => `<div class="voce"><div class="testo">«${esc(e.frasi[e.frasi.length - 1])}»<small>${new Date(e.quando).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })} · ${e.punteggio} caramelle</small></div></div>`).join('')}</div>` : '<p>Ancora nessuna frase.</p>'}</div>
     <div class="card morbida"><h3 style="margin-bottom:10px">Ultime partite</h3>
@@ -123,6 +134,16 @@ function storie(cont, scheda) {
   riempiImmagini(cont);
   cont.querySelector('#nuova').onclick = () => vai('editor', { tipo: 'storia', voce: null, scheda });
   cont.querySelectorAll('[data-mod]').forEach((b) => { b.onclick = () => vai('editor', { tipo: 'storia', voce: lista.find((x) => x.id === b.dataset.mod), scheda }); });
+}
+
+function racconti(cont, scheda) {
+  const lista = (S.scene.racconti || []).slice().sort((a, b) => (a.livello || 1) - (b.livello || 1));
+  cont.innerHTML = `<div class="riga-pulsanti"><button class="btn" id="nuovo">${ICONE.piu} Nuovo racconto</button><span>${lista.length} racconti per “Riassumi la storia”</span></div>
+    <div class="elenco">${lista.map((r) => `<div class="voce">
+      <div class="testo"><b>${esc(r.titolo)}</b><small>Livello ${r.livello || 1} · ${(r.testo || '').split(/\s+/).length} parole · ${(r.elementi || []).length} elementi essenziali</small></div>
+      <button class="btn-tondo" data-mod="${esc(r.id)}" aria-label="Modifica">${ICONE.matita}</button></div>`).join('')}</div>`;
+  cont.querySelector('#nuovo').onclick = () => vai('editor', { tipo: 'racconto', voce: null, scheda });
+  cont.querySelectorAll('[data-mod]').forEach((b) => { b.onclick = () => vai('editor', { tipo: 'racconto', voce: lista.find((x) => x.id === b.dataset.mod), scheda }); });
 }
 
 // ---------------- Da rivedere ----------------
@@ -290,7 +311,9 @@ function attivita(cont) {
       <div style="display:flex;flex-wrap:wrap;gap:10px">${Object.entries(SUONI).map(([k, x]) => `<label style="display:flex;align-items:center;gap:8px;padding:8px 14px;border:2px solid #E7E1D6;border-radius:14px;background:#fff">
         <input type="checkbox" data-suono="${k}" style="width:22px;height:22px" ${!S.config.suoniPronuncia || S.config.suoniPronuncia.includes(k) ? 'checked' : ''}> <b>${esc(x.nome)}</b> <small style="color:var(--tenue)">${esc(x.esempio)}</small></label>`).join('')}</div>
       <span class="aiuto">Virgola riconosce la parola giusta e le sostituzioni più comuni (es. treno → “teno”, cane → “tane”). È un allenamento: con la voce di una bambina può sbagliare, e le registrazioni restano da riascoltare.</span></div>
-    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe.</p>
+    <div class="card morbida"><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="solo-ascolto" style="width:22px;height:22px" ${S.config.riassuntoSoloAscolto ? 'checked' : ''}>
+      <span><b>Riassumi la storia: solo ascolto</b><br><small style="color:var(--tenue)">Il racconto non si legge: Virgola lo racconta e basta (più difficile, allena la comprensione all’ascolto).</small></span></label></div>
+    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero.</p>
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" id="salva" style="align-self:flex-start">Salva</button>`;
   cont.querySelector('#salva').onclick = async (e) => {
@@ -305,6 +328,7 @@ function attivita(cont) {
     const suoni = [...cont.querySelectorAll('[data-suono]')].filter((x) => x.checked).map((x) => x.dataset.suono);
     if (!suoni.length) { cont.querySelector('#err').textContent = 'Scegli almeno un suono per la pronuncia.'; return; }
     S.config.suoniPronuncia = suoni;
+    S.config.riassuntoSoloAscolto = cont.querySelector('#solo-ascolto').checked;
     S.config.impostazioni = { ...(S.config.impostazioni || {}), livelli };
     e.target.disabled = true;
     try { await salvaConfig(); toast('Attività salvate'); } catch (ex) { cont.querySelector('#err').textContent = ex.message; }

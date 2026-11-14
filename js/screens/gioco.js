@@ -11,8 +11,9 @@ import { racconta } from './racconta.js';
 import { descrivi } from './descrivi.js';
 import { coppie, sillabe, iniziale, rime, ripeti, pronuncia } from './suoni.js';
 import { scombinata, unisci, finisci, trasforma, dopo } from './frasi2.js';
+import { riassunto } from './riassunto.js';
 
-const ESERCIZI = { pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
+const ESERCIZI = { riassunto, pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
 
 // Identificativo stabile ricavato dal contenuto (per non ripetere sempre gli stessi esercizi).
 function idDa(testo) {
@@ -34,6 +35,7 @@ function fonte(gioco) {
     case 'rime': return (sc.rime || []).map((c) => ({ id: idDa('r' + c.join('/')), coppia: c }));
     case 'sillabe': case 'iniziale': return conId(sc.parole, (x) => gioco + x.sillabe);
     case 'ripeti': return conId(sc.ripeti, (x) => x.frase);
+    case 'riassunto': return sc.racconti || [];
     case 'pronuncia': {
       const scelti = (S.config && S.config.suoniPronuncia) || null;
       return conId(sc.pronuncia, (x) => 'p' + x.suono + x.parola).filter((x) => !scelti || scelti.includes(x.suono));
@@ -58,7 +60,7 @@ function scegli(gioco) {
   const livello = conLivelli ? (imp.livelli[gioco] || 1) : 1;
   const tutte = fonte(gioco);
   const fonteL = conLivelli ? tutte : tutte.map((x) => ({ ...x, livello: 1 }));
-  const quanti = ['racconta', 'dopo'].includes(gioco) ? Math.min(3, imp.scenePerPartita) : imp.scenePerPartita;
+  const quanti = gioco === 'riassunto' ? 1 : ['racconta', 'dopo'].includes(gioco) ? Math.min(3, imp.scenePerPartita) : imp.scenePerPartita;
   const recenti = new Set(loc.get('recenti.' + gioco, []));
   const ordina = (lista) => {
     const nuovi = mescola(lista.filter((x) => !recenti.has(x.id)));

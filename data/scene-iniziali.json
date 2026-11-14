@@ -4219,5 +4219,1031 @@
     "testo"
    ]
   }
+ ],
+ "racconti": [
+  {
+   "id": "rc-sciarpa",
+   "livello": 1,
+   "titolo": "La sciarpa di Rina",
+   "testo": "Nel bosco viveva una piccola volpe di nome Rina. Rina aveva una sciarpa rossa che le piaceva tantissimo. Una mattina si svegliò e la sciarpa non c'era più! Rina la cercò sotto il letto, dietro l'albero e vicino al ruscello, ma niente. Allora chiese aiuto al suo amico gufo Otto. Otto volò in alto e guardò dappertutto. Alla fine vide la sciarpa dentro un nido: gli uccellini la usavano come coperta! Rina sorrise e decise di lasciarla a loro, perché avevano freddo.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "La volpe Rina",
+     "parole": [
+      "volpe",
+      "rina",
+      "volpina"
+     ],
+     "domanda": "Chi è la protagonista della storia?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "Nel bosco",
+     "parole": [
+      "bosco",
+      "alberi",
+      "foresta"
+     ],
+     "domanda": "Dove vive Rina?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Perde la sciarpa",
+     "parole": [
+      "sciarp*+pers*",
+      "sciarp*+perd*",
+      "sciarp*+sparit*",
+      "sciarp*+non",
+      "sciarp*+cerc*",
+      "sciarp*+trova*"
+     ],
+     "domanda": "Che cosa succede alla sciarpa di Rina?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Chiede aiuto al gufo",
+     "parole": [
+      "gufo",
+      "otto",
+      "aiut*"
+     ],
+     "domanda": "A chi chiede aiuto Rina?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "La lascia agli uccellini nel nido",
+     "parole": [
+      "nido",
+      "uccellin*",
+      "uccell*",
+      "coperta",
+      "lasci*",
+      "regal*"
+     ],
+     "domanda": "Come finisce la storia? Dove era la sciarpa?"
+    }
+   ]
+  },
+  {
+   "id": "rc-palloncino",
+   "livello": 1,
+   "titolo": "Il palloncino di Leo",
+   "testo": "Leo era al parco con il papà. Al chiosco il papà gli comprò un palloncino blu. Leo era felicissimo e correva sul prato. All'improvviso arrivò un colpo di vento e il palloncino gli scappò dalla mano! Il palloncino volò in alto e si impigliò tra i rami di un albero. Leo si mise a piangere. Il papà prese la scala del giardiniere, salì piano piano e riprese il palloncino. Questa volta il papà lo legò al polso di Leo, così non poteva più volare via.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Leo e il papà",
+     "parole": [
+      "leo",
+      "bambino",
+      "papa"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "Al parco",
+     "parole": [
+      "parco",
+      "prato",
+      "giardino"
+     ],
+     "domanda": "Dove si trova Leo?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Il palloncino vola via",
+     "parole": [
+      "vol*",
+      "scapp*",
+      "vento",
+      "pers*",
+      "albero",
+      "rami"
+     ],
+     "domanda": "Che cosa succede al palloncino?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Il papà sale con la scala",
+     "parole": [
+      "scala",
+      "sal*",
+      "prend*",
+      "ripres*",
+      "riprend*"
+     ],
+     "domanda": "Che cosa fa il papà per aiutare Leo?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Lo lega al polso",
+     "parole": [
+      "leg*",
+      "polso",
+      "mano",
+      "braccio"
+     ],
+     "domanda": "Come finisce? Come fanno perché il palloncino non scappi più?"
+    }
+   ]
+  },
+  {
+   "id": "rc-osso",
+   "livello": 1,
+   "titolo": "Bruno e l'osso nascosto",
+   "testo": "Bruno era un cagnolino molto allegro. Un giorno nascose il suo osso preferito in giardino, ma il giorno dopo non si ricordava più dove! Bruno scavò vicino alla siepe, sotto lo scivolo e accanto alla casetta. Era tutto sporco di terra, ma l'osso non c'era. La gatta Mimì lo guardava dalla finestra e rideva. Poi Mimì saltò giù e gli indicò il vaso dei fiori. Bruno scavò lì e trovò il suo osso! Da quel giorno Bruno e Mimì diventarono amici.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Il cagnolino Bruno",
+     "parole": [
+      "bruno",
+      "cane",
+      "cagnolin*",
+      "cagnetto"
+     ],
+     "domanda": "Chi è il protagonista?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "In giardino",
+     "parole": [
+      "giardino",
+      "prato",
+      "cortile"
+     ],
+     "domanda": "Dove ha nascosto l'osso?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Non ricorda dove ha nascosto l'osso",
+     "parole": [
+      "osso",
+      "nascost*",
+      "ricord*",
+      "dimentic*"
+     ],
+     "domanda": "Qual è il problema di Bruno?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "La gatta Mimì lo aiuta",
+     "parole": [
+      "mimi",
+      "gatta",
+      "gatto",
+      "indic*",
+      "aiut*"
+     ],
+     "domanda": "Chi aiuta Bruno?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Trova l'osso nel vaso e diventano amici",
+     "parole": [
+      "trov*",
+      "vaso",
+      "amic*",
+      "fiori"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-torta",
+   "livello": 1,
+   "titolo": "Una torta per la nonna",
+   "testo": "Domani era il compleanno della nonna e Sofia voleva prepararle una sorpresa. Con la mamma decise di fare una torta al cioccolato. In cucina misero sul tavolo la farina, le uova e il cioccolato. Ma quando aprirono il barattolo dello zucchero, era vuoto! Sofia allora andò dalla vicina, la signora Teresa, che le prestò lo zucchero. La torta venne buonissima. Il giorno dopo la nonna spense le candeline e abbracciò forte Sofia.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Sofia e la mamma",
+     "parole": [
+      "sofia",
+      "bambina",
+      "mamma"
+     ],
+     "domanda": "Chi prepara la torta?"
+    },
+    {
+     "tipo": "quando",
+     "nome": "Per il compleanno della nonna",
+     "parole": [
+      "compleann*",
+      "nonna",
+      "festa",
+      "sorpresa"
+     ],
+     "domanda": "Per chi è la torta, e per quale occasione?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Manca lo zucchero",
+     "parole": [
+      "zucchero",
+      "vuot*",
+      "manca*",
+      "finit*"
+     ],
+     "domanda": "Quale problema hanno in cucina?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "La vicina presta lo zucchero",
+     "parole": [
+      "vicin*",
+      "teresa",
+      "prest*",
+      "dat*"
+     ],
+     "domanda": "Come risolvono il problema?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "La nonna è felice e abbraccia Sofia",
+     "parole": [
+      "abbracci*",
+      "candelin*",
+      "felic*",
+      "content*",
+      "buonissim*"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-tartaruga",
+   "livello": 1,
+   "titolo": "La gara di Lina",
+   "testo": "Nel prato vicino allo stagno viveva Lina, una tartaruga molto lenta. Il coniglio Saltello la prendeva sempre in giro. Un giorno Lina disse: «Facciamo una gara fino alla grande quercia!». Saltello rise e partì velocissimo. Era così avanti che si fermò a riposare all'ombra e si addormentò. Lina, passo dopo passo, non si fermò mai. Quando Saltello si svegliò, Lina era già arrivata alla quercia! Da quel giorno il coniglio non prese più in giro nessuno.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "La tartaruga Lina e il coniglio",
+     "parole": [
+      "lina",
+      "tartarug*",
+      "conigli*",
+      "saltello"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Il coniglio la prende in giro",
+     "parole": [
+      "giro",
+      "prend*",
+      "lent*",
+      "ride",
+      "rise"
+     ],
+     "domanda": "Perché Lina vuole fare la gara?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Fanno una gara",
+     "parole": [
+      "gara",
+      "corr*",
+      "quercia"
+     ],
+     "domanda": "Che cosa decidono di fare?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Il coniglio si addormenta",
+     "parole": [
+      "dorm*",
+      "addorment*",
+      "ripos*",
+      "ferm*"
+     ],
+     "domanda": "Che cosa fa il coniglio durante la gara?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Vince Lina",
+     "parole": [
+      "vin*",
+      "arriv*",
+      "prima",
+      "primo",
+      "non prese",
+      "nessuno"
+     ],
+     "domanda": "Chi vince la gara?"
+    }
+   ]
+  },
+  {
+   "id": "rc-drago",
+   "livello": 2,
+   "titolo": "Il drago che aveva paura del buio",
+   "testo": "In cima alla montagna c'era un vecchio castello, e nel castello viveva un drago di nome Fumetto. Fumetto era grande, verde e sputava fuoco, ma aveva un segreto: aveva paura del buio. Ogni sera, quando il sole tramontava, si nascondeva sotto le coperte e non riusciva a dormire. Una notte una piccola lucciola di nome Lia entrò dalla finestra. «Perché tremi?» gli chiese. Fumetto le raccontò tutto. Allora Lia gli propose di uscire insieme sulla torre. Lei faceva luce con la sua coda e gli mostrava le stelle, la luna e le lucciole che danzavano nel prato. Fumetto scoprì che il buio era pieno di cose bellissime. Da quella sera, ogni notte, Fumetto e Lia guardavano il cielo insieme, e il drago non ebbe più paura.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Il drago Fumetto",
+     "parole": [
+      "drago",
+      "fumetto"
+     ],
+     "domanda": "Chi è il protagonista?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "In un castello sulla montagna",
+     "parole": [
+      "castell*",
+      "montagn*",
+      "torre"
+     ],
+     "domanda": "Dove vive il drago?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Ha paura del buio",
+     "parole": [
+      "paura",
+      "buio",
+      "notte",
+      "tremava",
+      "trema*"
+     ],
+     "domanda": "Qual è il segreto del drago?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Arriva la lucciola Lia",
+     "parole": [
+      "lucciol*",
+      "lia"
+     ],
+     "domanda": "Chi arriva una notte ad aiutarlo?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Guardano le stelle insieme",
+     "parole": [
+      "stell*",
+      "cielo",
+      "luna",
+      "luce"
+     ],
+     "domanda": "Che cosa gli fa vedere Lia?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Non ha più paura",
+     "parole": [
+      "non ha più paura",
+      "non ebbe",
+      "piu paura",
+      "coraggi*",
+      "non avev*",
+      "passa"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-mare",
+   "livello": 2,
+   "titolo": "Il castello di sabbia",
+   "testo": "Era estate e Marta era al mare con il fratello Pietro. Marta voleva costruire il castello di sabbia più bello della spiaggia. Prese il secchiello e la paletta e lavorò tutta la mattina: fece le torri, le mura e perfino un ponte con i bastoncini del gelato. Era fierissima! Ma all'improvviso arrivò un'onda grande e il castello si sciolse in un attimo. Marta si mise a piangere. Pietro le si sedette vicino e le disse: «Ne facciamo uno insieme, ma più lontano dall'acqua». Così lavorarono insieme tutto il pomeriggio. Il nuovo castello era ancora più grande, e la sera Marta e Pietro fecero una foto per ricordarlo.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Marta e il fratello Pietro",
+     "parole": [
+      "marta",
+      "pietro",
+      "fratell*",
+      "bambina"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "Al mare d'estate",
+     "parole": [
+      "mare",
+      "spiaggia",
+      "estate",
+      "sabbia"
+     ],
+     "domanda": "Dove sono e quando?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Costruisce un castello di sabbia",
+     "parole": [
+      "castell*",
+      "costru*",
+      "torri",
+      "sabbia"
+     ],
+     "domanda": "Che cosa costruisce Marta?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Un'onda lo distrugge",
+     "parole": [
+      "onda",
+      "distru*",
+      "sciol*",
+      "rovin*",
+      "acqua",
+      "cade"
+     ],
+     "domanda": "Che cosa succede al castello?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Ne costruiscono uno insieme lontano dall'acqua",
+     "parole": [
+      "insieme",
+      "lontan*",
+      "nuovo",
+      "pietro",
+      "foto",
+      "altro"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-quaderno",
+   "livello": 2,
+   "titolo": "Il quaderno perduto",
+   "testo": "Luca frequentava la terza elementare. Un lunedì mattina, in classe, la maestra chiese di consegnare il quaderno dei compiti. Luca aprì lo zaino, ma il quaderno non c'era! Eppure era sicuro di aver fatto tutti gli esercizi. Cercò sotto il banco, nell'armadietto e perfino nel cestino. Niente. Luca era molto preoccupato e aveva quasi le lacrime agli occhi. Durante la ricreazione, la maestra andò in palestra e trovò un quaderno senza nome vicino alla panchina. Dentro c'erano proprio i compiti di Luca! Venerdì infatti, dopo ginnastica, l'aveva appoggiato lì e se n'era dimenticato. La maestra glielo restituì sorridendo. Da quel giorno Luca scrive sempre il suo nome sulla copertina di ogni quaderno.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Luca",
+     "parole": [
+      "luca",
+      "bambino"
+     ],
+     "domanda": "Chi è il protagonista?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "A scuola",
+     "parole": [
+      "scuola",
+      "classe",
+      "maestr*"
+     ],
+     "domanda": "Dove si svolge la storia?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Perde il quaderno dei compiti",
+     "parole": [
+      "quadern*+pers*",
+      "quadern*+perd*",
+      "quadern*+non",
+      "quadern*+dimentic*",
+      "quadern*+cerc*",
+      "quadern*+sparit*"
+     ],
+     "domanda": "Qual è il problema di Luca?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "La maestra lo trova in palestra",
+     "parole": [
+      "palestr*",
+      "trov*",
+      "panchin*"
+     ],
+     "domanda": "Chi trova il quaderno e dove?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Ora scrive il nome sui quaderni",
+     "parole": [
+      "nome",
+      "copertin*",
+      "scriv*"
+     ],
+     "domanda": "Che cosa impara Luca alla fine?"
+    }
+   ]
+  },
+  {
+   "id": "rc-pettirosso",
+   "livello": 2,
+   "titolo": "Il pettirosso",
+   "testo": "Era inverno e il giardino di Anna era coperto di neve. Una mattina, guardando dalla finestra, Anna vide un pettirosso fermo sotto la siepe. Non volava e teneva un'ala tutta storta. «Mamma, è ferito!» gridò. La mamma prese una scatola con dentro un panno morbido e insieme misero il pettirosso al caldo. Il giorno dopo lo portarono dal veterinario, che fasciò l'ala e spiegò come dargli da mangiare. Per tre settimane Anna gli preparò semi e briciole e gli cambiò l'acqua ogni giorno. Il pettirosso diventò sempre più forte. Quando arrivò la primavera, Anna aprì la scatola in giardino: il pettirosso fece un saltello, cantò e volò sul ramo più alto. Ogni mattina torna ancora a salutarla.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Anna e la mamma",
+     "parole": [
+      "anna",
+      "bambina",
+      "mamma"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "quando",
+     "nome": "D'inverno, nella neve",
+     "parole": [
+      "inverno",
+      "neve",
+      "freddo"
+     ],
+     "domanda": "In che stagione succede?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Trova un pettirosso ferito",
+     "parole": [
+      "pettiross*",
+      "uccellin*",
+      "uccell*",
+      "ferit*",
+      "ala"
+     ],
+     "domanda": "Che cosa trova Anna in giardino?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Lo curano con il veterinario",
+     "parole": [
+      "veterinari*",
+      "cur*",
+      "fasci*",
+      "scatola",
+      "mangiare",
+      "semi"
+     ],
+     "domanda": "Come lo aiutano?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "In primavera lo liberano",
+     "parole": [
+      "primavera",
+      "liber*",
+      "vol*",
+      "torna",
+      "ramo"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-robot",
+   "livello": 2,
+   "titolo": "Il robot cuoco",
+   "testo": "Tommaso adorava costruire cose. Un sabato, con scatole, tappi e lampadine, costruì un robot e lo chiamò Bip. «Bip, oggi sarai il mio aiuto cuoco: facciamo i biscotti!» disse. Il robot si mise subito al lavoro: mescolò la farina, ruppe le uova e versò il latte. Ma quando bisognava mettere lo zucchero, Bip prese il barattolo sbagliato e mise il sale! I biscotti sembravano perfetti, ma al primo morso Tommaso fece una smorfia: erano salatissimi! Invece di arrabbiarsi, Tommaso e la sorellina scoppiarono a ridere. Poi riprovarono tutti insieme, leggendo bene la ricetta e le etichette dei barattoli. Questa volta i biscotti erano dolci e buonissimi, e Bip ne ebbe uno finto tutto per sé.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Tommaso e il robot Bip",
+     "parole": [
+      "tommaso",
+      "robot",
+      "bip"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Fanno i biscotti",
+     "parole": [
+      "biscott*",
+      "cucin*",
+      "ricett*",
+      "cuoco"
+     ],
+     "domanda": "Che cosa preparano?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Il robot mette il sale invece dello zucchero",
+     "parole": [
+      "sale",
+      "salat*",
+      "sbagli*",
+      "zucchero"
+     ],
+     "domanda": "Che errore fa il robot?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Ridono invece di arrabbiarsi",
+     "parole": [
+      "rid*",
+      "ris*",
+      "arrabb*"
+     ],
+     "domanda": "Come reagiscono i bambini?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Riprovano leggendo bene la ricetta",
+     "parole": [
+      "ripro*",
+      "di nuovo",
+      "legg*",
+      "dolci",
+      "buon*",
+      "etichett*"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-mappa",
+   "livello": 3,
+   "titolo": "La mappa nella soffitta",
+   "testo": "Durante le vacanze di Pasqua, Giulia e suo cugino Marco andarono a dormire dalla nonna Rosa, che abitava in una vecchia casa in campagna. Un pomeriggio di pioggia, annoiati, salirono in soffitta. Tra bauli polverosi e vestiti antichi, Marco trovò un foglio ingiallito: era una mappa disegnata a matita, con una grande X vicino a un albero e la scritta «Il mio tesoro». I due cugini si guardarono emozionati. Appena smise di piovere, seguirono la mappa: contarono venti passi dal pozzo, girarono intorno al fienile e arrivarono al vecchio fico. Scavarono con una paletta per quasi un'ora, finché sentirono un rumore metallico. Era una scatola di latta arrugginita! Dentro però non c'erano monete d'oro: c'erano fotografie in bianco e nero, una bambola di pezza e alcune lettere. Corsero dalla nonna, che si commosse: quella scatola l'aveva nascosta lei quando aveva otto anni! Quella sera, davanti al camino, la nonna raccontò a Giulia e Marco la sua infanzia. I due bambini capirono che quel tesoro valeva più dell'oro. Prima di partire, misero nella scatola anche un loro disegno e la sotterrarono di nuovo, per i bambini che verranno.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Giulia, Marco e la nonna Rosa",
+     "parole": [
+      "giulia",
+      "marco",
+      "cugin*",
+      "nonna"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "Nella casa della nonna in campagna",
+     "parole": [
+      "campagna",
+      "casa",
+      "soffitt*",
+      "nonna"
+     ],
+     "domanda": "Dove si trovano?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Trovano una mappa in soffitta",
+     "parole": [
+      "mappa",
+      "soffitt*",
+      "foglio"
+     ],
+     "domanda": "Che cosa trovano in soffitta?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Seguono la mappa e scavano",
+     "parole": [
+      "segu*",
+      "scav*",
+      "fico",
+      "albero",
+      "pozzo",
+      "x"
+     ],
+     "domanda": "Che cosa fanno con la mappa?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Trovano una scatola con foto e lettere, non oro",
+     "parole": [
+      "scatol*",
+      "foto*",
+      "lettere",
+      "bambola",
+      "ricord*"
+     ],
+     "domanda": "Che cosa c'è nella scatola?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Era il tesoro della nonna da bambina; aggiungono un disegno e la risotterrano",
+     "parole": [
+      "nonna",
+      "infanzia",
+      "raccont*",
+      "disegno",
+      "sotterr*",
+      "bambina",
+      "nascost*"
+     ],
+     "domanda": "Di chi era il tesoro, e come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-concerto",
+   "livello": 3,
+   "titolo": "Il concerto di Nina",
+   "testo": "Nina suonava il violino da due anni e il suo sogno era partecipare al concerto di fine anno della scuola di musica. Per settimane si esercitò ogni giorno, dopo i compiti, finché il brano le veniva perfetto. La sera del concerto il teatro era pieno: c'erano i genitori, i nonni e perfino la sua amica Chiara. Quando toccò a lei, Nina salì sul palco, ma vedendo tutte quelle persone le tremarono le mani. Appoggiò l'archetto sulle corde e non uscì nessun suono: aveva dimenticato la prima nota! Il silenzio sembrava infinito. Allora Nina si ricordò il consiglio della maestra Elena: «Se hai paura, chiudi gli occhi, respira tre volte e pensa a quando suoni nella tua cameretta». Nina chiuse gli occhi e respirò lentamente: uno, due, tre. La prima nota tornò da sola, e poi tutte le altre. Suonò con tutto il cuore e, alla fine, il pubblico si alzò in piedi ad applaudire. Dietro le quinte la maestra la abbracciò: «Hai avuto paura, ma sei stata più forte della paura». Nina tornò a casa con un mazzo di fiori e la voglia di suonare ancora.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Nina, che suona il violino",
+     "parole": [
+      "nina",
+      "violin*"
+     ],
+     "domanda": "Chi è la protagonista e che cosa suona?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "Al concerto, in teatro",
+     "parole": [
+      "concert*",
+      "teatro",
+      "palco",
+      "scuola di musica"
+     ],
+     "domanda": "Dove si svolge la parte importante della storia?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Ha paura e dimentica la prima nota",
+     "parole": [
+      "paura",
+      "trem*",
+      "dimentic*",
+      "nota",
+      "bloc*",
+      "silenzio"
+     ],
+     "domanda": "Che cosa succede a Nina sul palco?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Ricorda il consiglio della maestra: respirare",
+     "parole": [
+      "consiglio",
+      "maestra",
+      "respir*",
+      "occhi",
+      "elena"
+     ],
+     "domanda": "Come riesce a superare la paura?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Suona benissimo e tutti applaudono",
+     "parole": [
+      "applau*",
+      "suon*",
+      "brav*",
+      "fiori",
+      "abbracci*",
+      "pubblico"
+     ],
+     "domanda": "Come finisce il concerto?"
+    }
+   ]
+  },
+  {
+   "id": "rc-gatto-tetto",
+   "livello": 3,
+   "titolo": "Pepe sul tetto",
+   "testo": "Pepe era il gatto della famiglia Bianchi: curioso, agile e sempre in cerca di avventure. Un pomeriggio di maggio, mentre i bambini, Sara e Davide, facevano merenda in giardino, Pepe vide una farfalla gialla e cominciò a inseguirla. Saltò sul muretto, poi sulla tettoia e infine arrivò fino al tetto della casa. La farfalla volò via, e Pepe si accorse di essere molto in alto. Provò a scendere, ma le tegole scivolavano e lui miagolava spaventato. Sara corse a chiamare la mamma, mentre Davide cercava di convincerlo a scendere con un piattino di croccantini. Ma Pepe non si muoveva. Allora la mamma chiamò i vigili del fuoco. Dopo pochi minuti arrivò un camion rosso con una lunghissima scala. Un pompiere salì con calma, parlò dolcemente a Pepe e lo prese in braccio. Tutti i vicini applaudirono quando il pompiere rimise il gatto tra le braccia di Sara. Per ringraziarlo, i bambini fecero un disegno con il camion dei pompieri e lo portarono in caserma. E Pepe? Da quel giorno insegue le farfalle solo in giardino.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Il gatto Pepe e i bambini Sara e Davide",
+     "parole": [
+      "pepe",
+      "gatto",
+      "sara",
+      "davide"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Insegue una farfalla",
+     "parole": [
+      "farfall*",
+      "insegu*"
+     ],
+     "domanda": "Perché Pepe sale così in alto?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Resta bloccato sul tetto",
+     "parole": [
+      "tetto",
+      "bloccat*",
+      "scend*",
+      "alto",
+      "miagol*",
+      "paura"
+     ],
+     "domanda": "Che problema ha Pepe?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Chiamano i vigili del fuoco",
+     "parole": [
+      "pompier*",
+      "vigili",
+      "fuoco",
+      "chiam*"
+     ],
+     "domanda": "Chi chiamano per aiutarlo?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Il pompiere lo salva con la scala",
+     "parole": [
+      "scala",
+      "salv*",
+      "prend*",
+      "braccio",
+      "braccia",
+      "scen*"
+     ],
+     "domanda": "Come viene salvato Pepe?"
+    },
+    {
+     "tipo": "fine2",
+     "nome": "I bambini ringraziano con un disegno",
+     "parole": [
+      "disegn*",
+      "ringrazi*",
+      "caserma"
+     ],
+     "domanda": "Come ringraziano i bambini?"
+    }
+   ]
+  },
+  {
+   "id": "rc-festa",
+   "livello": 3,
+   "titolo": "La festa a sorpresa",
+   "testo": "Elena e Samuele erano compagni di banco dalla prima elementare. Un giorno Samuele le disse, con la voce triste, che il papà aveva trovato lavoro in un'altra città e che a fine mese si sarebbero trasferiti. Elena rimase senza parole. Tornando a casa ebbe un'idea: organizzare una festa a sorpresa per salutarlo. Ne parlò con la maestra e con i compagni, e tutti vollero aiutare. Alcuni prepararono un cartellone con scritto «Ti vogliamo bene, Samuele!», altri portarono palloncini e torte. Elena invece raccolse una foto da ogni compagno per creare un album dei ricordi. Il giorno prima della festa, però, Samuele entrò in classe proprio mentre stavano nascondendo il cartellone dietro l'armadio! Elena, pronta, disse che era un lavoro di scienze sulle piante, e Samuele non sospettò nulla. Il venerdì, quando aprì la porta della classe, trovò tutti i compagni che gridavano «Sorpresa!». Samuele si commosse e ricevette l'album. Prima di salutarsi, Elena e Samuele si promisero di scriversi ogni settimana. E così fecero.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "Elena e Samuele, compagni di banco",
+     "parole": [
+      "elena",
+      "samuele",
+      "compagn*",
+      "amic*"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Samuele si trasferisce in un'altra città",
+     "parole": [
+      "trasfer*",
+      "città",
+      "citta",
+      "parte",
+      "partire",
+      "andare via",
+      "lavoro"
+     ],
+     "domanda": "Che cosa succede a Samuele?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Elena organizza una festa a sorpresa",
+     "parole": [
+      "festa",
+      "sorpresa",
+      "organizz*"
+     ],
+     "domanda": "Che idea ha Elena?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Preparano cartellone, palloncini e un album di foto",
+     "parole": [
+      "album",
+      "foto*",
+      "cartellon*",
+      "palloncin*",
+      "torte"
+     ],
+     "domanda": "Che cosa preparano i compagni?"
+    },
+    {
+     "tipo": "problema2",
+     "nome": "Samuele quasi scopre la sorpresa",
+     "parole": [
+      "quasi",
+      "scopr*",
+      "nascond*",
+      "scienze",
+      "sospett*"
+     ],
+     "domanda": "Che cosa rischia di rovinare la sorpresa?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "Samuele riceve l'album e promettono di scriversi",
+     "parole": [
+      "scriv*",
+      "promess*",
+      "promis*",
+      "commoss*",
+      "ricev*",
+      "sorpresa"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  },
+  {
+   "id": "rc-orto",
+   "livello": 3,
+   "titolo": "L'orto della classe",
+   "testo": "In primavera la maestra della terza B propose una cosa nuova: coltivare un orto nel cortile della scuola. I bambini erano entusiasti. Divisero la terra in piccoli quadrati e ognuno scelse cosa piantare: lattuga, pomodori, fagioli e fragole. Ogni giorno, a turno, due bambini annaffiavano e strappavano le erbacce. Dopo qualche settimana spuntarono le prime foglioline verdi. Ma una mattina, arrivando a scuola, trovarono le lattughe tutte bucate e mangiucchiate! Sulla terra c'erano strisce lucide: erano state le lumache. Alcuni bambini volevano arrendersi, ma Gabriele propose di chiedere aiuto a suo nonno, che era contadino. Il nonno venne a scuola e spiegò che bastava mettere intorno alle piante dei gusci d'uovo sbriciolati, perché alle lumache non piace strisciarci sopra. I bambini raccolsero gusci per una settimana intera e li sparsero con cura. Funzionò! A giugno l'orto era pieno di verdure. L'ultimo giorno di scuola fecero una grande insalata con i loro pomodori e la loro lattuga e la mangiarono tutti insieme, con il nonno di Gabriele come ospite d'onore.",
+   "elementi": [
+    {
+     "tipo": "chi",
+     "nome": "I bambini della terza B e la maestra",
+     "parole": [
+      "bambini",
+      "classe",
+      "terza",
+      "maestra",
+      "alunni"
+     ],
+     "domanda": "Chi sono i protagonisti?"
+    },
+    {
+     "tipo": "dove",
+     "nome": "Nel cortile della scuola, in primavera",
+     "parole": [
+      "cortile",
+      "scuola",
+      "primavera"
+     ],
+     "domanda": "Dove e quando succede?"
+    },
+    {
+     "tipo": "azione",
+     "nome": "Coltivano un orto",
+     "parole": [
+      "orto",
+      "piant*",
+      "coltiv*",
+      "annaffi*",
+      "semi"
+     ],
+     "domanda": "Che cosa decidono di fare?"
+    },
+    {
+     "tipo": "problema",
+     "nome": "Le lumache mangiano la lattuga",
+     "parole": [
+      "lumac*",
+      "mangi*",
+      "bucat*",
+      "lattug*"
+     ],
+     "domanda": "Che problema hanno con le piante?"
+    },
+    {
+     "tipo": "azione2",
+     "nome": "Il nonno di Gabriele consiglia i gusci d'uovo",
+     "parole": [
+      "nonno",
+      "gabriele",
+      "gusci*",
+      "uov*",
+      "contadin*"
+     ],
+     "domanda": "Chi li aiuta e come?"
+    },
+    {
+     "tipo": "fine",
+     "nome": "A giugno raccolgono le verdure e fanno un'insalata insieme",
+     "parole": [
+      "insalat*",
+      "giugno",
+      "raccol*",
+      "verdur*",
+      "pomodor*",
+      "insieme"
+     ],
+     "domanda": "Come finisce la storia?"
+    }
+   ]
+  }
  ]
 }

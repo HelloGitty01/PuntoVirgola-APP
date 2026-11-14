@@ -23,7 +23,7 @@ export async function sceneIniziali() {
 }
 
 // Aggiunge ai dati già esistenti i contenuti delle nuove attività (aggiornamento versione 2).
-const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia'];
+const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia', 'racconti'];
 export async function completaContenuti() {
   if (!S.scene) return;
   const vecchia = (S.scene.versione || 1) < 2;
