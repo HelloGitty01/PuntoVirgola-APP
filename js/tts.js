@@ -25,6 +25,8 @@ function punteggio(v) {
   const n = v.name.toLowerCase();
   if (MASCHILI.some((m) => n.includes(m))) return -100;
   let p = 0;
+  if (n.includes('espeak')) p -= 60; // eSpeak suona molto robotica: solo se non c'è altro
+  if (n.includes('chrome os')) p += 20; // voci di sistema del Chromebook, più naturali
   if (/natural|neural|online|premium|enhanced/.test(n)) p += 40; // voci più naturali (Edge, ChromeOS)
   if (FEMMINILI.some((f) => n.includes(f))) p += 30;
   if (n.includes('google')) p += 25; // "Google italiano" è femminile
