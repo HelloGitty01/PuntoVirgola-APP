@@ -9,12 +9,32 @@ export const TIPI = {
   perche: { etichetta: 'PERCHÉ?', nome: 'Perché' }
 };
 
+// Tutte le attività. gruppo: 'frasi' o 'suoni'. livelli: quanti livelli ha (0 = nessuno).
 export const GIOCHI = {
-  componi: { titolo: 'Componi la scena', sotto: 'Metti i mattoncini al posto giusto', tipo: 'fa' },
-  dillo: { titolo: 'Dillo tu', sotto: 'Guarda la figura e parla', tipo: 'dove' },
-  racconta: { titolo: 'Racconta la storia', sotto: 'Metti in ordine e racconta', tipo: 'cosa' },
-  descrivi: { titolo: 'Descrivi la scena', sotto: 'Tante parole e una parola segreta', tipo: 'quando' }
+  componi: { titolo: 'Componi la scena', sotto: 'Metti i mattoncini al posto giusto', tipo: 'fa', gruppo: 'frasi', livelli: 5 },
+  dillo: { titolo: 'Dillo tu', sotto: 'Guarda la figura e parla', tipo: 'dove', gruppo: 'frasi', livelli: 5 },
+  racconta: { titolo: 'Racconta la storia', sotto: 'Metti in ordine e racconta', tipo: 'cosa', gruppo: 'frasi', livelli: 3 },
+  descrivi: { titolo: 'Descrivi la scena', sotto: 'Tante parole e una parola segreta', tipo: 'quando', gruppo: 'frasi', livelli: 5 },
+  scombinata: { titolo: 'Frase scombinata', sotto: 'Rimetti le parole in ordine', tipo: 'chi', gruppo: 'frasi', livelli: 3 },
+  unisci: { titolo: 'Unisci le frasi', sotto: 'Trova la parola che le lega', tipo: 'perche', gruppo: 'frasi', livelli: 0 },
+  finisci: { titolo: 'Finisci tu', sotto: 'Completa la frase a voce', tipo: 'dove', gruppo: 'frasi', livelli: 0 },
+  trasforma: { titolo: 'Trasforma', sotto: 'Ieri, domani, tanti…', tipo: 'fa', gruppo: 'frasi', livelli: 0 },
+  dopo: { titolo: 'Cosa succede dopo?', sotto: 'Inventa il seguito della storia', tipo: 'cosa', gruppo: 'frasi', livelli: 0 },
+  coppie: { titolo: 'Orecchie attente', sotto: 'Cane o pane? Ascolta e tocca', tipo: 'dove', gruppo: 'suoni', livelli: 0 },
+  sillabe: { titolo: 'Battiamo le sillabe', sotto: 'Un colpo per ogni pezzetto', tipo: 'chi', gruppo: 'suoni', livelli: 0 },
+  iniziale: { titolo: 'Come comincia?', sotto: 'Trova il suono iniziale', tipo: 'quando', gruppo: 'suoni', livelli: 0 },
+  rime: { titolo: 'Le rime di Punto', sotto: 'Gatto fa rima con…', tipo: 'perche', gruppo: 'suoni', livelli: 0 },
+  ripeti: { titolo: 'Ripeti con Virgola', sotto: 'Ascolta e ripeti', tipo: 'fa', gruppo: 'suoni', livelli: 4 }
 };
+export const GRUPPI = { frasi: 'Costruisco le frasi', suoni: 'Suoni e parole' };
+
+export function attivaGioco(config, id) {
+  const a = (config && config.attivita) || {};
+  return a[id] !== false;
+}
+
+// Punteggio per le attività a scelta: 10 al primo tentativo, 5 al secondo, poi 0.
+export function puntiScelta(tentativi) { return [10, 5][tentativi - 1] ?? 0; }
 
 const limita = (n) => Math.max(0, Math.min(10, Math.round(n)));
 

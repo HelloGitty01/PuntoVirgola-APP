@@ -1,5 +1,5 @@
 // Service worker di Punto e Virgola: app disponibile anche offline.
-const VERSIONE = 'pv-v1.1.1';
+const VERSIONE = 'pv-v1.2.0';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/main.js', 'js/nav.js', 'js/state.js', 'js/github.js', 'js/data.js', 'js/speech.js', 'js/tts.js',
@@ -7,7 +7,7 @@ const SHELL = [
   'js/screens/setup.js', 'js/screens/home.js', 'js/screens/gioco.js', 'js/screens/componi.js',
   'js/screens/dillo.js', 'js/screens/racconta.js', 'js/screens/descrivi.js',
   'js/screens/risultato.js', 'js/screens/personaggio.js', 'js/screens/genitori.js',
-  'js/screens/editor.js',
+  'js/screens/editor.js', 'js/screens/suoni.js', 'js/screens/frasi2.js',
   'data/scene-iniziali.json',
   'img/logo-completo.png', 'img/wordmark.png', 'img/punto.png', 'img/virgola.png', 'img/duo.png',
   'img/icon-192.png', 'img/icon-512.png', 'img/favicon.png',

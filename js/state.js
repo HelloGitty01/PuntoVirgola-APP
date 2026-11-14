@@ -45,12 +45,13 @@ export const CONFIG_PREDEFINITA = {
   pin: null,
   impostazioni: {
     scenePerPartita: 5,
-    livelli: { componi: 1, dillo: 1, racconta: 1, descrivi: 1 },
-    paroleDescrivi: { 1: 4, 2: 6, 3: 8 },
+    livelli: { componi: 1, dillo: 1, racconta: 1, descrivi: 1, scombinata: 1, ripeti: 1 },
+    paroleDescrivi: { 1: 4, 2: 6, 3: 8, 4: 10, 5: 12 },
     letturaAutomatica: true,
     motoreVoce: 'vosk'
   },
-  ignorate: []
+  ignorate: [],
+  attivita: {}
 };
 
 export function impostazioni() {

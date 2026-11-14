@@ -3,16 +3,16 @@ import { vai } from '../nav.js';
 import { S, loc, dispositivo, impostazioni, scollegaDispositivo, idDispositivo } from '../state.js';
 import { conGitHub, leggiPartite, salvaConfig, salvaScene, aggiornaDaRemoto, sincronizza } from '../data.js';
 import { esc, ICONE, toast, finestra, riquadroImmagine, riempiImmagini } from '../ui.js';
-import { TIPI, GIOCHI } from '../punteggi.js';
+import { TIPI, GIOCHI, GRUPPI, attivaGioco } from '../punteggi.js';
 import { normalizza } from '../match.js';
 import { CREDITI_ARASAAC } from '../arasaac.js';
 import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria } from './editor.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
 
-const VERSIONE = '1.1.0';
+const VERSIONE = '1.2.0';
 const SCHEDE = [
-  ['riepilogo', 'Riepilogo'], ['scene', 'Scene'], ['storie', 'Storie'], ['rivedere', 'Da rivedere'],
+  ['riepilogo', 'Riepilogo'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
 ];
 
@@ -48,7 +48,7 @@ export function genitori(app, { scheda = 'riepilogo' } = {}) {
     try { await aggiornaDaRemoto(); toast('Dati aggiornati'); vai('genitori', { scheda }); } catch (e) { toast(e.message); }
   };
   app.querySelectorAll('[data-scheda]').forEach((b) => { b.onclick = () => vai('genitori', { scheda: b.dataset.scheda }); });
-  const fn = { riepilogo, scene, storie, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
+  const fn = { riepilogo, attivita, scene, storie, esercizi, rivedere, impostazioniScheda, dispositivi, info }[scheda === 'impostazioni' ? 'impostazioniScheda' : scheda];
   fn(cont, scheda);
 }
 
@@ -176,13 +176,8 @@ async function impostazioniScheda(cont) {
       <div class="campo"><label for="spp">Esercizi per partita</label><input id="spp" type="number" min="1" max="15" value="${imp.scenePerPartita}"></div>
       <div class="campo"><label><input type="checkbox" id="lett" ${imp.letturaAutomatica ? 'checked' : ''}> Virgola legge ad alta voce le istruzioni</label></div>
     </div>
-    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Livello di ogni gioco</h3>
-      ${Object.entries(GIOCHI).map(([g, t]) => `<div class="campo" style="flex-direction:row;align-items:center;justify-content:space-between"><label for="lv-${g}">${t.titolo}</label>
-        <select id="lv-${g}" style="width:140px">${[1, 2, 3].map((l) => `<option value="${l}" ${imp.livelli[g] === l ? 'selected' : ''}>Livello ${l}</option>`).join('')}</select></div>`).join('')}
-      <p class="aiuto">Livello 1: frasi di 2 elementi (chi, fa cosa). Livello 2: 3 elementi. Livello 3: 4 o più elementi.</p>
-    </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>“Descrivi la scena”: parole minime</h3>
-      <div style="display:flex;gap:12px">${[1, 2, 3].map((l) => `<div class="campo"><label for="pd-${l}">Livello ${l}</label><input id="pd-${l}" type="number" min="2" max="20" value="${imp.paroleDescrivi[l]}"></div>`).join('')}</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">${[1, 2, 3, 4, 5].map((l) => `<div class="campo"><label for="pd-${l}">Livello ${l}</label><input id="pd-${l}" type="number" min="2" max="25" value="${imp.paroleDescrivi[l]}"></div>`).join('')}</div>
     </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Voce di Virgola (su questo dispositivo)</h3>
       <div class="campo"><label for="voce-nome">Voce</label><select id="voce-nome"></select>
@@ -258,8 +253,8 @@ async function impostazioniScheda(cont) {
     S.config.nome = v('nome').value.trim();
     S.config.impostazioni = {
       scenePerPartita: Math.max(1, Math.min(15, Number(v('spp').value) || 5)),
-      livelli: Object.fromEntries(Object.keys(GIOCHI).map((g) => [g, Number(v('lv-' + g).value)])),
-      paroleDescrivi: { 1: Number(v('pd-1').value) || 4, 2: Number(v('pd-2').value) || 6, 3: Number(v('pd-3').value) || 8 },
+      livelli: imp.livelli,
+      paroleDescrivi: Object.fromEntries([1, 2, 3, 4, 5].map((l) => [l, Number(v('pd-' + l).value) || imp.paroleDescrivi[l]])),
       letturaAutomatica: v('lett').checked,
       motoreVoce: v('motore').value
     };
@@ -268,6 +263,81 @@ async function impostazioniScheda(cont) {
     const b = v('salva'); b.disabled = true;
     try { await salvaConfig(); toast('Impostazioni salvate'); vai('genitori', { scheda: 'impostazioni' }); }
     catch (ex) { v('err').textContent = ex.message; b.disabled = false; }
+  };
+}
+
+// ---------------- Attività: attiva/disattiva e livelli ----------------
+function attivita(cont) {
+  const imp = impostazioni();
+  cont.innerHTML = `<p style="margin:0">Scegli quali attività vede tua figlia nella home e a che livello giocarle.</p>
+    ${Object.entries(GRUPPI).map(([gr, titolo]) => `<div class="card morbida" style="padding:8px 0"><h3 style="padding:8px 14px 0">${esc(titolo)}</h3>
+      ${Object.entries(GIOCHI).filter(([, g]) => g.gruppo === gr).map(([id, g]) => `<div class="interruttore" data-tipo="${g.tipo}">
+        <span class="icona-mini" style="width:40px;height:40px;border-radius:12px;background:var(--cc);border:2px solid var(--c);display:flex;align-items:center;justify-content:center;color:var(--ct)">${ICONE[id].replace('<svg', '<svg style="width:24px;height:24px"')}</span>
+        <label class="nome" for="att-${id}"><b>${esc(g.titolo)}</b><small>${esc(g.sotto)}</small></label>
+        ${g.livelli ? `<select id="lv-${id}" aria-label="Livello di ${esc(g.titolo)}" style="width:120px">${Array.from({ length: g.livelli }, (_, i) => i + 1).map((l) => `<option value="${l}" ${(imp.livelli[id] || 1) === l ? 'selected' : ''}>Livello ${l}</option>`).join('')}</select>` : ''}
+        <span class="switch"><input type="checkbox" id="att-${id}" ${attivaGioco(S.config, id) ? 'checked' : ''}><span></span></span>
+      </div>`).join('')}</div>`).join('')}
+    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe.</p>
+    <p class="errore" id="err" role="alert"></p>
+    <button class="btn" id="salva" style="align-self:flex-start">Salva</button>`;
+  cont.querySelector('#salva').onclick = async (e) => {
+    const att = {};
+    const livelli = { ...imp.livelli };
+    Object.entries(GIOCHI).forEach(([id, g]) => {
+      att[id] = cont.querySelector('#att-' + id).checked;
+      if (g.livelli) livelli[id] = Number(cont.querySelector('#lv-' + id).value);
+    });
+    if (!Object.values(att).some(Boolean)) { cont.querySelector('#err').textContent = 'Lascia attiva almeno un’attività.'; return; }
+    S.config.attivita = att;
+    S.config.impostazioni = { ...(S.config.impostazioni || {}), livelli };
+    e.target.disabled = true;
+    try { await salvaConfig(); toast('Attività salvate'); } catch (ex) { cont.querySelector('#err').textContent = ex.message; }
+    e.target.disabled = false;
+  };
+}
+
+// ---------------- Altri esercizi: elenchi modificabili ----------------
+const ELENCHI = [
+  { k: 'parole', titolo: 'Parole divise in sillabe', uso: 'Battiamo le sillabe, Come comincia?', aiuto: 'Una parola per riga, con le sillabe separate da trattini: ca-ra-mel-la',
+    a: (x) => x.sillabe, da: (r) => ({ parola: r.replace(/-/g, ''), sillabe: r }), ok: (r) => /^[^\s-]+(-[^\s-]+)+$/.test(r) },
+  { k: 'coppie', titolo: 'Coppie minime', uso: 'Orecchie attente', aiuto: 'Due parole che cambiano per un solo suono, separate da /: cane / pane',
+    a: (x) => x.join(' / '), da: (r) => r.split('/').map((t) => t.trim()), ok: (r) => r.split('/').filter((t) => t.trim()).length === 2 },
+  { k: 'rime', titolo: 'Rime', uso: 'Le rime di Punto', aiuto: 'Due parole che fanno rima, separate da /: gatto / piatto',
+    a: (x) => x.join(' / '), da: (r) => r.split('/').map((t) => t.trim()), ok: (r) => r.split('/').filter((t) => t.trim()).length === 2 },
+  { k: 'ripeti', titolo: 'Frasi da ripetere', uso: 'Ripeti con Virgola', aiuto: 'Livello (1-4) | frase: 2 | il cane corre nel prato',
+    a: (x) => `${x.livello} | ${x.frase}`, da: (r) => { const [l, f] = r.split('|'); return { livello: Number(l) || 1, frase: (f || '').trim() }; }, ok: (r) => r.includes('|') },
+  { k: 'scombinate', titolo: 'Frasi da riordinare', uso: 'Frase scombinata', aiuto: 'Una frase per riga (il livello dipende dalla lunghezza).',
+    a: (x) => x, da: (r) => r, ok: (r) => r.split(/\s+/).length >= 3 },
+  { k: 'unisci', titolo: 'Frasi da unire', uso: 'Unisci le frasi', aiuto: 'Prima frase | seconda frase | parola giusta | altre parole: Prendo l’ombrello | piove | perché | ma, quindi',
+    a: (x) => `${x.a} | ${x.b} | ${x.giusto} | ${(x.altre || []).join(', ')}`, da: (r) => { const [a, b, g, o] = r.split('|').map((t) => (t || '').trim()); return { a, b, giusto: g, altre: (o || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 4 },
+  { k: 'finisci', titolo: 'Frasi da finire', uso: 'Finisci tu', aiuto: 'L’inizio della frase, una per riga: Sono contenta quando…',
+    a: (x) => x, da: (r) => r, ok: (r) => r.length > 3 },
+  { k: 'trasforma', titolo: 'Frasi da trasformare', uso: 'Trasforma', aiuto: 'Frase | frase nuova con ___ | parola giusta | altre: Il gatto dorme | I gatti ___ | dormono | dorme, dormiamo',
+    a: (x) => `${x.frase} | ${x.modello} | ${x.giusto} | ${(x.altre || []).join(', ')}`, da: (r) => { const [f, m, g, o] = r.split('|').map((t) => (t || '').trim()); return { frase: f, modello: m, giusto: g, altre: (o || '').split(',').map((t) => t.trim()).filter(Boolean) }; }, ok: (r) => r.split('|').length >= 4 && r.includes('___') }
+];
+
+function esercizi(cont) {
+  cont.innerHTML = `<p style="margin:0">Qui modifichi i contenuti delle altre attività. Una voce per riga, nel formato indicato.</p>
+    ${ELENCHI.map((e) => `<div class="card morbida" style="display:flex;flex-direction:column;gap:8px">
+      <h3>${esc(e.titolo)} <small style="font-weight:400;color:var(--tenue)">· ${esc(e.uso)}</small></h3>
+      <span class="aiuto">${esc(e.aiuto)}</span>
+      <textarea id="el-${e.k}" rows="6" style="font-size:16px">${esc(((S.scene[e.k]) || []).map(e.a).join('\n'))}</textarea></div>`).join('')}
+    <p class="errore" id="err" role="alert"></p>
+    <button class="btn" id="salva" style="align-self:flex-start">Salva gli esercizi</button>`;
+  cont.querySelector('#salva').onclick = async (ev) => {
+    const err = cont.querySelector('#err');
+    err.textContent = '';
+    const nuovi = {};
+    for (const e of ELENCHI) {
+      const righe = cont.querySelector('#el-' + e.k).value.split('\n').map((r) => r.trim()).filter(Boolean);
+      const sbagliata = righe.find((r) => !e.ok(r));
+      if (sbagliata) { err.textContent = `${e.titolo}: la riga “${sbagliata}” non è nel formato giusto.`; return; }
+      nuovi[e.k] = righe.map(e.da);
+    }
+    Object.assign(S.scene, nuovi);
+    ev.target.disabled = true;
+    try { await salvaScene(); toast('Esercizi salvati'); } catch (ex) { err.textContent = ex.message; }
+    ev.target.disabled = false;
   };
 }
 

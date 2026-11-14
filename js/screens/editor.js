@@ -112,7 +112,7 @@ export function editorScena(app, scena, alTermine) {
     <form id="f" style="display:flex;flex-direction:column;gap:16px">
       <div class="card morbida" style="display:grid;grid-template-columns:1fr 160px;gap:12px">
         <div class="campo"><label for="frase">Frase modello</label><input id="frase" type="text" value="${esc(s.frase || '')}" placeholder="Il gatto mangia in cucina"></div>
-        <div class="campo"><label for="livello">Livello</label><select id="livello">${[1, 2, 3].map((l) => `<option ${l === (s.livello || 1) ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+        <div class="campo"><label for="livello">Livello</label><select id="livello">${[1, 2, 3, 4, 5].map((l) => `<option ${l === (s.livello || 1) ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
       </div>
       <div class="card morbida"><h3>Immagine</h3><div id="img"></div></div>
       <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Elementi della frase (in ordine)</h3>
@@ -194,7 +194,7 @@ export function editorStoria(app, storia, alTermine) {
     <form id="f" style="display:flex;flex-direction:column;gap:16px">
       <div class="card morbida" style="display:grid;grid-template-columns:1fr 160px;gap:12px">
         <div class="campo"><label for="titolo">Titolo</label><input id="titolo" type="text" value="${esc(s.titolo || '')}" required></div>
-        <div class="campo"><label for="livello">Livello</label><select id="livello">${[1, 2, 3].map((l) => `<option ${l === (s.livello || 1) ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+        <div class="campo"><label for="livello">Livello</label><select id="livello">${[1, 2, 3, 4, 5].map((l) => `<option ${l === (s.livello || 1) ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
         <div class="campo" style="grid-column:1/-1"><label for="ponti">Parole ponte (separate da virgola)</label><input id="ponti" type="text" value="${esc((s.connettivi || []).join(', '))}"></div>
       </div>
       ${s.vignette.map((v, i) => `<div class="card morbida" style="display:flex;flex-direction:column;gap:10px"><h3>Vignetta ${i + 1}</h3>

@@ -22,7 +22,18 @@ export const ICONE = {
   componi: svg('<rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/>'),
   dillo: svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>'),
   racconta: svg('<rect x="3" y="4" width="8" height="7" rx="1.5"/><rect x="13" y="4" width="8" height="7" rx="1.5"/><rect x="3" y="13" width="8" height="7" rx="1.5"/><rect x="13" y="13" width="8" height="7" rx="1.5"/>'),
-  descrivi: svg('<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/>')
+  descrivi: svg('<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/>'),
+  scombinata: svg('<path d="M4 7h3l10 10h3M4 17h3l3-3M14 10l3-3h3"/><path d="M18 5l2 2-2 2M18 15l2 2-2 2"/>'),
+  unisci: svg('<path d="M9 15l6-6"/><path d="M11 6l1-1a4 4 0 0 1 6 6l-1 1M13 18l-1 1a4 4 0 0 1-6-6l1-1"/>'),
+  finisci: svg('<path d="M4 6h16M4 11h10"/><circle cx="15" cy="17" r="1"/><circle cx="19" cy="17" r="1"/><circle cx="11" cy="17" r="1"/>'),
+  trasforma: svg('<path d="M4 8h13l-3-3M20 16H7l3 3"/>'),
+  dopo: svg('<rect x="3" y="5" width="8" height="10" rx="1.5"/><path d="M14 10h6M17 7l3 3-3 3"/><path d="M15 19h1M18 19h1M21 19h.01"/>'),
+  coppie: svg('<path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0"/><path d="M10 9a2 2 0 0 1 4 0"/>'),
+  sillabe: svg('<ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8"/><path d="M5 3l5 4M19 3l-5 4"/>'),
+  iniziale: svg('<path d="M5 20L10 5h1l5 15M7 14h7"/><path d="M18 9v6M18 7v.01"/>'),
+  rime: svg('<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>'),
+  ripeti: svg('<path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/>'),
+  tamburo: svg('<ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8"/>')
 };
 
 export function caramella(piena = true, ritardo = 0) {

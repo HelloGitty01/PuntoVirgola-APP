@@ -2,7 +2,7 @@
 import { vai } from '../nav.js';
 import { S, loc, nomeBambina, caramelleTotali, dispositivo } from '../state.js';
 import { esc, ICONE, contatoreCaramelle, cancelloGenitori, virgolaDice, collegaFumetti } from '../ui.js';
-import { GIOCHI, personaggio, prossimoSblocco } from '../punteggi.js';
+import { GIOCHI, GRUPPI, attivaGioco, personaggio, prossimoSblocco } from '../punteggi.js';
 import { verificaPin } from './genitori.js';
 
 export function home(app) {
@@ -16,12 +16,19 @@ export function home(app) {
   ];
   const saluto = saluti[Math.floor(Math.random() * saluti.length)];
   const percentuale = prossimo ? Math.round((tot / prossimo.costo) * 100) : 100;
-  const giochi = Object.entries(GIOCHI).map(([id, g]) => `
+  const attivi = Object.entries(GIOCHI).filter(([id]) => attivaGioco(S.config, id));
+  const tessera = ([id, g]) => `
     <button class="gioco" data-tipo="${g.tipo}" data-gioco="${id}">
       <span class="icona">${ICONE[id]}</span>
       <span><b>${esc(g.titolo)}</b><span>${esc(g.sotto)}</span></span>
-    </button>`).join('');
-
+    </button>`;
+  const pochi = attivi.length <= 4;
+  const giochi = pochi
+    ? `<div class="giochi pochi" style="flex:1">${attivi.map(tessera).join('')}</div>`
+    : Object.entries(GRUPPI).map(([gr, titolo]) => {
+      const lista = attivi.filter(([, g]) => g.gruppo === gr);
+      return lista.length ? `<section class="gruppo-giochi"><h2>${esc(titolo)}</h2><div class="giochi">${lista.map(tessera).join('')}</div></section>` : '';
+    }).join('');
   app.innerHTML = `<main class="schermata">
     <div class="home">
       <div class="lato">
@@ -46,7 +53,7 @@ export function home(app) {
         <div style="display:flex;justify-content:flex-end;gap:12px">
           <button class="btn-tondo" id="genitori" aria-label="Area genitori">${ICONE.lucchetto}</button>
         </div>
-        <div class="giochi" style="flex:1">${giochi}</div>
+        ${giochi || '<p class="card">Nessuna attività attiva: chiedi a mamma o papà.</p>'}
       </div>
     </div></main>`;
 

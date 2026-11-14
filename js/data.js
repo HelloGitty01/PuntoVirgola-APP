@@ -22,8 +22,32 @@ export async function sceneIniziali() {
   return r.json();
 }
 
+// Aggiunge ai dati già esistenti i contenuti delle nuove attività (aggiornamento versione 2).
+const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma'];
+export async function completaContenuti() {
+  if (!S.scene) return;
+  const vecchia = (S.scene.versione || 1) < 2;
+  const mancano = CHIAVI_CONTENUTI.some((k) => !Array.isArray(S.scene[k]));
+  if (!vecchia && !mancano) return;
+  const ini = await sceneIniziali();
+  CHIAVI_CONTENUTI.forEach((k) => { if (!Array.isArray(S.scene[k])) S.scene[k] = ini[k]; });
+  if (vecchia) {
+    const ids = new Set((S.scene.scene || []).map((x) => x.id));
+    ini.scene.filter((x) => (x.livello || 1) >= 4 && !ids.has(x.id)).forEach((x) => S.scene.scene.push(x));
+    S.scene.versione = 2;
+  }
+  loc.set('cache.scene', S.scene);
+  const d = dispositivo() || {};
+  if (!gh || d.ruolo === 'genitore') { try { await salvaScene(); } catch (e) { console.warn('Aggiornamento contenuti rimandato', e.message); } }
+}
+
 // Carica configurazione e scene: prima la copia locale, poi (se possibile) GitHub.
 export async function caricaTutto() {
+  await caricaBase();
+  try { await completaContenuti(); } catch (e) { console.warn(e); }
+}
+
+async function caricaBase() {
   S.config = loc.get('cache.config');
   S.scene = loc.get('cache.scene');
   if (!gh) {

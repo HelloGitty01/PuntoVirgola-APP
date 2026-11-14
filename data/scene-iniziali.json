@@ -1,5 +1,5 @@
 {
- "versione": 1,
+ "versione": 2,
  "scene": [
   {
    "id": "l1-cane",
@@ -2312,6 +2312,657 @@
     "sciarpa",
     "guanti"
    ]
+  },
+  {
+   "id": "l4-pizza",
+   "livello": 4,
+   "frase": "Ieri il papà ha preparato la pizza in cucina",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "papà",
+     "pizza",
+     "cucina"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "Ieri",
+     "accettate": [
+      "ieri"
+     ],
+     "domanda": "Quando è successo?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "il papà",
+     "accettate": [
+      "papa",
+      "padre",
+      "babbo",
+      "uomo"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "ha preparato",
+     "accettate": [
+      "prepar*",
+      "cucin*",
+      "fatto",
+      "fa"
+     ],
+     "domanda": "Che cosa ha fatto il papà?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la pizza",
+     "accettate": [
+      "pizza"
+     ],
+     "domanda": "Che cosa ha preparato?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina",
+     "accettate": [
+      "cucina"
+     ],
+     "domanda": "Dove l’ha preparata?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "quando",
+     "testo": "Domani"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la torta"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in bagno"
+    }
+   ],
+   "vocabolario": [
+    "papa",
+    "pizza",
+    "cucina",
+    "forno",
+    "pomodoro",
+    "mozzarella",
+    "impasto",
+    "cena"
+   ],
+   "parolaSegreta": [
+    "mozzarella",
+    "forno"
+   ]
+  },
+  {
+   "id": "l4-cane-palla",
+   "livello": 4,
+   "frase": "Il cane prende la palla nel prato perché vuole giocare",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "cane",
+     "palla",
+     "prato"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "Il cane",
+     "accettate": [
+      "cane",
+      "cagnolino"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "prende",
+     "accettate": [
+      "prend*",
+      "afferr*",
+      "port*"
+     ],
+     "domanda": "Che cosa fa il cane?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la palla",
+     "accettate": [
+      "palla",
+      "pallone"
+     ],
+     "domanda": "Che cosa prende?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "nel prato",
+     "accettate": [
+      "prato",
+      "giardino",
+      "parco",
+      "erba"
+     ],
+     "domanda": "Dove la prende?"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché vuole giocare",
+     "accettate": [
+      "gioc*",
+      "divert*"
+     ],
+     "domanda": "Perché prende la palla?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "perche",
+     "testo": "perché ha sonno"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il gatto"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina"
+    }
+   ],
+   "vocabolario": [
+    "cane",
+    "palla",
+    "prato",
+    "erba",
+    "correre",
+    "coda",
+    "salto",
+    "giocare"
+   ],
+   "parolaSegreta": [
+    "erba",
+    "coda"
+   ]
+  },
+  {
+   "id": "l4-maestra",
+   "livello": 4,
+   "frase": "Stamattina la maestra legge una storia in classe",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "maestra",
+     "leggere",
+     "classe"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "Stamattina",
+     "accettate": [
+      "stamattina",
+      "mattina",
+      "mattino",
+      "oggi"
+     ],
+     "domanda": "Quando succede?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "la maestra",
+     "accettate": [
+      "maestra",
+      "insegnante"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "legge",
+     "accettate": [
+      "legg*",
+      "racconta"
+     ],
+     "domanda": "Che cosa fa la maestra?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "una storia",
+     "accettate": [
+      "storia",
+      "libro",
+      "favola",
+      "fiaba"
+     ],
+     "domanda": "Che cosa legge?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in classe",
+     "accettate": [
+      "classe",
+      "scuola",
+      "aula"
+     ],
+     "domanda": "Dove legge la storia?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "quando",
+     "testo": "Stanotte"
+    },
+    {
+     "tipo": "dove",
+     "testo": "al mare"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la spesa"
+    }
+   ],
+   "vocabolario": [
+    "maestra",
+    "storia",
+    "libro",
+    "classe",
+    "bambini",
+    "banchi",
+    "ascoltare",
+    "scuola"
+   ],
+   "parolaSegreta": [
+    "banchi",
+    "bambini"
+   ]
+  },
+  {
+   "id": "l4-pupazzo",
+   "livello": 4,
+   "frase": "D’inverno i bambini costruiscono un pupazzo di neve in giardino",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "inverno",
+     "pupazzo di neve",
+     "giardino"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "D’inverno",
+     "accettate": [
+      "inverno",
+      "neve",
+      "freddo"
+     ],
+     "domanda": "Quando succede?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "i bambini",
+     "accettate": [
+      "bambini",
+      "bimbi",
+      "ragazzi",
+      "bambino",
+      "bambina"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "costruiscono",
+     "accettate": [
+      "costru*",
+      "fanno",
+      "fare"
+     ],
+     "domanda": "Che cosa fanno i bambini?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un pupazzo di neve",
+     "accettate": [
+      "pupazzo"
+     ],
+     "domanda": "Che cosa costruiscono?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in giardino",
+     "accettate": [
+      "giardino",
+      "prato",
+      "fuori",
+      "cortile"
+     ],
+     "domanda": "Dove lo costruiscono?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "quando",
+     "testo": "D’estate"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "un castello di sabbia"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in cucina"
+    }
+   ],
+   "vocabolario": [
+    "inverno",
+    "neve",
+    "pupazzo",
+    "carota",
+    "sciarpa",
+    "cappello",
+    "guanti",
+    "freddo",
+    "bianco"
+   ],
+   "parolaSegreta": [
+    "carota",
+    "sciarpa"
+   ]
+  },
+  {
+   "id": "l5-mani",
+   "livello": 5,
+   "frase": "La bambina si lava le mani e poi mangia la pasta",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "lavarsi le mani",
+     "bambina",
+     "pasta"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "chi",
+     "testo": "La bambina",
+     "accettate": [
+      "bambina",
+      "bimba",
+      "ragazza"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "si lava",
+     "accettate": [
+      "lav*"
+     ],
+     "domanda": "Che cosa fa prima la bambina?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "le mani",
+     "accettate": [
+      "mani",
+      "mano"
+     ],
+     "domanda": "Che cosa si lava?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "e poi mangia",
+     "accettate": [
+      "mangi*"
+     ],
+     "domanda": "E dopo, che cosa fa?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la pasta",
+     "accettate": [
+      "pasta",
+      "spaghetti",
+      "pastasciutta"
+     ],
+     "domanda": "Che cosa mangia?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "cosa",
+     "testo": "i piedi"
+    },
+    {
+     "tipo": "fa",
+     "testo": "e poi dorme"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il gelato"
+    }
+   ],
+   "vocabolario": [
+    "bambina",
+    "mani",
+    "sapone",
+    "acqua",
+    "pasta",
+    "piatto",
+    "forchetta",
+    "tavola",
+    "pranzo"
+   ],
+   "parolaSegreta": [
+    "sapone",
+    "forchetta"
+   ]
+  },
+  {
+   "id": "l5-nonno",
+   "livello": 5,
+   "frase": "Dopo cena il nonno legge il giornale sul divano perché è stanco",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "nonno",
+     "giornale",
+     "divano"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "quando",
+     "testo": "Dopo cena",
+     "accettate": [
+      "cena",
+      "sera",
+      "dopocena"
+     ],
+     "domanda": "Quando succede?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "il nonno",
+     "accettate": [
+      "nonno",
+      "anziano",
+      "vecchio",
+      "signore"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "legge",
+     "accettate": [
+      "legg*",
+      "sfogli*"
+     ],
+     "domanda": "Che cosa fa il nonno?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il giornale",
+     "accettate": [
+      "giornale",
+      "libro",
+      "rivista"
+     ],
+     "domanda": "Che cosa legge?"
+    },
+    {
+     "tipo": "dove",
+     "testo": "sul divano",
+     "accettate": [
+      "divano",
+      "poltrona",
+      "sofa"
+     ],
+     "domanda": "Dove legge?"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché è stanco",
+     "accettate": [
+      "stanco",
+      "riposa*",
+      "stanchezza"
+     ],
+     "domanda": "Perché sta sul divano?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "quando",
+     "testo": "Prima di colazione"
+    },
+    {
+     "tipo": "dove",
+     "testo": "in bicicletta"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché ha fame"
+    }
+   ],
+   "vocabolario": [
+    "nonno",
+    "giornale",
+    "divano",
+    "occhiali",
+    "sera",
+    "lampada",
+    "stanco",
+    "riposare"
+   ],
+   "parolaSegreta": [
+    "occhiali",
+    "lampada"
+   ]
+  },
+  {
+   "id": "l5-mare",
+   "livello": 5,
+   "frase": "Al mare la mamma mette la crema alla bambina perché c’è il sole",
+   "immagine": {
+    "tipo": "arasaac",
+    "parole": [
+     "mare",
+     "crema solare",
+     "sole"
+    ]
+   },
+   "elementi": [
+    {
+     "tipo": "dove",
+     "testo": "Al mare",
+     "accettate": [
+      "mare",
+      "spiaggia"
+     ],
+     "domanda": "Dove sono?"
+    },
+    {
+     "tipo": "chi",
+     "testo": "la mamma",
+     "accettate": [
+      "mamma",
+      "madre",
+      "signora"
+     ],
+     "domanda": "Chi c’è nella figura?"
+    },
+    {
+     "tipo": "fa",
+     "testo": "mette",
+     "accettate": [
+      "mett*",
+      "spalm*"
+     ],
+     "domanda": "Che cosa fa la mamma?"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "la crema",
+     "accettate": [
+      "crema",
+      "protezione"
+     ],
+     "domanda": "Che cosa mette?"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché c’è il sole",
+     "accettate": [
+      "sole",
+      "caldo",
+      "scotta*"
+     ],
+     "domanda": "Perché mette la crema?"
+    }
+   ],
+   "distrattori": [
+    {
+     "tipo": "dove",
+     "testo": "In montagna"
+    },
+    {
+     "tipo": "perche",
+     "testo": "perché piove"
+    },
+    {
+     "tipo": "cosa",
+     "testo": "il cappotto"
+    }
+   ],
+   "vocabolario": [
+    "mare",
+    "spiaggia",
+    "mamma",
+    "crema",
+    "sole",
+    "ombrellone",
+    "costume",
+    "sabbia",
+    "asciugamano"
+   ],
+   "parolaSegreta": [
+    "asciugamano",
+    "ombrellone"
+   ]
   }
  ],
  "storie": [
@@ -2648,6 +3299,564 @@
       ]
      }
     }
+   ]
+  }
+ ],
+ "parole": [
+  {
+   "parola": "caramella",
+   "sillabe": "ca-ra-mel-la"
+  },
+  {
+   "parola": "gatto",
+   "sillabe": "gat-to"
+  },
+  {
+   "parola": "sole",
+   "sillabe": "so-le"
+  },
+  {
+   "parola": "farfalla",
+   "sillabe": "far-fal-la"
+  },
+  {
+   "parola": "bicicletta",
+   "sillabe": "bi-ci-clet-ta"
+  },
+  {
+   "parola": "pane",
+   "sillabe": "pa-ne"
+  },
+  {
+   "parola": "tavolo",
+   "sillabe": "ta-vo-lo"
+  },
+  {
+   "parola": "casa",
+   "sillabe": "ca-sa"
+  },
+  {
+   "parola": "mela",
+   "sillabe": "me-la"
+  },
+  {
+   "parola": "banana",
+   "sillabe": "ba-na-na"
+  },
+  {
+   "parola": "pomodoro",
+   "sillabe": "po-mo-do-ro"
+  },
+  {
+   "parola": "elefante",
+   "sillabe": "e-le-fan-te"
+  },
+  {
+   "parola": "ombrello",
+   "sillabe": "om-brel-lo"
+  },
+  {
+   "parola": "cane",
+   "sillabe": "ca-ne"
+  },
+  {
+   "parola": "luna",
+   "sillabe": "lu-na"
+  },
+  {
+   "parola": "telefono",
+   "sillabe": "te-le-fo-no"
+  },
+  {
+   "parola": "scuola",
+   "sillabe": "scuo-la"
+  },
+  {
+   "parola": "fiore",
+   "sillabe": "fio-re"
+  },
+  {
+   "parola": "albero",
+   "sillabe": "al-be-ro"
+  },
+  {
+   "parola": "palla",
+   "sillabe": "pal-la"
+  },
+  {
+   "parola": "coniglio",
+   "sillabe": "co-ni-glio"
+  },
+  {
+   "parola": "tartaruga",
+   "sillabe": "tar-ta-ru-ga"
+  },
+  {
+   "parola": "pizza",
+   "sillabe": "piz-za"
+  },
+  {
+   "parola": "finestra",
+   "sillabe": "fi-ne-stra"
+  },
+  {
+   "parola": "gelato",
+   "sillabe": "ge-la-to"
+  },
+  {
+   "parola": "topo",
+   "sillabe": "to-po"
+  },
+  {
+   "parola": "zaino",
+   "sillabe": "zai-no"
+  },
+  {
+   "parola": "dinosauro",
+   "sillabe": "di-no-sau-ro"
+  },
+  {
+   "parola": "matita",
+   "sillabe": "ma-ti-ta"
+  },
+  {
+   "parola": "pesce",
+   "sillabe": "pe-sce"
+  },
+  {
+   "parola": "cavallo",
+   "sillabe": "ca-val-lo"
+  },
+  {
+   "parola": "rana",
+   "sillabe": "ra-na"
+  },
+  {
+   "parola": "scala",
+   "sillabe": "sca-la"
+  },
+  {
+   "parola": "volpe",
+   "sillabe": "vol-pe"
+  }
+ ],
+ "coppie": [
+  [
+   "cane",
+   "pane"
+  ],
+  [
+   "rana",
+   "lana"
+  ],
+  [
+   "letto",
+   "tetto"
+  ],
+  [
+   "collo",
+   "pollo"
+  ],
+  [
+   "pala",
+   "palla"
+  ],
+  [
+   "sole",
+   "sale"
+  ],
+  [
+   "nave",
+   "neve"
+  ],
+  [
+   "mela",
+   "vela"
+  ],
+  [
+   "gatto",
+   "gallo"
+  ],
+  [
+   "pesce",
+   "pesca"
+  ],
+  [
+   "riso",
+   "viso"
+  ],
+  [
+   "dado",
+   "dito"
+  ]
+ ],
+ "rime": [
+  [
+   "gatto",
+   "piatto"
+  ],
+  [
+   "naso",
+   "vaso"
+  ],
+  [
+   "torta",
+   "porta"
+  ],
+  [
+   "gallo",
+   "cavallo"
+  ],
+  [
+   "fiore",
+   "cuore"
+  ],
+  [
+   "nave",
+   "chiave"
+  ],
+  [
+   "mela",
+   "candela"
+  ],
+  [
+   "cane",
+   "pane"
+  ],
+  [
+   "rana",
+   "lana"
+  ],
+  [
+   "letto",
+   "tetto"
+  ]
+ ],
+ "ripeti": [
+  {
+   "livello": 1,
+   "frase": "la palla rossa"
+  },
+  {
+   "livello": 1,
+   "frase": "il gatto dorme"
+  },
+  {
+   "livello": 1,
+   "frase": "la mamma canta"
+  },
+  {
+   "livello": 1,
+   "frase": "il sole splende"
+  },
+  {
+   "livello": 2,
+   "frase": "il cane corre nel prato"
+  },
+  {
+   "livello": 2,
+   "frase": "la bambina mangia una mela"
+  },
+  {
+   "livello": 2,
+   "frase": "il nonno legge il giornale"
+  },
+  {
+   "livello": 2,
+   "frase": "oggi piove tanto"
+  },
+  {
+   "livello": 3,
+   "frase": "dopo la scuola andiamo al parco a giocare"
+  },
+  {
+   "livello": 3,
+   "frase": "la maestra scrive le parole sulla lavagna"
+  },
+  {
+   "livello": 3,
+   "frase": "il papà prepara la colazione per tutti"
+  },
+  {
+   "livello": 3,
+   "frase": "stasera guardiamo un film sul divano"
+  },
+  {
+   "livello": 4,
+   "frase": "quando arriva l’estate andiamo al mare con i nonni"
+  },
+  {
+   "livello": 4,
+   "frase": "il gatto si è nascosto sotto il letto perché ha paura del temporale"
+  },
+  {
+   "livello": 4,
+   "frase": "prima di dormire mi lavo i denti e metto il pigiama"
+  }
+ ],
+ "scombinate": [
+  "Il cane gioca con la palla",
+  "La mamma prepara una torta buona",
+  "Il bambino va a scuola con lo zaino",
+  "Oggi la nonna cucina la pasta al pomodoro",
+  "Il gatto dorme sul divano del salotto",
+  "La bambina disegna un fiore giallo e rosso",
+  "Domani andiamo al mare con il papà",
+  "Il papà legge una storia prima di dormire",
+  "Quando piove prendo l'ombrello blu",
+  "La maestra spiega la lezione ai bambini",
+  "Dopo pranzo il nonno fa un riposino sulla poltrona",
+  "Il cagnolino abbaia perché vuole uscire a giocare"
+ ],
+ "unisci": [
+  {
+   "a": "Prendo l'ombrello",
+   "b": "piove",
+   "giusto": "perché",
+   "altre": [
+    "ma",
+    "quindi"
+   ]
+  },
+  {
+   "a": "Ho fame",
+   "b": "mangio un panino",
+   "giusto": "quindi",
+   "altre": [
+    "perché",
+    "ma"
+   ]
+  },
+  {
+   "a": "Volevo andare al parco",
+   "b": "pioveva",
+   "giusto": "ma",
+   "altre": [
+    "quindi",
+    "quando"
+   ]
+  },
+  {
+   "a": "Leggo un libro",
+   "b": "aspetto la mamma",
+   "giusto": "mentre",
+   "altre": [
+    "perché",
+    "ma"
+   ]
+  },
+  {
+   "a": "Apro la finestra",
+   "b": "fa caldo",
+   "giusto": "perché",
+   "altre": [
+    "ma",
+    "quindi"
+   ]
+  },
+  {
+   "a": "Il cane abbaia",
+   "b": "arriva il postino",
+   "giusto": "quando",
+   "altre": [
+    "ma",
+    "quindi"
+   ]
+  },
+  {
+   "a": "Sono stanca",
+   "b": "vado a letto",
+   "giusto": "quindi",
+   "altre": [
+    "ma",
+    "mentre"
+   ]
+  },
+  {
+   "a": "Il compito era difficile",
+   "b": "l'ho fatto bene",
+   "giusto": "ma",
+   "altre": [
+    "perché",
+    "quando"
+   ]
+  },
+  {
+   "a": "Mi metto il cappotto",
+   "b": "fa freddo",
+   "giusto": "perché",
+   "altre": [
+    "ma",
+    "mentre"
+   ]
+  },
+  {
+   "a": "Canto una canzone",
+   "b": "faccio la doccia",
+   "giusto": "mentre",
+   "altre": [
+    "quindi",
+    "perché"
+   ]
+  },
+  {
+   "a": "Ho studiato tanto",
+   "b": "la maestra mi ha fatto i complimenti",
+   "giusto": "quindi",
+   "altre": [
+    "ma",
+    "mentre"
+   ]
+  },
+  {
+   "a": "Rido sempre",
+   "b": "il nonno racconta le barzellette",
+   "giusto": "quando",
+   "altre": [
+    "ma",
+    "quindi"
+   ]
+  }
+ ],
+ "finisci": [
+  "Sono contenta quando…",
+  "Il gatto si è nascosto sotto il letto perché…",
+  "Quando piove io…",
+  "Il mio gioco preferito è… perché…",
+  "Al parco ho visto…",
+  "Se avessi una bacchetta magica…",
+  "Domani mi piacerebbe…",
+  "Ho un po' di paura quando…",
+  "La mia amica è simpatica perché…",
+  "Dopo la scuola di solito…",
+  "Il papà era sorpreso perché…",
+  "Prima di andare a dormire…"
+ ],
+ "trasforma": [
+  {
+   "frase": "Oggi il bambino mangia la mela",
+   "modello": "Ieri il bambino ___ la mela",
+   "giusto": "ha mangiato",
+   "altre": [
+    "mangia",
+    "mangerà"
+   ]
+  },
+  {
+   "frase": "Oggi la mamma prepara la torta",
+   "modello": "Ieri la mamma ___ la torta",
+   "giusto": "ha preparato",
+   "altre": [
+    "prepara",
+    "preparerà"
+   ]
+  },
+  {
+   "frase": "Oggi io gioco a calcio",
+   "modello": "Domani io ___ a calcio",
+   "giusto": "giocherò",
+   "altre": [
+    "gioco",
+    "ho giocato"
+   ]
+  },
+  {
+   "frase": "Oggi la bambina legge un libro",
+   "modello": "Ieri la bambina ___ un libro",
+   "giusto": "ha letto",
+   "altre": [
+    "legge",
+    "leggerà"
+   ]
+  },
+  {
+   "frase": "Il gatto dorme",
+   "modello": "I gatti ___",
+   "giusto": "dormono",
+   "altre": [
+    "dorme",
+    "dormiamo"
+   ]
+  },
+  {
+   "frase": "Il bambino corre",
+   "modello": "I bambini ___",
+   "giusto": "corrono",
+   "altre": [
+    "corre",
+    "corriamo"
+   ]
+  },
+  {
+   "frase": "La rana salta",
+   "modello": "Le rane ___",
+   "giusto": "saltano",
+   "altre": [
+    "salta",
+    "saltate"
+   ]
+  },
+  {
+   "frase": "Il fiore è bello",
+   "modello": "I fiori sono ___",
+   "giusto": "belli",
+   "altre": [
+    "bello",
+    "bella"
+   ]
+  },
+  {
+   "frase": "La casa è grande",
+   "modello": "Le case sono ___",
+   "giusto": "grandi",
+   "altre": [
+    "grande",
+    "grando"
+   ]
+  },
+  {
+   "frase": "Oggi andiamo al mare",
+   "modello": "Ieri ___ al mare",
+   "giusto": "siamo andati",
+   "altre": [
+    "andiamo",
+    "andremo"
+   ]
+  },
+  {
+   "frase": "Io bevo il latte",
+   "modello": "Noi ___ il latte",
+   "giusto": "beviamo",
+   "altre": [
+    "bevo",
+    "bevono"
+   ]
+  },
+  {
+   "frase": "Tu scrivi una lettera",
+   "modello": "Voi ___ una lettera",
+   "giusto": "scrivete",
+   "altre": [
+    "scrivi",
+    "scrivono"
+   ]
+  },
+  {
+   "frase": "Oggi il papà guida la macchina",
+   "modello": "Domani il papà ___ la macchina",
+   "giusto": "guiderà",
+   "altre": [
+    "guida",
+    "ha guidato"
+   ]
+  },
+  {
+   "frase": "L'uccellino vola",
+   "modello": "Gli uccellini ___",
+   "giusto": "volano",
+   "altre": [
+    "vola",
+    "voliamo"
    ]
   }
  ]

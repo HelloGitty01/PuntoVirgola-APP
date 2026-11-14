@@ -7,7 +7,10 @@ Nome tecnico del progetto: `PuntoVirgola`.
 
 ## Cosa contiene
 
-- **4 giochi**: Componi la scena (mattoncini colorati), Dillo tu (frase a voce), Racconta la storia (vignette in ordine + racconto), Descrivi la scena (almeno N parole + parola segreta). Ogni gioco ha 3 livelli.
+- **14 attività**, ognuna attivabile o disattivabile dall'area genitori (scheda **Attività**):
+  - *Costruisco le frasi*: Componi la scena (livelli 1–5), Dillo tu (1–5), Racconta la storia, Descrivi la scena, Frase scombinata, Unisci le frasi (perché, ma, quindi, quando, mentre), Finisci tu, Trasforma (ieri/domani, singolare/plurale), Cosa succede dopo?
+  - *Suoni e parole*: Orecchie attente (coppie minime come cane/pane), Battiamo le sillabe, Come comincia? (sillaba iniziale), Le rime di Punto, Ripeti con Virgola.
+- I contenuti delle nuove attività si modificano nella scheda **Altri esercizi** (una voce per riga).
 - **34 scene e 5 storie iniziali**, modificabili e ampliabili dall'area genitori (pittogrammi ARASAAC o foto vostre).
 - **Caramelle e personaggi**: le caramelle si accumulano e sbloccano nuovi personaggi.
 - **Riconoscimento vocale sul dispositivo** (Vosk): l'audio non esce mai dal Chromebook o dal tablet. Le registrazioni restano solo in memoria; c'è un tasto per scaricarle se volete conservarne una.
