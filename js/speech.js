@@ -209,8 +209,11 @@ export class Ascolto {
     if (this.vocabolario && !this.grammatica) {
       try {
         this.rec2 = new modello.KaldiRecognizer(this.ctx.sampleRate, JSON.stringify([...this.vocabolario, '[unk]']));
+        try { this.rec2.setWords(true); } catch {}
         this.rec2.on('result', (m) => {
-          const t = m.result && m.result.text;
+          // la lettura guidata tende a "inventare" parole della scena: teniamo solo quelle molto sicure
+          const r = m.result || {};
+          const t = Array.isArray(r.result) ? r.result.filter((w) => w.conf >= 0.85 && w.word !== '[unk]').map((w) => w.word).join(' ') : (r.text || '');
           if (t) this.testi2.push(t);
           if (this.attendiFinale2) this.attendiFinale2();
         });
