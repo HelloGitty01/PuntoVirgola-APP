@@ -1,7 +1,7 @@
 // Attività per frasi più complesse: frase scombinata, unisci le frasi, finisci tu, trasforma, cosa succede dopo.
 import { impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, mescola, attendi } from '../ui.js';
-import { puntiScelta, INCORAGGIAMENTI } from '../punteggi.js';
+import { puntiScelta, lode, nonSentito } from '../punteggi.js';
 import { normalizza, paroleContenuto, contiene } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
@@ -46,7 +46,7 @@ export function scombinata(area, { voce, fine }) {
     pos++;
     if (pos < parole.length) return;
     finito = true;
-    const msg = `${caso(INCORAGGIAMENTI)} La frase è: ${voce.frase}`;
+    const msg = `${lode()} La frase è: ${voce.frase}`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
     parla(msg);
     await attendi(900);
@@ -100,7 +100,7 @@ export function unisci(area, { voce, fine }) {
     b.classList.add('giusta');
     b.parentNode.querySelectorAll('[data-o]').forEach((x) => { if (x !== b) x.disabled = true; });
     area.querySelector('#buco').textContent = o;
-    const msg = `${caso(INCORAGGIAMENTI)} ${completa(o)}. Ora prova a dirla tu tutta intera!`;
+    const msg = `${lode()} ${completa(o)}. Ora prova a dirla tu tutta intera!`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
     await parla(msg);
     area.querySelector('#voce2').classList.remove('nascosto');
@@ -155,7 +155,7 @@ export function trasforma(area, { voce, fine }) {
     b.classList.add('giusta');
     b.parentNode.querySelectorAll('[data-o]').forEach((x) => { if (x !== b) x.disabled = true; });
     area.querySelector('#buco').textContent = o;
-    const msg = `${caso(INCORAGGIAMENTI)} ${prima}${o}${dopo || ''}.`;
+    const msg = `${lode()} ${prima}${o}${dopo || ''}.`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
     await attendi(700);
     parla(msg);
@@ -198,7 +198,7 @@ function rispostaLibera(area, { sinistra, intro, obiettivo, conta, fine, valuta,
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
     suFine: ({ testo, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); mostra(); return; }
+      if (!testo) { aggiornaFumetto(area, nonSentito(), { leggi }); mostra(); return; }
       frasi.push(testo);
       const n = mostra();
       const m = obiettivo - n;

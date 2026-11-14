@@ -1,7 +1,7 @@
 // Attività "Suoni e parole": orecchie attente, sillabe, suono iniziale, rime, ripeti con Virgola.
 import { S, impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, mescola, attendi } from '../ui.js';
-import { puntiScelta, INCORAGGIAMENTI, SUONI } from '../punteggi.js';
+import { puntiScelta, SUONI, lode, nonSentito } from '../punteggi.js';
 import { parole, normalizza } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
@@ -65,7 +65,7 @@ export function coppie(area, { voce, fine }) {
     opzioni, mostraEtichette: false, giusta: bersaglio,
     rileggi: () => parla(`Tocca: ${bersaglio}.`, { velocita: 0.85 }),
     alTocco: (o) => { if (o !== bersaglio) parla(`Questo è ${o}. Ascolta ancora: ${bersaglio}.`); },
-    dopoGiusta: () => `${caso(INCORAGGIAMENTI)} ${bersaglio}! Senti la differenza? ${bersaglio}, ${altro}.`,
+    dopoGiusta: () => `${lode()} ${bersaglio}! Senti la differenza? ${bersaglio}, ${altro}.`,
     fine
   });
 }
@@ -96,7 +96,7 @@ export function rime(area, { voce, fine }) {
     sinistra: `${riquadroImmagine(img(w), 'scena-img figura-grande')}<div class="parola-grande">${esc(w)}</div>`,
     opzioni, giusta: rima,
     alTocco: (o) => parla(o),
-    dopoGiusta: () => `${caso(INCORAGGIAMENTI)} ${w}, ${rima}: finiscono allo stesso modo!`,
+    dopoGiusta: () => `${lode()} ${w}, ${rima}: finiscono allo stesso modo!`,
     fine
   });
 }
@@ -153,7 +153,7 @@ export function sillabe(area, { voce, fine }) {
     }
     finito = true;
     area.querySelector('#parola').innerHTML = `<div class="sillabe-vis">${sill.map((x) => `<span>${esc(x)}</span>`).join('')}</div>`;
-    const msg = giusto ? `${caso(INCORAGGIAMENTI)} ${voce.parola} ha ${sill.length} sillabe:` : `${voce.parola} ha ${sill.length} sillabe, contiamole insieme:`;
+    const msg = giusto ? `${lode()} ${voce.parola} ha ${sill.length} sillabe:` : `${voce.parola} ha ${sill.length} sillabe, contiamole insieme:`;
     aggiornaFumetto(area, `${msg} ${sill.join(' - ')}`, { leggi: false, allegro: giusto });
     parla(`${msg} ${sill.join('... ')}.`);
     await attendi(900);
@@ -201,7 +201,7 @@ export function ripeti(area, { voce, fine }) {
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
     suFine: async ({ testo, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); return; }
+      if (!testo) { aggiornaFumetto(area, nonSentito(), { leggi }); return; }
       tentativi++;
       area.querySelector('#trascr').textContent = testo;
       const r = segna(testo);
@@ -216,7 +216,7 @@ export function ripeti(area, { voce, fine }) {
     if (finito) return;
     finito = true;
     const punti = Math.max(0, Math.round(10 * migliore) - (tentativi > 1 && migliore < 0.9 ? 2 : 0));
-    const msg = migliore >= 0.9 ? `${caso(INCORAGGIAMENTI)} Hai ripetuto tutta la frase!` : 'Bel lavoro! Ascoltala ancora una volta.';
+    const msg = migliore >= 0.9 ? `${lode()} Hai ripetuto tutta la frase!` : 'Bel lavoro! Ascoltala ancora una volta.';
     aggiornaFumetto(area, msg, { leggi: false, allegro: migliore >= 0.9 });
     parla(msg).then(() => { if (migliore < 0.9 && finito) parla(voce.frase, { velocita: 0.85 }); });
     await attendi(900);
@@ -286,7 +286,7 @@ export function pronuncia(area, { voce, fine }) {
     if (finito) return;
     finito = true;
     const punti = riuscita ? [10, 8, 6][tentativi - 1] ?? 6 : 3;
-    const msg = riuscita ? `${caso(INCORAGGIAMENTI)} Hai detto proprio ${voce.parola}!` : `Brava, ci hai provato tanto! Ci alleniamo ancora la prossima volta: ${voce.parola}.`;
+    const msg = riuscita ? `${lode()} Hai detto proprio ${voce.parola}!` : `Brava, ci hai provato tanto! Ci alleniamo ancora la prossima volta: ${voce.parola}.`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: riuscita });
     parla(msg);
     await attendi(900);

@@ -5820,5 +5820,137 @@
   "Con chi hai giocato oggi? A cosa avete giocato?",
   "Qual è stata la cosa più bella di oggi? Perché?",
   "C’è stata una cosa che non ti è piaciuta? Raccontamela."
+ ],
+ "dettati": [
+  {
+   "id": "det01",
+   "livello": 1,
+   "testo": "Il gatto dorme sulla sedia."
+  },
+  {
+   "id": "det02",
+   "livello": 1,
+   "testo": "La mamma prepara la pizza."
+  },
+  {
+   "id": "det03",
+   "livello": 1,
+   "testo": "Il cane gioca con la palla."
+  },
+  {
+   "id": "det04",
+   "livello": 1,
+   "testo": "Oggi c’è il sole."
+  },
+  {
+   "id": "det05",
+   "livello": 1,
+   "testo": "Ho un libro nuovo."
+  },
+  {
+   "id": "det06",
+   "livello": 1,
+   "testo": "La rana salta nello stagno."
+  },
+  {
+   "id": "det07",
+   "livello": 1,
+   "testo": "Il papà beve il caffè."
+  },
+  {
+   "id": "det08",
+   "livello": 1,
+   "testo": "La nonna ha un ombrello giallo."
+  },
+  {
+   "id": "det09",
+   "livello": 1,
+   "testo": "Domani andiamo al mare."
+  },
+  {
+   "id": "det10",
+   "livello": 1,
+   "testo": "Il bambino mangia la mela."
+  },
+  {
+   "id": "det11",
+   "livello": 2,
+   "testo": "Il gattino bianco gioca con un gomitolo di lana."
+  },
+  {
+   "id": "det12",
+   "livello": 2,
+   "testo": "Questa mattina ho fatto colazione con il latte e i biscotti."
+  },
+  {
+   "id": "det13",
+   "livello": 2,
+   "testo": "La maestra legge una storia e noi ascoltiamo in silenzio."
+  },
+  {
+   "id": "det14",
+   "livello": 2,
+   "testo": "Il cagnolino abbaia perché vuole uscire a giocare."
+  },
+  {
+   "id": "det15",
+   "livello": 2,
+   "testo": "Sul ramo dell’albero c’è un uccellino che canta."
+  },
+  {
+   "id": "det16",
+   "livello": 2,
+   "testo": "Ho preso un bel voto e sono molto contenta."
+  },
+  {
+   "id": "det17",
+   "livello": 2,
+   "testo": "La giraffa ha il collo lunghissimo e mangia le foglie."
+  },
+  {
+   "id": "det18",
+   "livello": 2,
+   "testo": "Quando piove, mi metto gli stivali e salto nelle pozzanghere."
+  },
+  {
+   "id": "det19",
+   "livello": 2,
+   "testo": "Il ragno ha costruito una ragnatela sulla finestra."
+  },
+  {
+   "id": "det20",
+   "livello": 2,
+   "testo": "Nel giardino della scuola ci sono tanti fiori colorati."
+  },
+  {
+   "id": "det21",
+   "livello": 3,
+   "testo": "Ieri pomeriggio sono andata al parco con la nonna. Abbiamo dato il pane alle anatre e poi abbiamo mangiato un gelato."
+  },
+  {
+   "id": "det22",
+   "livello": 3,
+   "testo": "Il piccolo scoiattolo cercava le ghiande nel bosco. Quando arrivò l’inverno, aveva la tana piena di cibo."
+  },
+  {
+   "id": "det23",
+   "livello": 3,
+   "testo": "La famiglia di Luca è partita per la montagna. In macchina cantavano tutti insieme e il viaggio è sembrato cortissimo."
+  },
+  {
+   "id": "det24",
+   "livello": 3,
+   "testo": "Che bella giornata! Il cielo è azzurro e le rondini volano alte. Andiamo a fare una passeggiata in campagna?"
+  },
+  {
+   "id": "det25",
+   "livello": 3,
+   "testo": "Il cuoco della scuola prepara gli gnocchi con il sugo. Ognuno ne vuole un piatto pieno, perché sono buonissimi."
+  },
+  {
+   "id": "det26",
+   "livello": 3,
+   "testo": "Mia sorella ha un acquario con tre pesci rossi. Ogni mattina dà loro da mangiare e controlla che l’acqua sia pulita."
+  }
  ]
 }

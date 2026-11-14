@@ -1,8 +1,8 @@
 // Gioco "Dillo tu": la bambina descrive la figura a voce.
 import { S, impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, mescola, attendi } from '../ui.js';
-import { TIPI, puntiDillo, INCORAGGIAMENTI } from '../punteggi.js';
-import { valutaElementi, paroleNonPreviste } from '../match.js';
+import { TIPI, puntiDillo, lode } from '../punteggi.js';
+import { valutaElementi, paroleNonPreviste, vocabolarioScena } from '../match.js';
 import { Ascolto, motoreScelto, voskPronto, preparaVosk, preparaAscolto } from '../speech.js';
 import { parla, zitto } from '../tts.js';
 
@@ -16,7 +16,10 @@ export function messaggioErroreVoce(e) {
 }
 
 // Tasto microfono riutilizzabile: gestisce preparazione del modello, ascolto e stop.
-export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscoltare, grammatica, suAnnulla }) {
+// Seconda lettura guidata del riconoscimento vocale (attiva salvo diversa scelta dei genitori)
+export function letturaGuidata() { return impostazioni().letturaGuidata !== false; }
+
+export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscoltare, grammatica, vocabolario, suAnnulla }) {
   const bt = area.querySelector('#mic');
   const etich = area.querySelector('#mic-testo');
   const annulla = area.querySelector('#mic-annulla');
@@ -56,7 +59,7 @@ export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscol
         await preparaVosk((p) => { etich.textContent = `Virgola prepara le orecchie… ${Math.round(p * 100)}%`; });
         bt.disabled = false;
       }
-      ascolto = new Ascolto({ onTesto: suTesto, grammatica: typeof grammatica === 'function' ? grammatica() : grammatica });
+      ascolto = new Ascolto({ onTesto: suTesto, grammatica: typeof grammatica === 'function' ? grammatica() : grammatica, vocabolario: letturaGuidata() ? (typeof vocabolario === 'function' ? vocabolario() : vocabolario) : null });
       await ascolto.avvia();
       bt.classList.add('ascolta');
       bt.innerHTML = ICONE.stop;
@@ -148,22 +151,25 @@ export function dillo(area, { voce, fine }) {
   }
 
   const fermaMic = collegaMicrofono(area, {
+    vocabolario: () => vocabolarioScena(voce),
     suTesto: (t) => {
       area.querySelector('#trascr').textContent = t;
-      const live = valutaElementi(t, el).trovati;
+      const live = valutaElementi(t, el, { tollerante: true }).trovati;
       mostraTrovati(new Set([...trovati, ...live]));
     },
     suErrore: (e) => {
       aggiornaFumetto(area, messaggioErroreVoce(e), { leggi });
       mostraAiutiTutti();
     },
-    suFine: ({ testo, audio }) => {
+    suFine: ({ testo, guidato, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova parlando un po’ più forte!', { leggi }); return; }
+      if (!testo && !guidato) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova parlando un po’ più forte!', { leggi }); return; }
+      testo = testo || guidato;
       tentativi++;
       frasi.push(testo);
       area.querySelector('#trascr').textContent = testo;
-      valutaElementi(testo, el).trovati.forEach((i) => trovati.add(i));
+      // contano sia la lettura libera sia quella guidata, con un po' di tolleranza sui suoni
+      valutaElementi(`${testo} ${guidato || ''}`, el, { tollerante: true }).trovati.forEach((i) => trovati.add(i));
       paroleNonPreviste(testo, el, voce.vocabolario || [], (S.config && S.config.ignorate) || []).forEach((p) => nonPreviste.add(p));
       if (mancantiPrimo === null) mancantiPrimo = el.map((e, i) => (trovati.has(i) ? null : e.tipo)).filter(Boolean);
       mostraTrovati(trovati);
@@ -181,7 +187,7 @@ export function dillo(area, { voce, fine }) {
       aggiornaFumetto(area, `Ti aiuto io! ${dom} Scegli il mattoncino giusto.`, { leggi });
       mostraAiuto(m);
     } else {
-      const lodi = trovati.size ? `${caso(INCORAGGIAMENTI)} ` : '';
+      const lodi = trovati.size ? `${lode()} ` : '';
       aggiornaFumetto(area, `${lodi}${dom}`, { leggi });
     }
   }

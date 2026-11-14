@@ -10,9 +10,11 @@ import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria, editorRacconto } from './editor.js';
 import { musica } from '../musica.js';
 import { report } from './report.js';
+import { limiteMinuti, secondiOggi, concediMinuti } from '../tempo.js';
+import { opzioniDettato } from './dettato.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE, MOBILE } from '../tts.js';
 
-const VERSIONE = '1.8.3';
+const VERSIONE = '1.9.0';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['report', 'Report logopedista'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -208,6 +210,10 @@ async function impostazioniScheda(cont) {
       <div class="campo"><label for="spp">Esercizi per partita</label><input id="spp" type="number" min="1" max="15" value="${imp.scenePerPartita}"></div>
       <div class="campo"><label><input type="checkbox" id="lett" ${imp.letturaAutomatica ? 'checked' : ''}> Virgola legge ad alta voce le istruzioni</label></div>
       <div class="campo"><label><input type="checkbox" id="sorp" ${imp.sorprese !== false ? 'checked' : ''}> Sorprese animate (ogni tanto passano un uccellino, una farfalla, Punto…)</label></div>
+      <div class="campo"><label for="limite">Tempo massimo di gioco al giorno</label>
+        <select id="limite" style="width:auto">${[0, 15, 20, 30, 45, 60, 90].map((m) => `<option value="${m}" ${Number(imp.limiteMinuti || 0) === m ? 'selected' : ''}>${m ? m + ' minuti' : 'Nessun limite'}</option>`).join('')}</select>
+        <span class="aiuto">Si conta solo il tempo dentro i giochi, su ogni dispositivo. Finito il tempo, il gioco in corso si può concludere, poi Virgola la saluta fino a domani.${limiteMinuti() ? ` Oggi su questo dispositivo: ${Math.round(secondiOggi() / 60)} minuti.` : ''}</span>
+        ${limiteMinuti() ? '<button type="button" class="btn secondario piccolo" id="extra" style="align-self:flex-start">Concedi 15 minuti in più oggi (su questo dispositivo)</button>' : ''}</div>
     </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>“Descrivi la scena”: parole minime</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap">${[1, 2, 3, 4, 5].map((l) => `<div class="campo"><label for="pd-${l}">Livello ${l}</label><input id="pd-${l}" type="number" min="2" max="25" value="${imp.paroleDescrivi[l]}"></div>`).join('')}</div>
@@ -231,6 +237,7 @@ async function impostazioniScheda(cont) {
         <option value="browser-locale" ${imp.motoreVoce === 'browser-locale' ? 'selected' : ''} ${SR ? '' : 'disabled'}>Browser, sul dispositivo (se supportato)</option>
         <option value="browser" ${imp.motoreVoce === 'browser' ? 'selected' : ''} ${SR ? '' : 'disabled'}>Browser online (l’audio va ai server di Google)</option>
       </select></div>
+      <div class="campo"><label><input type="checkbox" id="guidata" ${imp.letturaGuidata !== false ? 'checked' : ''}> Lettura guidata (Vosk): negli esercizi con le figure Virgola “ascolta due volte”, una volta cercando proprio le parole della scena, e accetta anche le parole che suonano quasi uguali (cugina/cucina)</label></div>
       <div id="stato-modello" class="aiuto">Controllo il modello vocale…</div>
       <button type="button" class="btn secondario piccolo" id="scarica-modello" style="align-self:flex-start">Scarica ora il modello vocale su questo dispositivo</button>
     </div>
@@ -285,6 +292,8 @@ async function impostazioniScheda(cont) {
     b.disabled = false; b.textContent = 'Scarica ora il modello vocale su questo dispositivo';
     statoModello();
   };
+  const ex = cont.querySelector('#extra');
+  if (ex) ex.onclick = () => { concediMinuti(15); toast('15 minuti in più per oggi'); };
   cont.querySelector('#f').onsubmit = async (e) => {
     e.preventDefault();
     const v = (id) => cont.querySelector('#' + id);
@@ -292,11 +301,14 @@ async function impostazioniScheda(cont) {
     if (pin && !/^\d{4,6}$/.test(pin)) { v('err').textContent = 'Il PIN deve avere da 4 a 6 cifre.'; return; }
     S.config.nome = v('nome').value.trim();
     S.config.impostazioni = {
+      ...(S.config.impostazioni || {}),
       scenePerPartita: Math.max(1, Math.min(15, Number(v('spp').value) || 5)),
       livelli: imp.livelli,
       paroleDescrivi: Object.fromEntries([1, 2, 3, 4, 5].map((l) => [l, Number(v('pd-' + l).value) || imp.paroleDescrivi[l]])),
       letturaAutomatica: v('lett').checked,
       sorprese: v('sorp').checked,
+      limiteMinuti: Number(v('limite').value) || 0,
+      letturaGuidata: v('guidata').checked,
       motoreVoce: v('motore').value
     };
     if (pin) S.config.pin = await sha256(pin);
@@ -322,9 +334,15 @@ function attivita(cont) {
       <div style="display:flex;flex-wrap:wrap;gap:10px">${Object.entries(SUONI).map(([k, x]) => `<label style="display:flex;align-items:center;gap:8px;padding:8px 14px;border:2px solid #E7E1D6;border-radius:14px;background:#fff">
         <input type="checkbox" data-suono="${k}" style="width:22px;height:22px" ${!S.config.suoniPronuncia || S.config.suoniPronuncia.includes(k) ? 'checked' : ''}> <b>${esc(x.nome)}</b> <small style="color:var(--tenue)">${esc(x.esempio)}</small></label>`).join('')}</div>
       <span class="aiuto">Virgola riconosce la parola giusta e le sostituzioni più comuni (es. treno → “teno”, cane → “tane”). È un allenamento: con la voce di una bambina può sbagliare, e le registrazioni restano da riascoltare.</span></div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:10px"><b>Dettato</b>
+      <label>Quante parole detta Virgola per volta:
+        <select id="det-parole" style="width:auto">${[1, 2, 3, 4, 5, 0].map((n) => `<option value="${n}" ${Number(opzioniDettato().parole) === n ? 'selected' : ''}>${n ? n : 'una frase intera'}</option>`).join('')}</select></label>
+      <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="det-maiuscole" style="width:22px;height:22px" ${opzioniDettato().maiuscole ? 'checked' : ''}> Controlla le maiuscole</label>
+      <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="det-punti" style="width:22px;height:22px" ${opzioniDettato().punteggiatura ? 'checked' : ''}> Controlla la punteggiatura (Virgola detta anche “virgola”, “punto”…)</label>
+      <span class="aiuto">Doppie, accenti, apostrofi e “h” si controllano sempre. Sul tablet conviene disattivare la correzione automatica della tastiera.</span></div>
     <div class="card morbida"><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="solo-ascolto" style="width:22px;height:22px" ${S.config.riassuntoSoloAscolto ? 'checked' : ''}>
       <span><b>Riassumi la storia: solo ascolto</b><br><small style="color:var(--tenue)">Il racconto non si legge: Virgola lo racconta e basta (più difficile, allena la comprensione all’ascolto).</small></span></label></div>
-    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero. Indovina: 1 = Virgola descrive e lei trova la figura, 2 = un turno a testa, 3 = descrive sempre lei. Cascata di lettere: 1 = cadono sillabe in ordine, 2 = lettere in ordine, 3 = lettere in disordine e più veloci.</p>
+    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero. Indovina: 1 = Virgola descrive e lei trova la figura, 2 = un turno a testa, 3 = descrive sempre lei. Cascata di lettere: 1 = cadono sillabe in ordine, 2 = lettere in ordine, 3 = lettere in disordine e più veloci. Dettato: 1 = frasi brevi, 2 = frasi più lunghe, 3 = piccoli testi.</p>
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" id="salva" style="align-self:flex-start">Salva</button>`;
   cont.querySelector('#salva').onclick = async (e) => {
@@ -340,6 +358,7 @@ function attivita(cont) {
     if (!suoni.length) { cont.querySelector('#err').textContent = 'Scegli almeno un suono per la pronuncia.'; return; }
     S.config.suoniPronuncia = suoni;
     S.config.riassuntoSoloAscolto = cont.querySelector('#solo-ascolto').checked;
+    S.config.dettato = { parole: Number(cont.querySelector('#det-parole').value), maiuscole: cont.querySelector('#det-maiuscole').checked, punteggiatura: cont.querySelector('#det-punti').checked };
     S.config.impostazioni = { ...(S.config.impostazioni || {}), livelli };
     e.target.disabled = true;
     try { await salvaConfig(); toast('Attività salvate'); } catch (ex) { cont.querySelector('#err').textContent = ex.message; }
@@ -371,8 +390,12 @@ const ELENCHI = [
     a: (x) => `${x.parola} | ${x.articolo} | ${(x.indizi || []).join('; ')} | ${(x.chiavi || []).join(', ')}`,
     da: (r) => { const [p, a, i, k] = r.split('|').map((t) => (t || '').trim()); return { id: 'ind-' + p.toLowerCase(), parola: p, articolo: a || p, immagine: { tipo: 'arasaac', parole: [p] }, indizi: i.split(';').map((t) => t.trim()).filter(Boolean), chiavi: (k || '').split(',').map((t) => t.trim()).filter(Boolean) }; },
     ok: (r) => r.split('|').length >= 3 && r.split('|')[2].trim().length > 3 },
-  { k: 'diario', titolo: 'Domande del diario', uso: 'Il diario di Punto', aiuto: 'Una domanda per riga, nell’ordine in cui Virgola le fa.',
-    a: (x) => x, da: (r) => r, ok: (r) => r.length > 3 }
+  { k: 'diario', titolo: 'Domande del diario', uso: 'Il diario', aiuto: 'Una domanda per riga, nell’ordine in cui Virgola le fa.',
+    a: (x) => x, da: (r) => r, ok: (r) => r.length > 3 },
+  { k: 'dettati', titolo: 'Dettati', uso: 'Dettato', aiuto: 'Livello | testo del dettato (1 = frasi brevi, 2 = frasi più lunghe, 3 = piccoli testi). Esempio: 2 | Il gattino gioca con un gomitolo di lana.',
+    a: (x) => `${x.livello || 1} | ${x.testo}`,
+    da: (r) => { const i = r.indexOf('|'); const l = i > 0 ? Number(r.slice(0, i).trim()) : 1; const t = (i > 0 ? r.slice(i + 1) : r).trim(); return { id: 'det-' + t.toLowerCase().replace(/[^a-z]/g, '').slice(0, 24), livello: [1, 2, 3].includes(l) ? l : 1, testo: t }; },
+    ok: (r) => r.replace(/^\s*\d\s*\|/, '').trim().split(/\s+/).length >= 2 }
 ];
 
 function esercizi(cont) {

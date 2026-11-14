@@ -1,8 +1,8 @@
 // Gioco "Descrivi la scena": almeno N parole importanti e una parola segreta.
 import { impostazioni } from '../state.js';
 import { esc, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, attendi } from '../ui.js';
-import { puntiDescrivi } from '../punteggi.js';
-import { paroleContenuto, contiene, evidenzia, normalizza } from '../match.js';
+import { puntiDescrivi, nonSentito } from '../punteggi.js';
+import { paroleContenuto, contiene, evidenzia, normalizza, valutaElementi, vocabolarioScena } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
 
@@ -55,7 +55,8 @@ export function descrivi(area, { voce, fine, livello }) {
   const leggi = imp.letturaAutomatica;
   const intro = `Sfida! Racconta cosa vedi nella figura usando almeno ${obiettivo} parole importanti${segreta ? ` e la parola segreta: ${segreta}` : ''}.`;
   const dette = () => [...new Set(paroleContenuto(frasi.join(' ')))];
-  const segretaTrovata = () => !segreta || contiene(frasi.join(' '), segreta);
+  const guidati = [];
+  const segretaTrovata = () => !segreta || contiene(frasi.join(' '), segreta) || valutaElementi([...frasi, ...guidati].join(' '), [{ testo: segreta }], { tollerante: true }).trovati.size > 0;
 
   area.innerHTML = `<div class="due-colonne">
     <div class="colonna">
@@ -93,13 +94,15 @@ export function descrivi(area, { voce, fine, livello }) {
   }
 
   const fermaMic = collegaMicrofono(area, {
+    vocabolario: () => vocabolarioScena(voce),
     suTesto: (t) => mostra(t),
     suAnnulla: () => mostra(),
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
-    suFine: ({ testo, audio }) => {
+    suFine: ({ testo, guidato, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); mostra(); return; }
+      if (!testo) { aggiornaFumetto(area, nonSentito(), { leggi }); mostra(); return; }
       frasi.push(testo);
+      if (guidato) guidati.push(guidato);
       const n = mostra();
       if (n >= obiettivo && segretaTrovata()) return concludi();
       const mancano = Math.max(0, obiettivo - n);
@@ -112,6 +115,7 @@ export function descrivi(area, { voce, fine, livello }) {
 
   area.querySelector('#togli-ultima').onclick = () => {
     frasi.pop();
+    guidati.pop();
     mostra();
     aggiornaFumetto(area, 'Ho cancellato l’ultima frase. Tocca il microfono e riprova!', { leggi });
   };

@@ -1,8 +1,8 @@
 // Altre attività: Allunga la frase, Le domande del perché, Indovina cosa descrivo, Il diario di Punto.
 import { S, impostazioni, nomeBambina } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, mescola, attendi } from '../ui.js';
-import { TIPI, INCORAGGIAMENTI } from '../punteggi.js';
-import { normalizza, parole, paroleContenuto, valutaElementi, contiene, trova } from '../match.js';
+import { TIPI, lode, nonSentito } from '../punteggi.js';
+import { normalizza, parole, paroleContenuto, valutaElementi, contiene, trova, vocabolarioScena } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
 import { htmlContatore, aggiornaContatore } from './descrivi.js';
@@ -82,14 +82,20 @@ export function allunga(area, { voce, fine }) {
   };
 
   const fermaMic = collegaMicrofono(area, {
+    vocabolario: () => vocabolarioScena(voce),
     suTesto: (t) => { area.querySelector('#trascr').textContent = t; },
     suAnnulla: () => { area.querySelector('#trascr').textContent = ''; },
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
-    suFine: async ({ testo, audio }) => {
+    suFine: async ({ testo, guidato, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); return; }
+      if (!testo) testo = guidato || '';
+      if (!testo) { aggiornaFumetto(area, nonSentito(), { leggi }); return; }
       frasi.push(testo);
-      if (finale) return chiudi(testo);
+      if (finale) return chiudi(`${testo} ${guidato || ''}`);
+      // se ha detto proprio il pezzo della figura (anche se il riconoscimento l'ha capito un po' storto) lo scriviamo bene
+      if (passi[p] && valutaElementi(`${testo} ${guidato || ''}`, [passi[p]], { tollerante: true }).trovati.size) {
+        return aggiungi(passi[p].testo, passi[p].tipo, 'sua');
+      }
       // tengo solo le parole nuove (se ha ripetuto anche l'inizio della frase)
       const gia = new Set(parole(fraseOra()));
       const toks = testo.split(/\s+/);
@@ -134,7 +140,7 @@ export function allunga(area, { voce, fine }) {
     finito = true;
     const passiPunti = esiti.reduce((t, x) => t + (x === 'sua' ? 1 : x === 'aiuto' ? 0.5 : 0), 0) / Math.max(1, passi.length);
     const punteggio = limita(7 * passiPunti + (quota >= 0.7 ? 3 : 1));
-    const msg = quota >= 0.7 ? `${caso(INCORAGGIAMENTI)} Era corta e ora è lunghissima: ${fraseOra()}!` : `Brava! La nostra frase lunga è: ${fraseOra()}.`;
+    const msg = quota >= 0.7 ? `${lode()} Era corta e ora è lunghissima: ${fraseOra()}!` : `Brava! La nostra frase lunga è: ${fraseOra()}.`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
     parla(msg);
     await attendi(900);
@@ -188,7 +194,7 @@ export function domande(area, { voce, fine }) {
       const nuove = paroleContenuto(testo).filter((w) => !paroleContenuto(voce.frase).includes(w)).length;
       return { contenuto: contiene(testo, 'perché') || contiene(testo, 'perche') || nuove >= 2, intera: n >= 4 && (contiene(testo, 'perché') || contiene(testo, 'perche')) };
     }
-    return { contenuto: valutaElementi(testo, [d.el]).trovati.size > 0, intera: n >= 3 };
+    return { contenuto: valutaElementi(`${testo} ${guidatoUltimo}`, [d.el], { tollerante: true }).trovati.size > 0, intera: n >= 3 };
   };
 
   const prossima = async (msgPrima) => {
@@ -208,13 +214,17 @@ export function domande(area, { voce, fine }) {
     r.querySelector('.stato').textContent = punti >= 3 ? '✓' : punti > 0 ? '~' : '–';
   };
 
+  let guidatoUltimo = '';
   const fermaMic = collegaMicrofono(area, {
+    vocabolario: () => vocabolarioScena(voce),
     suTesto: (t) => { area.querySelector('#trascr').textContent = t; },
     suAnnulla: () => { area.querySelector('#trascr').textContent = ''; },
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
-    suFine: async ({ testo, audio }) => {
+    suFine: async ({ testo, guidato, audio }) => {
       reg.imposta(audio);
-      if (!testo || finito) { if (!testo) aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); return; }
+      guidatoUltimo = guidato || '';
+      if (!testo && guidato) testo = guidato;
+      if (!testo || finito) { if (!testo) aggiornaFumetto(area, nonSentito(), { leggi }); return; }
       tentativo++;
       const d = lista[q];
       const v = valuta(d, testo);
@@ -311,7 +321,7 @@ function ascoltaETrova(area, { voce, fine }) {
     b.classList.add('giusta');
     area.querySelectorAll('.scelta-figura').forEach((x) => { if (x !== b) x.disabled = true; });
     const punteggio = limita([10, 9, 7, 5, 4][mostrati - 1] - 2 * errori);
-    const msg = `${caso(INCORAGGIAMENTI)} È proprio ${voce.articolo}! ${mostrati === 1 ? 'Ti è bastato un indizio solo!' : `Ti sono serviti ${mostrati} indizi.`}`;
+    const msg = `${lode()} È proprio ${voce.articolo}! ${mostrati === 1 ? 'Ti è bastato un indizio solo!' : `Ti sono serviti ${mostrati} indizi.`}`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
     parla(msg);
     await attendi(900);
@@ -373,7 +383,7 @@ function descriviTu(area, { voce, fine }) {
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
     suFine: ({ testo, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); mostra(); return; }
+      if (!testo) { aggiornaFumetto(area, nonSentito(), { leggi }); mostra(); return; }
       frasi.push(testo);
       if (parole(testo).some((w) => w.startsWith(radice))) {
         nomeDetto = true;

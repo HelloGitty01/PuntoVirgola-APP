@@ -22,7 +22,8 @@ export function calcolaGiorni(st, totale) {
     const g = giorni.get(k) || { chiave: k, caramelle: 0, partite: 0, giochi: {}, racconti: [] };
     g.caramelle += p.c || 0;
     g.partite++;
-    g.giochi[p.g] = (g.giochi[p.g] || 0) + (p.c || 0);
+    g.giochi[p.g] = (g.giochi[p.g] || 0) + (p.c || 0) - (p.b || 0);
+    if (p.b) g.giochi.serie = (g.giochi.serie || 0) + p.b;
     if (p.r) g.racconti.push(p.r);
     giorni.set(k, g);
   });
@@ -78,7 +79,7 @@ export function mieiGiorni(app) {
           ${lista.length ? lista.slice().reverse().map((g) => `<article class="pagina-giorno ${g.chiave === oggi() ? 'oggi' : ''}">
             <header><span class="data">${esc(maiuscola(daChiave(g.chiave).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' })))}${g.chiave === oggi() ? ' · oggi' : ''}</span>
               <span class="piu-caramelle"><span style="width:30px;display:inline-flex">${caramella(true)}</span>+${g.caramelle}</span></header>
-            <div class="giochi-giorno">${Object.entries(g.giochi).map(([id, c]) => GIOCHI[id] ? `<span class="chip-gioco" data-tipo="${GIOCHI[id].tipo}" title="${esc(GIOCHI[id].titolo)}">${ICONE[id] || ''}<span>${esc(GIOCHI[id].titolo)}</span><b>${c}</b></span>` : '').join('')}</div>
+            <div class="giochi-giorno">${Object.entries(g.giochi).map(([id, c]) => id === 'serie' ? `<span class="chip-gioco serie" title="Giorni di fila">🔥<span>Bonus giorni di fila</span><b>${c}</b></span>` : GIOCHI[id] ? `<span class="chip-gioco" data-tipo="${GIOCHI[id].tipo}" title="${esc(GIOCHI[id].titolo)}">${ICONE[id] || ''}<span>${esc(GIOCHI[id].titolo)}</span><b>${c}</b></span>` : '').join('')}</div>
             ${g.racconti.length ? `<p class="racconto-giorno">📖 «${esc(g.racconti.join(' '))}»</p>` : ''}
             <footer>In tutto: <b>${g.totale}</b> caramelle</footer>
           </article>`).join('') : '<div class="card"><p>Ancora nessuna giornata nel diario.</p></div>'}

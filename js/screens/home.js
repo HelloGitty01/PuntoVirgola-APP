@@ -4,17 +4,18 @@ import { S, loc, nomeBambina, caramelleTotali, dispositivo } from '../state.js';
 import { esc, ICONE, contatoreCaramelle, cancelloGenitori, virgolaDice, collegaFumetti } from '../ui.js';
 import { GIOCHI, GRUPPI, attivaGioco, personaggio, prossimoSblocco } from '../punteggi.js';
 import { verificaPin } from './genitori.js';
+import { limiteSuperato, minutiRimasti } from '../tempo.js';
+import { serieGiorni } from '../data.js';
+import { fraseSaluto } from '../punteggi.js';
 
 export function home(app) {
   const tot = caramelleTotali();
   const pg = personaggio(loc.get('avatar'));
   const prossimo = prossimoSblocco(tot);
-  const saluti = [
-    'Ciao! Scegli un gioco: io ti spiego tutto e Punto gioca con te.',
-    'Che bello vederti! Con quale gioco iniziamo oggi?',
-    'Pronta? Ogni frase giusta vale tante caramelle!'
-  ];
-  const saluto = saluti[Math.floor(Math.random() * saluti.length)];
+  const basta = limiteSuperato();
+  const rimasti = minutiRimasti();
+  const serie = serieGiorni(false);
+  const saluto = basta ? 'Per oggi abbiamo giocato abbastanza! Puoi guardare i tuoi progressi o cambiare personaggio. Ci vediamo domani!' : fraseSaluto(nomeBambina(), serie);
   const percentuale = prossimo ? Math.round((tot / prossimo.costo) * 100) : 100;
   const attivi = Object.entries(GIOCHI).filter(([id]) => attivaGioco(S.config, id));
   const tessera = ([id, g]) => `
@@ -41,7 +42,7 @@ export function home(app) {
         <div class="barattolo">
           <img src="img/punto.png" alt="">
           <div class="info">
-            <div class="riga-caramelle"><b>Le tue caramelle</b>${contatoreCaramelle(tot)}</div>
+            <div class="riga-caramelle"><b>Le tue caramelle</b>${serie >= 2 ? `<span class="serie-chip" title="Giorni di fila">🔥 ${serie}</span>` : ''}${contatoreCaramelle(tot)}</div>
             ${prossimo ? `<div class="barra-progresso" aria-hidden="true"><div style="width:${Math.min(100, percentuale)}%"></div></div>
             <small>Ancora ${prossimo.costo - tot} per sbloccare ${esc(prossimo.nome)} ${prossimo.faccia}</small>`
             : '<small>Hai sbloccato tutti i personaggi!</small>'}
@@ -49,7 +50,8 @@ export function home(app) {
         </div>
         <button class="diario-chip" id="diario-giorni">${ICONE.calendario}<span>I miei progressi</span></button>
       </div>
-      <div class="elenco-giochi">
+      ${rimasti !== null && !basta ? `<div class="tempo-chip">⏱ Oggi puoi giocare ancora ${rimasti} ${rimasti === 1 ? 'minuto' : 'minuti'}</div>` : ''}
+      <div class="elenco-giochi ${basta ? 'riposo' : ''}">
         ${giochi || '<p class="card">Nessuna attività attiva: chiedi a mamma o papà.</p>'}
       </div>
     </div></main>`;

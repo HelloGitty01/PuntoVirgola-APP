@@ -23,7 +23,7 @@ export async function sceneIniziali() {
 }
 
 // Aggiunge ai dati già esistenti i contenuti delle nuove attività (aggiornamento versione 2).
-const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia', 'racconti', 'indovinelli', 'diario'];
+const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia', 'racconti', 'indovinelli', 'diario', 'dettati'];
 export async function completaContenuti() {
   if (!S.scene) return;
   const versione = S.scene.versione || 1;
@@ -249,6 +249,8 @@ function riassuntoPartita(p) {
   const r = { q: p.fine || p.inizio || (es[0] && es[0].quando), g: p.gioco, c: es.reduce((t, e) => t + (e.punteggio || 0), 0), n: es.length };
   const dia = es.find((e) => e.gioco === 'diario');
   if (dia) r.r = (dia.risposte || []).map((x) => x.testo).join(' ');
+  const bonus = es.filter((e) => e.gioco === 'serie').reduce((t, e) => t + (e.punteggio || 0), 0);
+  if (bonus) { r.b = bonus; r.n -= 1; }
   return r;
 }
 function aggiungiStorico(chiave, partita) {
@@ -302,4 +304,21 @@ export async function leggiPartiteDal(dalISO) {
   }
   const inCoda = loc.get('coda', []).map((v) => v.dati).filter(dopo);
   return inCoda.reverse().concat(out);
+}
+
+// ---------- Giorni di fila ----------
+const chiaveGiorno = (d) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+function giorniGiocati() {
+  return new Set(Object.values(loc.get('storico', {})).filter((p) => p && p.q).map((p) => chiaveGiorno(new Date(p.q))));
+}
+export function giocatoOggi() { return giorniGiocati().has(chiaveGiorno(new Date())); }
+// Quanti giorni consecutivi fino a oggi (contando oggi se includiOggi, anche se non ha ancora finito un gioco).
+export function serieGiorni(includiOggi = false) {
+  const g = giorniGiocati();
+  if (includiOggi) g.add(chiaveGiorno(new Date()));
+  const d = new Date();
+  if (!g.has(chiaveGiorno(d))) d.setDate(d.getDate() - 1); // ieri conta ancora se oggi non ha giocato
+  let n = 0;
+  while (g.has(chiaveGiorno(d))) { n++; d.setDate(d.getDate() - 1); }
+  return n;
 }

@@ -1,7 +1,7 @@
 // Gioco "Racconta la storia": vignette in ordine, poi il racconto a voce.
 import { impostazioni } from '../state.js';
 import { esc, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, trascinabile, mescola, attendi } from '../ui.js';
-import { puntiRacconta } from '../punteggi.js';
+import { puntiRacconta, nonSentito } from '../punteggi.js';
 import { contiene, paroleContenuto, parole, trova } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
@@ -90,7 +90,7 @@ export function racconta(area, { voce, fine }) {
       suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e) + ' Puoi anche saltare il racconto.', { leggi }),
       suFine: ({ testo, audio }) => {
         reg.imposta(audio);
-        if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); return; }
+        if (!testo) { aggiornaFumetto(area, nonSentito(), { leggi }); return; }
         area.querySelector('#trascr').textContent = testo;
         const usati = ponti.filter((p) => contiene(testo, p));
         const toks = parole(testo);

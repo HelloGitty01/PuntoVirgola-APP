@@ -1,7 +1,7 @@
 // Gioco "Componi la scena": i mattoncini colorati vanno negli spazi giusti.
 import { impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, trascinabile, mescola, attendi } from '../ui.js';
-import { TIPI, INCORAGGIAMENTI, RIPROVA, puntiComponi } from '../punteggi.js';
+import { TIPI, puntiComponi, lode, riprova } from '../punteggi.js';
 import { normalizza } from '../match.js';
 import { parla } from '../tts.js';
 
@@ -67,7 +67,7 @@ export function componi(area, { voce, fine }) {
       btn.classList.remove('no'); void btn.offsetWidth; btn.classList.add('no');
       const msg = p.tipo !== el[j].tipo
         ? `Questo mattoncino va nello spazio "${TIPI[p.tipo].nome}". ${domanda(j)}`
-        : caso(RIPROVA);
+        : riprova();
       aggiornaFumetto(area, msg, { leggi });
       return;
     }
@@ -79,7 +79,7 @@ export function componi(area, { voce, fine }) {
     const prossimo = primoVuoto();
     evidenziaAttesa();
     if (prossimo >= 0) {
-      aggiornaFumetto(area, `${caso(INCORAGGIAMENTI)} ${domanda(prossimo)}`, { leggi, allegro: true });
+      aggiornaFumetto(area, `${lode()} ${domanda(prossimo)}`, { leggi, allegro: true });
     } else {
       completa();
     }

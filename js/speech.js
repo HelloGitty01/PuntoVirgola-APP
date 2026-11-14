@@ -159,9 +159,12 @@ export async function preparaAscolto() {
 // Un ascolto: avvia() → la bambina parla → ferma() restituisce { testo, audio }.
 export class Ascolto {
   // grammatica: elenco di parole tra cui il riconoscitore deve scegliere (solo Vosk), es. ['treno', 'teno', '[unk]']
-  constructor({ onTesto, grammatica } = {}) {
+  // vocabolario: parole attese nell'esercizio. Con Vosk si fa una seconda lettura "guidata" che sceglie
+  // solo tra queste parole: aiuta a riconoscere le parole giuste quando la lettura libera sbaglia.
+  constructor({ onTesto, grammatica, vocabolario } = {}) {
     this.onTesto = onTesto || (() => {});
     this.grammatica = grammatica || null;
+    this.vocabolario = vocabolario && vocabolario.length ? [...new Set(vocabolario)] : null;
     this.paroleConf = [];
     this.motore = motoreScelto();
     this.attivo = false;
@@ -201,7 +204,22 @@ export class Ascolto {
       this.parziale = (m.result && m.result.partial) || '';
       this.onTesto((this.testi.join(' ') + ' ' + this.parziale).trim());
     });
-    this.mic.ascoltatore = (buf) => { try { this.rec.acceptWaveform(buf); } catch {} };
+    this.testi2 = [];
+    this.rec2 = null;
+    if (this.vocabolario && !this.grammatica) {
+      try {
+        this.rec2 = new modello.KaldiRecognizer(this.ctx.sampleRate, JSON.stringify([...this.vocabolario, '[unk]']));
+        this.rec2.on('result', (m) => {
+          const t = m.result && m.result.text;
+          if (t) this.testi2.push(t);
+          if (this.attendiFinale2) this.attendiFinale2();
+        });
+      } catch (e) { console.warn('Lettura guidata non disponibile', e); this.rec2 = null; }
+    }
+    this.mic.ascoltatore = (buf) => {
+      try { this.rec.acceptWaveform(buf); } catch {}
+      if (this.rec2) { try { this.rec2.acceptWaveform(buf); } catch {} }
+    };
   }
 
   async avviaBrowser(locale) {
@@ -244,15 +262,24 @@ export class Ascolto {
     let testo = '';
     if (this.motore === 'vosk' && this.rec) {
       if (this.mic) this.mic.ascoltatore = null;
-      await new Promise((ok) => {
-        this.attendiFinale = ok;
-        try { this.rec.retrieveFinalResult(); } catch { ok(); }
-        setTimeout(ok, 1500);
-      });
+      await Promise.all([
+        new Promise((ok) => {
+          this.attendiFinale = ok;
+          try { this.rec.retrieveFinalResult(); } catch { ok(); }
+          setTimeout(ok, 1500);
+        }),
+        this.rec2 ? new Promise((ok) => {
+          this.attendiFinale2 = ok;
+          try { this.rec2.retrieveFinalResult(); } catch { ok(); }
+          setTimeout(ok, 1500);
+        }) : null
+      ]);
       this.attendiFinale = null;
+      this.attendiFinale2 = null;
       testo = this.testi.join(' ');
       if (this.parziale) testo = (testo + ' ' + this.parziale).trim();
       try { this.rec.remove(); } catch {}
+      if (this.rec2) { try { this.rec2.remove(); } catch {} }
     } else if (this.sr) {
       await new Promise((ok) => {
         this.attendiFinale = ok;
@@ -266,7 +293,8 @@ export class Ascolto {
     if (this.motore !== 'vosk') this.stream.getTracks().forEach((t) => t.stop());
     else if (!MIC_CALDO) chiudiMicrofono();
     window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false }));
-    return { testo: testo.trim(), audio, parole: this.paroleConf };
+    const guidato = (this.testi2 || []).join(' ').replace(/\[unk\]/g, ' ').replace(/\s+/g, ' ').trim();
+    return { testo: testo.trim(), guidato, audio, parole: this.paroleConf };
   }
 
   annulla() {

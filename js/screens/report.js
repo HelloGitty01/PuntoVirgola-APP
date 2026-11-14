@@ -5,6 +5,7 @@ import { esc, ICONE } from '../ui.js';
 import { GIOCHI, GRUPPI, SUONI, TIPI } from '../punteggi.js';
 import { parole, trova } from '../match.js';
 import { CONNETTIVI } from './frasi3.js';
+import { TIPI_ERRORE } from './dettato.js';
 
 const SPONTANEE = new Set(['dillo', 'descrivi', 'finisci', 'dopo', 'domande', 'diario', 'indovina', 'racconta', 'unisci']);
 const dataIt = (d, o = { day: 'numeric', month: 'long', year: 'numeric' }) => new Date(d).toLocaleDateString('it-IT', o);
@@ -19,7 +20,7 @@ const freccia = (ora, prima, soglia = 0.5) => {
 };
 
 function analizza(partite) {
-  const es = partite.flatMap((p) => (p.esercizi || []).map((e) => ({ ...e, gioco: e.gioco || p.gioco })));
+  const es = partite.flatMap((p) => (p.esercizi || []).map((e) => ({ ...e, gioco: e.gioco || p.gioco }))).filter((e) => e.gioco !== 'serie');
   const giorni = new Set(partite.map((p) => new Date(p.fine || p.inizio).toDateString()));
   const minuti = partite.reduce((t, p) => {
     const d = (new Date(p.fine).getTime() - new Date(p.inizio).getTime()) / 60000;
@@ -44,15 +45,22 @@ export async function report(cont) {
   const periodo = loc.get('report.giorni', 14);
   cont.innerHTML = `<div class="riga-pulsanti non-stampare">
       <label>Periodo: <select id="periodo" style="width:auto">${[7, 14, 30, 60].map((g) => `<option value="${g}" ${g === periodo ? 'selected' : ''}>ultimi ${g} giorni</option>`).join('')}</select></label>
-      <button class="btn" id="stampa">${ICONE.scarica} Stampa o salva in PDF</button></div>
-    <p class="aiuto non-stampare" style="margin:0">Per il PDF: tocca “Stampa o salva in PDF” e come stampante scegli “Salva come PDF”. Il report confronta il periodo scelto con quello precedente (▲ ▼).</p>
+      <button class="btn" id="stampa">${ICONE.scarica} Stampa o salva in PDF</button>
+      <button class="btn secondario" id="scarica">Scarica il report (file)</button></div>
+    <p class="aiuto non-stampare" style="margin:0">Per il PDF: tocca “Stampa o salva in PDF” e come stampante scegli “Salva come PDF”. Se dal telefono la stampa non funziona, usa “Scarica il report”: si apre in qualsiasi browser e da lì si stampa o si invia. Il report confronta il periodo scelto con quello precedente (▲ ▼).</p>
     <div id="corpo"><p>Preparo il report…</p></div>`;
   cont.querySelector('#periodo').onchange = (e) => { loc.set('report.giorni', Number(e.target.value)); report(cont); };
   cont.querySelector('#stampa').onclick = () => {
     const n = cont.querySelector('#note');
     const s = cont.querySelector('#note-stampa');
     if (n && s) s.textContent = n.value || '—';
-    window.print();
+    stampa(cont.querySelector('.report'));
+  };
+  cont.querySelector('#scarica').onclick = () => {
+    const n = cont.querySelector('#note');
+    const s = cont.querySelector('#note-stampa');
+    if (n && s) s.textContent = n.value || '—';
+    scarica(cont.querySelector('.report'));
   };
   const ora = Date.now();
   const inizio = new Date(ora - periodo * 864e5);
@@ -101,6 +109,11 @@ export async function report(cont) {
   const indD = ind.filter((e) => e.modo === 'descrivi');
   const dia = di('diario');
   const desc = di('descrivi');
+  const det = di('dettato');
+  const detB = B.es.filter((e) => e.gioco === 'dettato');
+  const errDet = {};
+  det.forEach((e) => (e.errori || []).forEach((x) => { (errDet[x.tipo] = errDet[x.tipo] || []).push(x); }));
+  const quotaDet = (l) => { const t = l.reduce((a, e) => a + (e.parole || 0), 0); return t ? (100 * l.reduce((a, e) => a + (e.giuste || 0), 0)) / t : null; };
   const esempi = A.frasi.slice().sort((a, b) => String(b.quando).localeCompare(String(a.quando))).filter((x) => parole(x.f).length >= 3).slice(0, 12);
   const topConn = Object.entries(A.conn).sort((a, b) => b[1] - a[1]).slice(0, 8);
 
@@ -159,6 +172,13 @@ export async function report(cont) {
       ${Object.entries(perSuono).map(([k, x]) => `<tr><td>${esc((SUONI[k] || {}).nome || k)}</td><td class="num">${perc(x.primo, x.tot)}</td><td class="num">${x.ok}/${x.tot}</td><td><small>${Object.entries(x.sentite).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([w, n]) => `${esc(w)} (${n})`).join(', ') || '–'}</small></td></tr>`).join('')}</table>
       <small>Il riconoscimento vocale su una voce infantile è indicativo: le sostituzioni vanno confermate all’ascolto.</small>` : '')}
 
+    ${sezione('Ortografia (“Dettato”)', det.length ? `<table>
+      <tr><td>Dettati svolti</td><td class="num">${det.length}</td></tr>
+      <tr><td>Parole scritte correttamente</td><td class="num">${f1(quotaDet(det))}%${freccia(quotaDet(det), quotaDet(detB), 2)}</td></tr>
+      <tr><td>Impostazioni</td><td><small>${(() => { const o = det[0].opzioni || {}; return `${o.parole ? o.parole + ' parole per volta' : 'una frase per volta'}${o.maiuscole ? ', maiuscole controllate' : ''}${o.punteggiatura ? ', punteggiatura controllata' : ''}`; })()}</small></td></tr></table>
+      ${Object.keys(errDet).length ? `<table><tr><th>Tipo di errore</th><th class="num">Quanti</th><th>Esempi (scritto → corretto)</th></tr>
+      ${Object.entries(errDet).sort((a, b) => b[1].length - a[1].length).map(([t, l]) => `<tr><td>${esc(TIPI_ERRORE[t] || t)}</td><td class="num">${l.length}</td><td><small>${[...new Set(l.map((x) => `${x.scritto || '—'} → ${x.atteso || '—'}`))].slice(0, 5).map(esc).join(', ')}</small></td></tr>`).join('')}</table>` : '<p>Nessun errore nei dettati del periodo.</p>'}` : '')}
+
     ${sezione('Il diario della giornata (racconto autobiografico)', dia.length ? `<table><tr><th>Giorno</th><th class="num">Risposte (scritte)</th><th class="num">Parole</th><th>Connettivi</th></tr>
       ${dia.map((e) => `<tr><td>${dataIt(e.quando, { weekday: 'short', day: 'numeric', month: 'short' })}</td><td class="num">${(e.risposte || []).length}${e.scritte ? ` (${e.scritte})` : ''}</td><td class="num">${e.parole || 0}</td><td><small>${esc((e.connettivi || []).join(', ') || '–')}</small></td></tr>`).join('')}</table>
       ${dia.slice(0, 2).map((e) => `<blockquote><small>${dataIt(e.quando, { weekday: 'long', day: 'numeric', month: 'long' })}</small><br>${(e.risposte || []).map((r) => `<i>${esc(r.domanda)}</i> ${esc(r.testo)}`).join('<br>')}</blockquote>`).join('')}` : '')}
@@ -181,4 +201,48 @@ function livello(id) {
   if (!g || !g.livelli) return '';
   const l = ((S.config && S.config.impostazioni && S.config.impostazioni.livelli) || {})[id] || 1;
   return `livello ${l} di ${g.livelli}`;
+}
+
+// Stampa: copio il report in un contenitore attaccato direttamente al body e nascondo tutto il resto.
+// (Stampare la pagina così com'è può dare un PDF vuoto: il report sta dentro contenitori con lo scorrimento.)
+function stampa(el) {
+  if (!el) return;
+  document.getElementById('stampa-report')?.remove();
+  const box = document.createElement('div');
+  box.id = 'stampa-report';
+  box.appendChild(el.cloneNode(true));
+  box.querySelectorAll('textarea, .non-stampare').forEach((x) => x.remove());
+  document.body.appendChild(box);
+  document.body.classList.add('stampa-report');
+  const pulisci = () => { document.body.classList.remove('stampa-report'); box.remove(); window.removeEventListener('afterprint', pulisci); };
+  window.addEventListener('afterprint', pulisci);
+  const img = box.querySelector('img');
+  const via = () => setTimeout(() => { window.print(); setTimeout(() => { if (document.body.classList.contains('stampa-report') && !matchMedia('print').matches) pulisci(); }, 1500); }, 100);
+  if (img && !img.complete) { img.onload = via; img.onerror = via; } else via();
+}
+
+const CSS_FILE = `body{font-family:Andika,'Segoe UI',Arial,sans-serif;color:#1b1b1b;max-width:820px;margin:24px auto;padding:0 16px;font-size:15px;line-height:1.45}
+h1{font-size:24px;color:#123E7A;margin:0}h2{font-size:18px;color:#123E7A;margin:22px 0 8px;border-bottom:2px solid #DCEFFF;padding-bottom:4px}
+.intesta{display:flex;justify-content:space-between;gap:16px;border-bottom:3px solid #123E7A;padding-bottom:12px}.intesta img{display:none}
+table{width:100%;border-collapse:collapse;margin:6px 0}th,td{text-align:left;padding:5px 8px;border-bottom:1px solid #e5e5e5;vertical-align:top}th{background:#F3F7FC}
+.num{text-align:right;white-space:nowrap}.cifre{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.cifre div{border:1px solid #dde6f0;border-radius:10px;padding:8px 10px}
+.cifre b{display:block;font-size:22px;color:#123E7A}blockquote{margin:4px 0 8px;padding:4px 10px;border-left:3px solid #48ABFC;background:#F7FAFD}
+.note-stampa{white-space:pre-wrap;border:1px solid #ccc;border-radius:8px;min-height:60px;padding:8px}small{color:#666}.trend-su{color:#2E7D32}.trend-giu{color:#C62828}
+.non-stampare,textarea{display:none}@media print{body{margin:0}}`;
+
+// Report come file HTML autonomo (si apre e si stampa da qualsiasi dispositivo).
+function scarica(el) {
+  if (!el) return;
+  const copia = el.cloneNode(true);
+  copia.querySelectorAll('textarea, .non-stampare').forEach((x) => x.remove());
+  const nome = ((S.config && S.config.nome) || 'bambina').replace(/[^a-zA-Z0-9]+/g, '-');
+  const html = `<!DOCTYPE html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report ${nome}</title><style>${CSS_FILE}</style></head><body>${copia.innerHTML}</body></html>`;
+  const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `report-${nome}-${new Date().toISOString().slice(0, 10)}.html`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
