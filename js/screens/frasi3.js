@@ -404,22 +404,25 @@ function descriviTu(area, { voce, fine }) {
   return () => { fermaMic(); reg.libera(); };
 }
 
-// ---------- Il diario di Punto ----------
+// ---------- Il diario (della bambina): a voce o scrivendo ----------
 export function diario(area, { voce, fine }) {
   const domandeDiario = (voce.domande && voce.domande.length ? voce.domande : ['Cosa hai fatto oggi?']);
   const risposte = [];
   let q = 0, finito = false;
   const leggi = impostazioni().letturaAutomatica;
   const nome = nomeBambina();
-  const intro = `Ciao${nome ? ' ' + nome : ''}! Punto vuole sapere com’è andata la tua giornata. Raccontami tutto, qui non ci sono risposte sbagliate! ${domandeDiario[0]}`;
+  const intro = `Ciao${nome ? ' ' + nome : ''}! Apriamo il tuo diario: raccontami com’è andata la tua giornata. Puoi parlare oppure scrivere. Qui non ci sono risposte sbagliate! ${domandeDiario[0]}`;
   area.innerHTML = `<div class="due-colonne">
     <div class="colonna">
       <div class="quaderno" id="quaderno"><div class="data-quaderno">${esc(new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }))}</div><div id="pagine"></div></div>
     </div>
     <div class="colonna">
       ${virgolaDice(intro)}
-      <div class="card morbida"><div class="trascrizione" id="trascr"></div>
-        <span class="aiuto" id="conta-parole">Oggi mi hai raccontato 0 parole</span></div>
+      <form class="scrivi-diario" id="scrivi-form" autocomplete="off">
+        <textarea id="scrivi" rows="2" placeholder="Scrivi qui, oppure tocca il microfono e parla…" aria-label="Scrivi la tua risposta" spellcheck="true" lang="it"></textarea>
+        <button class="btn" type="submit" id="invia" disabled>${ICONE.diario} Scrivi</button>
+      </form>
+      <span class="aiuto" id="conta-parole" style="margin-top:-6px">Oggi mi hai raccontato 0 parole</span>
       <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px;align-items:center">
         ${htmlMic()}
         <div class="riga-pulsanti" style="justify-content:center">${htmlRegistrazione()}
@@ -441,7 +444,6 @@ export function diario(area, { voce, fine }) {
   disegna();
   const avanti = (prima) => {
     q++;
-    area.querySelector('#trascr').textContent = '';
     disegna();
     if (q >= domandeDiario.length) {
       aggiornaFumetto(area, `${prima} Grazie! Tocca “Ho finito” per chiudere il diario.`, { leggi, allegro: true });
@@ -450,16 +452,36 @@ export function diario(area, { voce, fine }) {
     aggiornaFumetto(area, `${prima} ${domandeDiario[q]}`, { leggi, allegro: true });
   };
   const fermaMic = collegaMicrofono(area, {
-    suTesto: (t) => { area.querySelector('#trascr').textContent = t; },
-    suAnnulla: () => { area.querySelector('#trascr').textContent = ''; },
+    // mentre parla, il testo compare nel riquadro di scrittura
+    suTesto: (t) => { const c = area.querySelector('#scrivi'); c.value = t; c.readOnly = true; },
+    suAnnulla: () => { const c = area.querySelector('#scrivi'); c.value = ''; c.readOnly = false; },
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
     suFine: ({ testo, audio }) => {
       reg.imposta(audio);
+      const c = area.querySelector('#scrivi'); c.value = ''; c.readOnly = false;
       if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Me lo ridici?', { leggi }); return; }
-      if (q >= domandeDiario.length) { risposte[risposte.length - 1].testo += ' ' + testo; disegna(); return; }
-      risposte.push({ domanda: domandeDiario[q], testo });
-      avanti(caso(['Che bello!', 'Davvero? Che bello!', 'Punto è curiosissimo!', 'Mi piace tanto ascoltarti!', 'Wow!']));
+      rispondi(testo, 'voce');
     }
+  });
+  function rispondi(testo, come) {
+    if (q >= domandeDiario.length) { risposte[risposte.length - 1].testo += ' ' + testo; disegna(); return; }
+    risposte.push({ domanda: domandeDiario[q], testo, come });
+    avanti(caso(come === 'scritto'
+      ? ['Che bello, l’hai scritto tu!', 'Brava, che bella scrittura!', 'Grazie! Punto è curiosissimo!', 'Wow!']
+      : ['Che bello!', 'Davvero? Che bello!', 'Punto è curiosissimo!', 'Mi piace tanto ascoltarti!', 'Wow!']));
+  }
+  const campo = area.querySelector('#scrivi');
+  const invia = area.querySelector('#invia');
+  campo.addEventListener('input', () => { invia.disabled = !campo.value.trim(); });
+  campo.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); area.querySelector('#scrivi-form').requestSubmit(); } });
+  area.querySelector('#scrivi-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const t = campo.value.replace(/\s+/g, ' ').trim();
+    if (!t || finito) return;
+    campo.value = '';
+    invia.disabled = true;
+    rispondi(t, 'scritto');
+    campo.focus();
   });
   area.querySelector('#salta').onclick = () => { if (q < domandeDiario.length) avanti('Va bene!'); };
   area.querySelector('#finito').onclick = async () => {
@@ -468,11 +490,11 @@ export function diario(area, { voce, fine }) {
     const testo = risposte.map((r) => r.testo).join(' ');
     const n = parole(testo).length;
     const punteggio = risposte.length >= 3 ? 10 : risposte.length === 2 ? 7 : 4;
-    const msg = `Grazie per avermi raccontato la tua giornata! Hai usato ${n} parole. Punto lo scrive nel suo diario.`;
+    const msg = `Grazie per avermi raccontato la tua giornata! Hai usato ${n} parole. È tutto scritto nel tuo diario.`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
     parla(msg);
     await attendi(900);
-    fine({ punteggio, risposte, frasi: risposte.map((r) => r.testo), parole: n, paroleImportanti: new Set(paroleContenuto(testo)).size, connettivi: connettiviIn(testo) });
+    fine({ punteggio, risposte, frasi: risposte.map((r) => r.testo), scritte: risposte.filter((r) => r.come === 'scritto').length, parole: n, paroleImportanti: new Set(paroleContenuto(testo)).size, connettivi: connettiviIn(testo) });
   };
   return () => { fermaMic(); reg.libera(); };
 }

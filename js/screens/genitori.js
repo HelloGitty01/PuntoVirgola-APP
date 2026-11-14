@@ -12,7 +12,7 @@ import { musica } from '../musica.js';
 import { report } from './report.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE, MOBILE } from '../tts.js';
 
-const VERSIONE = '1.7.3';
+const VERSIONE = '1.8.2';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['report', 'Report logopedista'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -324,7 +324,7 @@ function attivita(cont) {
       <span class="aiuto">Virgola riconosce la parola giusta e le sostituzioni più comuni (es. treno → “teno”, cane → “tane”). È un allenamento: con la voce di una bambina può sbagliare, e le registrazioni restano da riascoltare.</span></div>
     <div class="card morbida"><label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="solo-ascolto" style="width:22px;height:22px" ${S.config.riassuntoSoloAscolto ? 'checked' : ''}>
       <span><b>Riassumi la storia: solo ascolto</b><br><small style="color:var(--tenue)">Il racconto non si legge: Virgola lo racconta e basta (più difficile, allena la comprensione all’ascolto).</small></span></label></div>
-    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero. Indovina: 1 = Virgola descrive e lei trova la figura, 2 = un turno a testa, 3 = descrive sempre lei.</p>
+    <p class="aiuto">Componi e Dillo tu: livello 1 = 2 elementi, 2 = 3 elementi, 3 = 4 elementi, 4 = 5 elementi, 5 = frasi lunghe con due azioni o un perché. Frase scombinata: 1 = frasi corte, 3 = frasi lunghe. Riassumi la storia: 1 = racconti brevi con riassunto guidato, 2-3 = racconti più lunghi con riassunto libero. Indovina: 1 = Virgola descrive e lei trova la figura, 2 = un turno a testa, 3 = descrive sempre lei. Cascata di lettere: 1 = cadono sillabe in ordine, 2 = lettere in ordine, 3 = lettere in disordine e più veloci.</p>
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" id="salva" style="align-self:flex-start">Salva</button>`;
   cont.querySelector('#salva').onclick = async (e) => {

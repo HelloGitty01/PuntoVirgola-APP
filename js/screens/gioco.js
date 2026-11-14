@@ -11,8 +11,9 @@ import { coppie, sillabe, iniziale, rime, ripeti, pronuncia } from './suoni.js';
 import { scombinata, unisci, finisci, trasforma, dopo } from './frasi2.js';
 import { riassunto } from './riassunto.js';
 import { allunga, domande, indovina, diario, sceneAllunga } from './frasi3.js';
+import { cascata } from './cascata.js';
 
-const ESERCIZI = { allunga, domande, indovina, diario, riassunto, pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
+const ESERCIZI = { cascata, allunga, domande, indovina, diario, riassunto, pronuncia, componi, dillo, racconta, descrivi, coppie, sillabe, iniziale, rime, ripeti, scombinata, unisci, finisci, trasforma, dopo };
 
 // Identificativo stabile ricavato dal contenuto (per non ripetere sempre gli stessi esercizi).
 function idDa(testo) {
@@ -39,6 +40,7 @@ function fonte(gioco) {
     case 'domande': return (sc.scene || []).filter((s) => (s.elementi || []).length >= 2);
     case 'indovina': return sc.indovinelli || [];
     case 'diario': return [{ id: 'diario', domande: sc.diario || [] }];
+    case 'cascata': return (sc.parole || []).length >= 3 ? [{ id: 'cascata' }] : [];
     case 'pronuncia': {
       const scelti = (S.config && S.config.suoniPronuncia) || null;
       return conId(sc.pronuncia, (x) => 'p' + x.suono + x.parola).filter((x) => !scelti || scelti.includes(x.suono));
@@ -63,7 +65,7 @@ function scegli(gioco) {
   const livello = conLivelli ? (imp.livelli[gioco] || 1) : 1;
   const tutte = fonte(gioco);
   const fonteL = conLivelli ? tutte : tutte.map((x) => ({ ...x, livello: 1 }));
-  const quanti = ['riassunto', 'diario'].includes(gioco) ? 1 : gioco === 'domande' ? Math.min(3, imp.scenePerPartita) : ['racconta', 'dopo'].includes(gioco) ? Math.min(3, imp.scenePerPartita) : imp.scenePerPartita;
+  const quanti = ['riassunto', 'diario', 'cascata'].includes(gioco) ? 1 : gioco === 'domande' ? Math.min(3, imp.scenePerPartita) : ['racconta', 'dopo'].includes(gioco) ? Math.min(3, imp.scenePerPartita) : imp.scenePerPartita;
   const recenti = new Set(loc.get('recenti.' + gioco, []));
   const ordina = (lista) => {
     const nuovi = mescola(lista.filter((x) => !recenti.has(x.id)));

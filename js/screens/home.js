@@ -20,40 +20,36 @@ export function home(app) {
   const tessera = ([id, g]) => `
     <button class="gioco" data-tipo="${g.tipo}" data-gioco="${id}">
       <span class="icona">${ICONE[id]}</span>
-      <span><b>${esc(g.titolo)}</b><span>${esc(g.sotto)}</span></span>
+      <span class="testi"><b>${esc(g.titolo)}</b><span>${esc(g.sotto)}</span></span>
     </button>`;
-  const pochi = attivi.length <= 4;
-  const giochi = pochi
-    ? `<div class="giochi pochi" style="flex:1">${attivi.map(tessera).join('')}</div>`
-    : Object.entries(GRUPPI).map(([gr, titolo]) => {
-      const lista = attivi.filter(([, g]) => g.gruppo === gr);
-      return lista.length ? `<section class="gruppo-giochi"><h2>${esc(titolo)}</h2><div class="giochi">${lista.map(tessera).join('')}</div></section>` : '';
-    }).join('');
+  const giochi = Object.entries(GRUPPI).map(([gr, titolo]) => {
+    const lista = attivi.filter(([, g]) => g.gruppo === gr);
+    return lista.length ? `<section class="gruppo-giochi" data-gruppo="${gr}"><h2>${esc(titolo)}</h2><div class="giochi">${lista.map(tessera).join('')}</div></section>` : '';
+  }).join('');
   app.innerHTML = `<main class="schermata">
     <div class="home">
-      <div class="lato">
+      <header class="home-testa">
         <img class="wordmark" src="img/wordmark.png" alt="Punto e Virgola">
-        <div class="saluto">
-          <button class="avatar" id="avatar" aria-label="Cambia il tuo personaggio">${pg.faccia}</button>
-          <div><h1>Ciao, ${esc(nomeBambina())}!</h1><p>A cosa giochiamo oggi?</p></div>
-        </div>
         ${virgolaDice(saluto)}
-        <div class="card barattolo">
+        <button class="btn-tondo angolo-genitori" id="genitori" aria-label="Area genitori">${ICONE.lucchetto}</button>
+      </header>
+      <div class="profilo">
+        <button class="saluto" id="avatar" aria-label="Cambia il tuo personaggio">
+          <span class="avatar">${pg.faccia}</span>
+          <span><h1>Ciao, ${esc(nomeBambina())}!</h1><small>Tocca per cambiare personaggio</small></span>
+        </button>
+        <div class="barattolo">
+          <img src="img/punto.png" alt="">
           <div class="info">
-            <b>Le tue caramelle</b>
-            ${contatoreCaramelle(tot)}
+            <div class="riga-caramelle"><b>Le tue caramelle</b>${contatoreCaramelle(tot)}</div>
             ${prossimo ? `<div class="barra-progresso" aria-hidden="true"><div style="width:${Math.min(100, percentuale)}%"></div></div>
-            <span style="font-size:16px;color:var(--tenue)">Ancora ${prossimo.costo - tot} per sbloccare ${esc(prossimo.nome)} ${prossimo.faccia}</span>`
-            : '<span style="font-size:16px;color:var(--tenue)">Hai sbloccato tutti i personaggi!</span>'}
-            <button class="btn secondario piccolo btn-diario" id="diario-giorni">${ICONE.calendario} Il mio diario</button>
+            <small>Ancora ${prossimo.costo - tot} per sbloccare ${esc(prossimo.nome)} ${prossimo.faccia}</small>`
+            : '<small>Hai sbloccato tutti i personaggi!</small>'}
           </div>
-          <img src="img/punto.png" alt="Punto">
         </div>
+        <button class="diario-chip" id="diario-giorni">${ICONE.calendario}<span>I miei progressi</span></button>
       </div>
-      <div class="lato">
-        <div class="angolo-genitori" style="display:flex;justify-content:flex-end;gap:12px">
-          <button class="btn-tondo" id="genitori" aria-label="Area genitori">${ICONE.lucchetto}</button>
-        </div>
+      <div class="elenco-giochi">
         ${giochi || '<p class="card">Nessuna attività attiva: chiedi a mamma o papà.</p>'}
       </div>
     </div></main>`;

@@ -36,6 +36,7 @@ export const ICONE = {
   ripeti: svg('<path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/>'),
   pronuncia: svg('<path d="M3 12c3-4 6-5 9-3 3-2 6-1 9 3-3 4-6 6-9 6s-6-2-9-6z"/><path d="M3 12h18"/>'),
   riassunto: svg('<path d="M4 5a2 2 0 0 1 2-2h5v17H6a2 2 0 0 0-2 2z"/><path d="M20 5a2 2 0 0 0-2-2h-5v17h5a2 2 0 0 1 2 2z"/><path d="M15 8h3M15 11h3"/>'),
+  cascata: svg('<rect x="9" y="2" width="6" height="6" rx="1"/><rect x="3" y="16" width="6" height="6" rx="1"/><rect x="9" y="16" width="6" height="6" rx="1"/><rect x="15" y="10" width="6" height="6" rx="1"/><rect x="15" y="16" width="6" height="6" rx="1"/><path d="M12 10v3"/>'),
   allunga: svg('<rect x="2" y="9" width="5" height="6" rx="1.5"/><rect x="9" y="9" width="5" height="6" rx="1.5"/><path d="M16 12h6M19 9l3 3-3 3"/>'),
   domande: svg('<path d="M4 5h16v11H9l-5 4z"/><path d="M10 8.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2"/><path d="M12 13.5v.01"/>'),
   indovina: svg('<circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L20 20"/><path d="M8.5 8.5a2 2 0 0 1 3 0"/>'),

@@ -1,3 +1,4 @@
+import { nomeBambina } from './state.js';
 // Regole dei punteggi (0–10 caramelle), frasi di Virgola, personaggi.
 
 export const TIPI = {
@@ -29,7 +30,8 @@ export const GIOCHI = {
   allunga: { titolo: 'Allunga la frase', sotto: 'Da corta a lunghissima!', tipo: 'dove', gruppo: 'frasi', livelli: 0 },
   domande: { titolo: 'Le domande di Virgola', sotto: 'Rispondi con una frase intera', tipo: 'perche', gruppo: 'frasi', livelli: 0 },
   indovina: { titolo: 'Indovina cosa descrivo', sotto: 'Indizi, figure e indovinelli', tipo: 'chi', gruppo: 'storie', livelli: 3 },
-  diario: { titolo: 'Il diario di Punto', sotto: 'Racconta la tua giornata', tipo: 'quando', gruppo: 'storie', livelli: 0 },
+  diario: { get titolo() { const n = nomeBambina(); return n ? `Il diario di ${n}` : 'Il mio diario'; }, sotto: 'Racconta la tua giornata, a voce o scrivendo', tipo: 'quando', gruppo: 'storie', livelli: 0 },
+  cascata: { titolo: 'Cascata di lettere', sotto: 'Il gioco delle parole che cadono', tipo: 'perche', gruppo: 'suoni', livelli: 3 },
   pronuncia: { titolo: 'Pronuncia con Virgola', sotto: 'TR, STR, Z, C, SC: diciamole bene!', tipo: 'chi', gruppo: 'suoni', livelli: 0 }
 };
 export const SUONI = {

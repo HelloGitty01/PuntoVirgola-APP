@@ -1,4 +1,4 @@
-// "Il mio diario": le caramelle giorno per giorno, che si sommano.
+// "I miei progressi": le caramelle giorno per giorno, che si sommano.
 import { vai } from '../nav.js';
 import { caramelleTotali, nomeBambina } from '../state.js';
 import { storico, aggiornaStorico, conGitHub } from '../data.js';
@@ -57,7 +57,7 @@ export function mieiGiorni(app) {
     app.innerHTML = `<main class="schermata">
       <div class="barra">
         <button class="btn-tondo" id="esci" aria-label="Torna alla home">${ICONE.indietro}</button>
-        <h1>Il diario di ${esc(nomeBambina() || 'caramelle')}</h1>
+        <h1>${nomeBambina() ? `I progressi di ${esc(nomeBambina())}` : 'I miei progressi'}</h1>
         <div class="destra">${contatoreCaramelle(tot)}</div>
       </div>
       <div class="diario-giorni">

@@ -159,8 +159,8 @@ export async function report(cont) {
       ${Object.entries(perSuono).map(([k, x]) => `<tr><td>${esc((SUONI[k] || {}).nome || k)}</td><td class="num">${perc(x.primo, x.tot)}</td><td class="num">${x.ok}/${x.tot}</td><td><small>${Object.entries(x.sentite).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([w, n]) => `${esc(w)} (${n})`).join(', ') || '–'}</small></td></tr>`).join('')}</table>
       <small>Il riconoscimento vocale su una voce infantile è indicativo: le sostituzioni vanno confermate all’ascolto.</small>` : '')}
 
-    ${sezione('Il diario della giornata (racconto autobiografico)', dia.length ? `<table><tr><th>Giorno</th><th class="num">Risposte</th><th class="num">Parole</th><th>Connettivi</th></tr>
-      ${dia.map((e) => `<tr><td>${dataIt(e.quando, { weekday: 'short', day: 'numeric', month: 'short' })}</td><td class="num">${(e.risposte || []).length}</td><td class="num">${e.parole || 0}</td><td><small>${esc((e.connettivi || []).join(', ') || '–')}</small></td></tr>`).join('')}</table>
+    ${sezione('Il diario della giornata (racconto autobiografico)', dia.length ? `<table><tr><th>Giorno</th><th class="num">Risposte (scritte)</th><th class="num">Parole</th><th>Connettivi</th></tr>
+      ${dia.map((e) => `<tr><td>${dataIt(e.quando, { weekday: 'short', day: 'numeric', month: 'short' })}</td><td class="num">${(e.risposte || []).length}${e.scritte ? ` (${e.scritte})` : ''}</td><td class="num">${e.parole || 0}</td><td><small>${esc((e.connettivi || []).join(', ') || '–')}</small></td></tr>`).join('')}</table>
       ${dia.slice(0, 2).map((e) => `<blockquote><small>${dataIt(e.quando, { weekday: 'long', day: 'numeric', month: 'long' })}</small><br>${(e.risposte || []).map((r) => `<i>${esc(r.domanda)}</i> ${esc(r.testo)}`).join('<br>')}</blockquote>`).join('')}` : '')}
 
     ${sezione('Esempi di frasi dette', esempi.length ? esempi.map((x) => `<blockquote>«${esc(x.f)}» <small>— ${esc((GIOCHI[x.gioco] || {}).titolo || x.gioco)}, ${dataIt(x.quando, { day: 'numeric', month: 'short' })}</small></blockquote>`).join('') : '')}
