@@ -110,8 +110,8 @@ export function racconta(area, { voce, fine }) {
     const modello = vig.map((v, i) => `${PONTI_MODELLO[Math.min(i, 2)] && i < vig.length - 1 ? PONTI_MODELLO[Math.min(i, 2)] : 'Alla fine'}, ${(v.testo || '').replace(/^./, (c) => c.toLowerCase())}`).join('. ');
     const lode = raccontata ? (nPonti ? 'Che bel racconto!' : 'Bel racconto! La prossima volta usa anche le parole ponte.') : 'Va bene!';
     aggiornaFumetto(area, `${lode} Ascolta come la racconto io.`, { leggi: false, allegro: true });
-    await parla(`${lode} Ascolta come la racconto io. ${modello}.`);
-    await attendi(500);
+    parla(`${lode} Ascolta come la racconto io. ${modello}.`);
+    await attendi(900);
     fine({
       punteggio: puntiRacconta({ errori, ponti: nPonti, vignetteCitate: citate, totaleVignette: vig.length, raccontata }),
       errori, ponti: nPonti, vignetteCitate: citate, raccontata, frasi: testo ? [testo] : []

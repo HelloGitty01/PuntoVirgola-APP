@@ -89,8 +89,8 @@ export function componi(area, { voce, fine }) {
     finito = true;
     const frase = voce.frase || el.map((e) => e.testo).join(' ');
     aggiornaFumetto(area, `Bravissima! Ascolta la frase: ${frase}`, { leggi: false, allegro: true });
-    await parla(`Bravissima! Ascolta la frase. ${frase}`);
-    await attendi(600);
+    parla(`Bravissima! Ascolta la frase. ${frase}`);
+    await attendi(900);
     fine({ punteggio: puntiComponi({ errori, aiuti }), errori, aiuti });
   }
 

@@ -103,6 +103,54 @@ function registratore(stream) {
   };
 }
 
+// ---------- Microfono "caldo" ----------
+// Aprire il microfono e l'audio richiede quasi un secondo: le prime parole andavano perse.
+// Nelle schermate con il microfono lo apriamo in anticipo e lo teniamo pronto; i suoni
+// arrivano al riconoscitore solo mentre la bambina sta parlando (dopo il tocco).
+let mic = null;
+let aprendo = null;
+
+export function apriMicrofono() {
+  if (mic) {
+    if (mic.ctx.state === 'suspended') mic.ctx.resume().catch(() => {});
+    return Promise.resolve(mic);
+  }
+  if (!aprendo) {
+    aprendo = (async () => {
+      const stream = await microfono();
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') await ctx.resume().catch(() => {});
+      const sorgente = ctx.createMediaStreamSource(stream);
+      const nodo = ctx.createScriptProcessor(4096, 1, 1);
+      const m = { stream, ctx, sorgente, nodo, ascoltatore: null };
+      nodo.onaudioprocess = (e) => { if (m.ascoltatore) m.ascoltatore(e.inputBuffer); };
+      sorgente.connect(nodo);
+      nodo.connect(ctx.destination);
+      mic = m;
+      return m;
+    })().finally(() => { aprendo = null; });
+  }
+  return aprendo;
+}
+
+export function chiudiMicrofono() {
+  if (!mic) return;
+  const m = mic; mic = null;
+  try { m.sorgente.disconnect(); m.nodo.disconnect(); } catch {}
+  m.stream.getTracks().forEach((t) => t.stop());
+  m.ctx.close().catch(() => {});
+}
+
+// Prepara tutto prima del tocco: modello vocale (se già scaricato) e microfono (se il permesso c'è già).
+export async function preparaAscolto() {
+  if (motoreScelto() !== 'vosk') return;
+  try {
+    if (!voskPronto() && await modelloInCache()) await preparaVosk();
+    const p = navigator.permissions ? await navigator.permissions.query({ name: 'microphone' }) : null;
+    if (p && p.state === 'granted') await apriMicrofono();
+  } catch { /* si aprirà al primo tocco */ }
+}
+
 // Un ascolto: avvia() → la bambina parla → ferma() restituisce { testo, audio }.
 export class Ascolto {
   // grammatica: elenco di parole tra cui il riconoscitore deve scegliere (solo Vosk), es. ['treno', 'teno', '[unk]']
@@ -116,16 +164,19 @@ export class Ascolto {
 
   async avvia() {
     window.dispatchEvent(new CustomEvent('pv-microfono', { detail: true }));
-    try { this.stream = await microfono(); } catch (e) { window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false })); throw e; }
-    this.reg = registratore(this.stream);
+    try {
+      if (this.motore === 'vosk') { this.mic = await apriMicrofono(); this.stream = this.mic.stream; }
+      else this.stream = await microfono();
+    } catch (e) { window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false })); throw e; }
     this.attivo = true;
     if (this.motore === 'vosk') await this.avviaVosk();
     else await this.avviaBrowser(this.motore === 'browser-locale');
+    this.reg = registratore(this.stream);
   }
 
   async avviaVosk() {
     const modello = await preparaVosk();
-    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    this.ctx = this.mic.ctx;
     this.testi = [];
     this.parziale = '';
     this.rec = this.grammatica
@@ -145,11 +196,7 @@ export class Ascolto {
       this.parziale = (m.result && m.result.partial) || '';
       this.onTesto((this.testi.join(' ') + ' ' + this.parziale).trim());
     });
-    this.nodo = this.ctx.createScriptProcessor(4096, 1, 1);
-    this.nodo.onaudioprocess = (e) => { try { this.rec.acceptWaveform(e.inputBuffer); } catch {} };
-    this.sorgente = this.ctx.createMediaStreamSource(this.stream);
-    this.sorgente.connect(this.nodo);
-    this.nodo.connect(this.ctx.destination);
+    this.mic.ascoltatore = (buf) => { try { this.rec.acceptWaveform(buf); } catch {} };
   }
 
   async avviaBrowser(locale) {
@@ -191,7 +238,7 @@ export class Ascolto {
     this.attivo = false;
     let testo = '';
     if (this.motore === 'vosk' && this.rec) {
-      try { this.sorgente.disconnect(); this.nodo.disconnect(); } catch {}
+      if (this.mic) this.mic.ascoltatore = null;
       await new Promise((ok) => {
         this.attendiFinale = ok;
         try { this.rec.retrieveFinalResult(); } catch { ok(); }
@@ -201,7 +248,6 @@ export class Ascolto {
       testo = this.testi.join(' ');
       if (this.parziale) testo = (testo + ' ' + this.parziale).trim();
       try { this.rec.remove(); } catch {}
-      try { await this.ctx.close(); } catch {}
     } else if (this.sr) {
       await new Promise((ok) => {
         this.attendiFinale = ok;
@@ -211,7 +257,8 @@ export class Ascolto {
       testo = this.finali.join(' ');
     }
     const audio = this.reg ? await this.reg.ferma() : null;
-    this.stream.getTracks().forEach((t) => t.stop());
+    // con Vosk il microfono resta aperto e pronto per il prossimo tocco; con il browser si chiude
+    if (this.motore !== 'vosk') this.stream.getTracks().forEach((t) => t.stop());
     window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false }));
     return { testo: testo.trim(), audio, parole: this.paroleConf };
   }

@@ -8,6 +8,7 @@ export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&a
 const svg = (d, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
 export const ICONE = {
   indietro: svg('<path d="M15 5l-7 7 7 7"/>'),
+  avanti: svg('<path d="M5 12h13M13 6l6 6-6 6"/>'),
   altoparlante: svg('<path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a7.5 7.5 0 0 1 0 11"/>'),
   mic: svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>', 'stroke="#fff"'),
   stop: svg('<rect x="7" y="7" width="10" height="10" rx="2" fill="#fff"/>', 'stroke="#fff"'),

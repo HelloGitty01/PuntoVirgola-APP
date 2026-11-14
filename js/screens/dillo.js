@@ -3,7 +3,7 @@ import { S, impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, riquadroImmagine, riempiImmagini, mescola, attendi } from '../ui.js';
 import { TIPI, puntiDillo, INCORAGGIAMENTI } from '../punteggi.js';
 import { valutaElementi, paroleNonPreviste } from '../match.js';
-import { Ascolto, motoreScelto, voskPronto, preparaVosk } from '../speech.js';
+import { Ascolto, motoreScelto, voskPronto, preparaVosk, preparaAscolto } from '../speech.js';
 import { parla, zitto } from '../tts.js';
 
 const caso = (a) => a[Math.floor(Math.random() * a.length)];
@@ -34,6 +34,7 @@ export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscol
     if (suAnnulla) suAnnulla(); else suTesto('');
     etich.textContent = 'Cancellato! Tocca e riprova';
   };
+  preparaAscolto();
   const statoRiposo = () => { if (annulla) annulla.classList.add('nascosto'); bt.classList.remove('ascolta'); bt.innerHTML = ICONE.mic; bt.setAttribute('aria-label', 'Tocca e parla'); etich.textContent = 'Tocca e parla'; bt.disabled = false; };
   statoRiposo();
   bt.onclick = async () => {
@@ -215,8 +216,8 @@ export function dillo(area, { voce, fine }) {
     finito = true;
     const frase = voce.frase || el.map((e) => e.testo).join(' ');
     aggiornaFumetto(area, `Bravissima! Si dice: ${frase}`, { leggi: false, allegro: true });
-    await parla(`Bravissima! Si dice: ${frase}`);
-    await attendi(700);
+    parla(`Bravissima! Si dice: ${frase}`);
+    await attendi(900);
     fine({
       punteggio: puntiDillo({ tentativi: Math.max(1, tentativi), aiuti, trovati: trovati.size, totali: el.length }),
       tentativi, aiuti,

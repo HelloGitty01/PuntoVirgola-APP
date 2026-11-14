@@ -4,7 +4,7 @@ import { S, impostazioni } from '../state.js';
 import { esc, ICONE, virgolaDice, aggiornaFumetto, collegaFumetti, finestra } from '../ui.js';
 import { parole } from '../match.js';
 import { parla, zitto } from '../tts.js';
-import { Ascolto, motoreScelto, voskPronto, preparaVosk } from '../speech.js';
+import { Ascolto, motoreScelto, voskPronto, preparaVosk, preparaAscolto } from '../speech.js';
 import { messaggioErroreVoce } from './dillo.js';
 
 const CONNETTIVI = ['poi', 'dopo', 'perche', 'alla fine', 'infine', 'quindi', 'ma', 'allora', 'cosi', 'mentre', 'quando', 'invece', 'però', 'pero', 'prima'];
@@ -82,6 +82,7 @@ export function valutaRiassunto(racconto, testo) {
 
 // ---------- Dettatura dentro un campo di testo ----------
 function collegaDettatura(btn, campo, area, alCambio) {
+  preparaAscolto();
   let a = null, base = '';
   // tasto per cancellare quello che è stato dettato finora (torna al testo di prima)
   const canc = document.createElement('button');
@@ -263,7 +264,6 @@ export function riassunto(area, { voce, fine, livello }) {
     area.querySelector('#chiudi').onclick = () => {
       if (finito) return;
       finito = true;
-      zitto();
       fine({
         punteggio: Math.max(0, v.punteggio - (giro > 1 ? 1 : 0)),
         titolo: voce.titolo,

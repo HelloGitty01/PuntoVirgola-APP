@@ -48,8 +48,8 @@ export function scombinata(area, { voce, fine }) {
     finito = true;
     const msg = `${caso(INCORAGGIAMENTI)} La frase è: ${voce.frase}`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
-    await parla(msg);
-    await attendi(500);
+    parla(msg);
+    await attendi(900);
     fine({ punteggio: Math.max(0, 10 - 2 * errori - aiuti), errori, aiuti });
   });
   area.querySelector('#aiuto').onclick = () => {
@@ -157,9 +157,9 @@ export function trasforma(area, { voce, fine }) {
     area.querySelector('#buco').textContent = o;
     const msg = `${caso(INCORAGGIAMENTI)} ${prima}${o}${dopo || ''}.`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
-    await attendi(1200);
-    await parla(msg);
-    await attendi(400);
+    await attendi(700);
+    parla(msg);
+    await attendi(900);
     fine({ punteggio: puntiScelta(tentativi), tentativi });
   });
 }
@@ -214,8 +214,8 @@ function rispostaLibera(area, { sinistra, intro, obiettivo, conta, fine, valuta,
     const punti = valuta(testo);
     const msg = chiusura(testo, punti);
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
-    await parla(msg);
-    await attendi(400);
+    parla(msg);
+    await attendi(900);
     fine({ punteggio: punti, frasi });
   };
   return () => { fermaMic(); reg.libera(); };

@@ -43,8 +43,8 @@ function scelta(area, { intro, sinistra, opzioni, conFigure = true, mostraEtiche
     if (conFigure) area.querySelectorAll('[data-o]').forEach((x) => { x.querySelector('.etichetta-parola').textContent = opzioni[+x.dataset.o]; });
     const msg = dopoGiusta(tentativi);
     aggiornaFumetto(area, msg, { leggi: false, allegro: true });
-    await parla(msg);
-    await attendi(500);
+    parla(msg);
+    await attendi(900);
     fine({ punteggio: puntiScelta(tentativi), tentativi });
   });
 }
@@ -155,8 +155,8 @@ export function sillabe(area, { voce, fine }) {
     area.querySelector('#parola').innerHTML = `<div class="sillabe-vis">${sill.map((x) => `<span>${esc(x)}</span>`).join('')}</div>`;
     const msg = giusto ? `${caso(INCORAGGIAMENTI)} ${voce.parola} ha ${sill.length} sillabe:` : `${voce.parola} ha ${sill.length} sillabe, contiamole insieme:`;
     aggiornaFumetto(area, `${msg} ${sill.join(' - ')}`, { leggi: false, allegro: giusto });
-    await parla(`${msg} ${sill.join('... ')}.`);
-    await attendi(400);
+    parla(`${msg} ${sill.join('... ')}.`);
+    await attendi(900);
     fine({ punteggio: giusto ? (prove === 1 ? 10 : 6) : 2, colpi, sillabe: sill.length, prove });
   };
   return () => { if (ctxAudio) ctxAudio.close().catch(() => {}); };
@@ -218,9 +218,8 @@ export function ripeti(area, { voce, fine }) {
     const punti = Math.max(0, Math.round(10 * migliore) - (tentativi > 1 && migliore < 0.9 ? 2 : 0));
     const msg = migliore >= 0.9 ? `${caso(INCORAGGIAMENTI)} Hai ripetuto tutta la frase!` : 'Bel lavoro! Ascoltala ancora una volta.';
     aggiornaFumetto(area, msg, { leggi: false, allegro: migliore >= 0.9 });
-    await parla(msg);
-    if (migliore < 0.9) await parla(voce.frase, { velocita: 0.85 });
-    await attendi(400);
+    parla(msg).then(() => { if (migliore < 0.9 && finito) parla(voce.frase, { velocita: 0.85 }); });
+    await attendi(900);
     fine({ punteggio: punti, tentativi, frasi: [area.querySelector('#trascr').textContent] });
   }
   return () => { fermaMic(); reg.libera(); };
@@ -289,7 +288,8 @@ export function pronuncia(area, { voce, fine }) {
     const punti = riuscita ? [10, 8, 6][tentativi - 1] ?? 6 : 3;
     const msg = riuscita ? `${caso(INCORAGGIAMENTI)} Hai detto proprio ${voce.parola}!` : `Brava, ci hai provato tanto! Ci alleniamo ancora la prossima volta: ${voce.parola}.`;
     aggiornaFumetto(area, msg, { leggi: false, allegro: riuscita });
-    await parla(msg);
+    parla(msg);
+    await attendi(900);
     fine({ punteggio: punti, suono: voce.suono, parola: voce.parola, riuscita, tentativi, sentite });
   }
   return () => { fermaMic(); reg.libera(); };

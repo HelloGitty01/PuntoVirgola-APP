@@ -1,9 +1,7 @@
 // Gestione della partita: scelta delle scene, avanzamento, registrazione.
 import { vai } from '../nav.js';
 import { S, loc, impostazioni } from '../state.js';
-import { mescola, ICONE, esc, contatoreCaramelle, finestra, caramella } from '../ui.js';
-
-const caramellaIcona = `<span style="width:44px;display:inline-flex">${caramella(true)}</span>`;
+import { mescola, ICONE, esc, contatoreCaramelle, finestra } from '../ui.js';
 import { GIOCHI } from '../punteggi.js';
 import { componi } from './componi.js';
 import { dillo } from './dillo.js';
@@ -124,9 +122,11 @@ export function gioco(app, param = {}) {
     if (mic) { mic.disabled = true; const t = area.querySelector('#mic-testo'); if (t) t.textContent = 'Esercizio finito!'; }
     const barra = document.createElement('div');
     barra.className = 'barra-fine';
-    barra.innerHTML = `<button class="btn grande arancio" id="vai-caramelle">${caramellaIcona} Vedi le caramelle!</button>`;
+    barra.innerHTML = `<button class="btn grande arancio" id="vai-caramelle">Avanti! ${ICONE.avanti}</button>`;
     app.querySelector('main').appendChild(barra);
     barra.querySelector('button').onclick = () => vai('risultato', { esito, ultimo });
+    // nel riassunto la bambina ha appena toccato "Fatto!": si va avanti subito
+    if (P.gioco === 'riassunto') vai('risultato', { esito, ultimo });
   };
   pulizia = ESERCIZI[P.gioco](area, { voce: P.elementi[P.i], fine, livello: P.livello });
   return () => { if (typeof pulizia === 'function') pulizia(); };

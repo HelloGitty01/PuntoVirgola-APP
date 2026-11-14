@@ -125,9 +125,8 @@ export function descrivi(area, { voce, fine, livello }) {
     const msg = n >= obiettivo ? 'Che bella descrizione!' : 'Bella descrizione!';
     const modello = descrizioneModello(voce, obiettivo, segreta);
     aggiornaFumetto(area, `${msg} Io l’avrei descritta così: ${modello.testo}`, { leggi: false, allegro: true });
-    if (modello.testo) await parla(`${msg} Io l'avrei descritta così, con ${modello.n} parole importanti. ${modello.testo}`);
-    else await parla(msg);
-    await attendi(500);
+    parla(modello.testo ? `${msg} Io l'avrei descritta così, con ${modello.n} parole importanti. ${modello.testo}` : msg);
+    await attendi(900);
     fine({ punteggio: punti, parole: n, obiettivo, segreta, segretaTrovata: segretaTrovata() && !!segreta, frasi });
   }
 

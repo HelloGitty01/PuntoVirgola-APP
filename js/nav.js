@@ -1,6 +1,7 @@
 // Navigazione tra le schermate.
 import { zitto } from './tts.js';
 import { musicaPerSchermata } from './musica.js';
+import { chiudiMicrofono } from './speech.js';
 
 const registro = {};
 let pulizia = null;
@@ -12,6 +13,7 @@ export function schermataCorrente() { return corrente; }
 export function vai(nome, param) {
   if (pulizia) { try { pulizia(); } catch (e) { console.warn(e); } pulizia = null; }
   zitto();
+  chiudiMicrofono();
   // Contenitore nuovo a ogni schermata: così non restano ascoltatori di eventi vecchi.
   const vecchio = document.getElementById('app');
   const app = vecchio.cloneNode(false);
