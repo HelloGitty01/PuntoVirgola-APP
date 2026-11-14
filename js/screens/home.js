@@ -1,7 +1,7 @@
 // Home della bambina.
 import { vai } from '../nav.js';
 import { S, loc, nomeBambina, caramelleTotali, dispositivo } from '../state.js';
-import { esc, ICONE, contatoreCaramelle, cancelloGenitori } from '../ui.js';
+import { esc, ICONE, contatoreCaramelle, cancelloGenitori, virgolaDice, collegaFumetti } from '../ui.js';
 import { GIOCHI, personaggio, prossimoSblocco } from '../punteggi.js';
 import { verificaPin } from './genitori.js';
 
@@ -9,10 +9,16 @@ export function home(app) {
   const tot = caramelleTotali();
   const pg = personaggio(loc.get('avatar'));
   const prossimo = prossimoSblocco(tot);
+  const saluti = [
+    'Ciao! Scegli un gioco: io ti spiego tutto e Punto gioca con te.',
+    'Che bello vederti! Con quale gioco iniziamo oggi?',
+    'Pronta? Ogni frase giusta vale tante caramelle!'
+  ];
+  const saluto = saluti[Math.floor(Math.random() * saluti.length)];
   const percentuale = prossimo ? Math.round((tot / prossimo.costo) * 100) : 100;
   const giochi = Object.entries(GIOCHI).map(([id, g]) => `
     <button class="gioco" data-tipo="${g.tipo}" data-gioco="${id}">
-      ${ICONE[id]}
+      <span class="icona">${ICONE[id]}</span>
       <span><b>${esc(g.titolo)}</b><span>${esc(g.sotto)}</span></span>
     </button>`).join('');
 
@@ -24,6 +30,7 @@ export function home(app) {
           <button class="avatar" id="avatar" aria-label="Cambia il tuo personaggio">${pg.faccia}</button>
           <div><h1>Ciao, ${esc(nomeBambina())}!</h1><p>A cosa giochiamo oggi?</p></div>
         </div>
+        ${virgolaDice(saluto)}
         <div class="card barattolo">
           <div class="info">
             <b>Le tue caramelle</b>
@@ -43,6 +50,7 @@ export function home(app) {
       </div>
     </div></main>`;
 
+  collegaFumetti(app);
   app.querySelector('#avatar').onclick = () => vai('personaggio');
   app.querySelectorAll('[data-gioco]').forEach((b) => { b.onclick = () => vai('gioco', { gioco: b.dataset.gioco }); });
   app.querySelector('#genitori').onclick = async () => {

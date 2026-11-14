@@ -40,17 +40,18 @@ export function puntiDescrivi({ parole, obiettivo, segreta }) {
   return limita(6 * Math.min(1, parole / obiettivo) + (segreta ? 4 : 0));
 }
 
-export function fraseVirgola(punti) {
+export function fraseVirgola(punti, nome = '') {
   const scegli = (a) => a[Math.floor(Math.random() * a.length)];
-  if (punti >= 10) return scegli(['Perfetto! Ti do 10 caramelle!', 'Bravissima! Tutte e 10 le caramelle sono tue!', 'Che campionessa! 10 caramelle!']);
-  if (punti >= 7) return scegli([`Molto brava! Ti do ${punti} caramelle.`, `Ottimo lavoro! Ecco ${punti} caramelle.`]);
-  if (punti >= 4) return scegli([`Brava! Ti do ${punti} caramelle. La prossima volta ancora meglio!`, `Bene! ${punti} caramelle per te.`]);
-  if (punti >= 1) return `Ti do ${punti} ${punti === 1 ? 'caramella' : 'caramelle'}. Ci riproviamo insieme?`;
-  return 'Questa volta niente caramelle, ma hai imparato una frase nuova! Riproviamo?';
+  const n = nome ? `, ${nome}` : '';
+  if (punti >= 10) return scegli([`Evviva${n}! Sei stata fantastica: 10 caramelle tutte per te!`, `Wow${n}! Perfetto! Ecco 10 caramelle!`, `Che campionessa! Punto è a bocca aperta: 10 caramelle!`]);
+  if (punti >= 7) return scegli([`Bravissima${n}! Ti meriti ${punti} caramelle!`, `Ottimo lavoro! Ecco ${punti} caramelle, gnam!`, `Che brava! ${punti} caramelle nel tuo barattolo!`]);
+  if (punti >= 4) return scegli([`Brava${n}! Ti do ${punti} caramelle. La prossima andrà ancora meglio!`, `Bene! ${punti} caramelle per te. Stai imparando tanto!`]);
+  if (punti >= 1) return `Ti do ${punti} ${punti === 1 ? 'caramella' : 'caramelle'}. Non importa: ci riproviamo insieme, io e te!`;
+  return 'Questa volta niente caramelle, ma hai imparato una frase nuova! Ci riproviamo insieme?';
 }
 
-export const INCORAGGIAMENTI = ['Brava!', 'Esatto!', 'Giusto!', 'Benissimo!', 'Sì, proprio così!'];
-export const RIPROVA = ['Uhm, non va lì. Guarda il colore!', 'Quasi! Prova un altro mattoncino.', 'Non è questo. Riprova!'];
+export const INCORAGGIAMENTI = ['Brava!', 'Esatto!', 'Giusto!', 'Benissimo!', 'Sì, proprio così!', 'Evviva!', 'Che brava!', 'Super!'];
+export const RIPROVA = ['Uhm, non va lì. Guarda il colore!', 'Quasi! Prova un altro mattoncino.', 'Ops! Non è questo. Riprova, ce la fai!', 'Mmm, sei vicina! Prova ancora.'];
 
 // Personaggi tra cui scegliere (i primi sono gratis, gli altri si sbloccano con le caramelle).
 export const PERSONAGGI = [

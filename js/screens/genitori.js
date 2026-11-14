@@ -8,8 +8,9 @@ import { normalizza } from '../match.js';
 import { CREDITI_ARASAAC } from '../arasaac.js';
 import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria } from './editor.js';
+import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
 
-const VERSIONE = '1.0.0';
+const VERSIONE = '1.1.0';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['scene', 'Scene'], ['storie', 'Storie'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -183,6 +184,14 @@ async function impostazioniScheda(cont) {
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>“Descrivi la scena”: parole minime</h3>
       <div style="display:flex;gap:12px">${[1, 2, 3].map((l) => `<div class="campo"><label for="pd-${l}">Livello ${l}</label><input id="pd-${l}" type="number" min="2" max="20" value="${imp.paroleDescrivi[l]}"></div>`).join('')}</div>
     </div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Voce di Virgola (su questo dispositivo)</h3>
+      <div class="campo"><label for="voce-nome">Voce</label><select id="voce-nome"></select>
+        <span class="aiuto">Le voci dipendono dal dispositivo. Su Chromebook la più naturale di solito è “Google italiano”; su Edge le voci “Natural”.</span></div>
+      <div class="campo"><label for="voce-tono">Tono (più alto = più allegro)</label><input id="voce-tono" type="range" min="0.9" max="1.5" step="0.02"></div>
+      <div class="campo"><label for="voce-vel">Velocità</label><input id="voce-vel" type="range" min="0.75" max="1.15" step="0.01"></div>
+      <div class="riga-pulsanti"><button type="button" class="btn secondario piccolo" id="voce-prova">${ICONE.altoparlante} Prova la voce</button>
+        <button type="button" class="link" id="voce-reset">Valori consigliati</button></div>
+    </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Riconoscimento vocale</h3>
       <div class="campo"><label for="motore">Motore</label><select id="motore">
         <option value="vosk" ${imp.motoreVoce === 'vosk' ? 'selected' : ''}>Vosk, sul dispositivo (consigliato, l’audio non esce)</option>
@@ -200,6 +209,31 @@ async function impostazioniScheda(cont) {
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" type="submit" id="salva" style="align-self:flex-start">Salva impostazioni</button>
   </form>`;
+  // Voce di Virgola: preferenze salvate solo su questo dispositivo
+  const pv = { ...PREDEFINITE, ...loc.get('voce', {}) };
+  const selV = cont.querySelector('#voce-nome');
+  const riempiVoci = () => {
+    const voci = vociItaliane();
+    const att = (voceCorrente() || {}).name;
+    selV.innerHTML = voci.length ? voci.map((v) => `<option ${v.name === (pv.nome || att) ? 'selected' : ''}>${esc(v.name)}</option>`).join('') : '<option>Nessuna voce italiana trovata</option>';
+  };
+  riempiVoci();
+  if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', riempiVoci);
+  cont.querySelector('#voce-tono').value = pv.tono;
+  cont.querySelector('#voce-vel').value = pv.velocita;
+  const salvaVoce = () => {
+    const v = { nome: selV.value, tono: Number(cont.querySelector('#voce-tono').value), velocita: Number(cont.querySelector('#voce-vel').value) };
+    loc.set('voce', v);
+    aggiornaVoce();
+  };
+  ['#voce-nome', '#voce-tono', '#voce-vel'].forEach((q) => cont.querySelector(q).addEventListener('change', salvaVoce));
+  cont.querySelector('#voce-prova').onclick = () => { salvaVoce(); parla(`Ciao ${S.config.nome || ''}! Sono Virgola, la tua maestra. Sei pronta a giocare con le frasi? Evviva!`); };
+  cont.querySelector('#voce-reset').onclick = () => {
+    cont.querySelector('#voce-tono').value = PREDEFINITE.tono;
+    cont.querySelector('#voce-vel').value = PREDEFINITE.velocita;
+    salvaVoce();
+    toast('Voce ripristinata');
+  };
   const statoModello = async () => {
     const box = cont.querySelector('#stato-modello');
     if (await modelloInCache()) { box.innerHTML = '<span class="ok-testo">Modello vocale pronto su questo dispositivo.</span>'; return; }

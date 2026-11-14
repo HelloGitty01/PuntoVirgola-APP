@@ -1,6 +1,6 @@
 // Virgola assegna le caramelle.
 import { vai } from '../nav.js';
-import { dispositivo, caramelleTotali } from '../state.js';
+import { dispositivo, caramelleTotali, nomeBambina } from '../state.js';
 import { registraPartita } from '../data.js';
 import { caramella, virgolaDice, collegaFumetti, contatoreCaramelle } from '../ui.js';
 import { fraseVirgola, PERSONAGGI } from '../punteggi.js';
@@ -9,7 +9,7 @@ import { chiudiPartita, partitaCorrente } from './gioco.js';
 
 export function risultato(app, { esito, ultimo }) {
   const p = esito.punteggio;
-  const frase = fraseVirgola(p);
+  const frase = fraseVirgola(p, Math.random() < 0.5 ? nomeBambina() : '');
   app.innerHTML = `<main class="schermata">
     <div class="risultato">
       <div class="mascotte">
