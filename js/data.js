@@ -26,16 +26,24 @@ export async function sceneIniziali() {
 const CHIAVI_CONTENUTI = ['parole', 'coppie', 'rime', 'ripeti', 'scombinate', 'unisci', 'finisci', 'trasforma', 'pronuncia', 'racconti'];
 export async function completaContenuti() {
   if (!S.scene) return;
-  const vecchia = (S.scene.versione || 1) < 2;
+  const versione = S.scene.versione || 1;
+  const vecchia = versione < 2;
+  const senzaDescrizioni = versione < 3;
   // (le chiavi mancanti, come 'pronuncia', vengono aggiunte anche ai dati già in versione 2)
   const mancano = CHIAVI_CONTENUTI.some((k) => !Array.isArray(S.scene[k]));
-  if (!vecchia && !mancano) return;
+  if (!vecchia && !mancano && !senzaDescrizioni) return;
   const ini = await sceneIniziali();
   CHIAVI_CONTENUTI.forEach((k) => { if (!Array.isArray(S.scene[k])) S.scene[k] = ini[k]; });
   if (vecchia) {
     const ids = new Set((S.scene.scene || []).map((x) => x.id));
     ini.scene.filter((x) => (x.livello || 1) >= 4 && !ids.has(x.id)).forEach((x) => S.scene.scene.push(x));
     S.scene.versione = 2;
+  }
+  if (senzaDescrizioni) {
+    // versione 3: descrizioni d'esempio per "Descrivi la scena"
+    const perId = new Map(ini.scene.map((x) => [x.id, x]));
+    (S.scene.scene || []).forEach((x) => { if (!x.descrizione && perId.has(x.id)) x.descrizione = perId.get(x.id).descrizione; });
+    S.scene.versione = 3;
   }
   loc.set('cache.scene', S.scene);
   const d = dispositivo() || {};

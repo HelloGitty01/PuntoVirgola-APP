@@ -123,7 +123,9 @@ export function editorScena(app, scena, alTermine) {
         <button type="button" class="btn secondario piccolo" id="add-di" style="align-self:flex-start">${ICONE.piu} Aggiungi distrattore</button></div>
       <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Per “Descrivi la scena”</h3>
         <div class="campo"><label for="voc">Vocabolario della scena (separato da virgola)</label><textarea id="voc">${esc((s.vocabolario || []).join(', '))}</textarea></div>
-        <div class="campo"><label for="seg">Parole segrete possibili</label><input id="seg" type="text" value="${esc((s.parolaSegreta || []).join(', '))}"></div></div>
+        <div class="campo"><label for="seg">Parole segrete possibili</label><input id="seg" type="text" value="${esc((s.parolaSegreta || []).join(', '))}"></div>
+        <div class="campo"><label for="desc">Descrizione d’esempio (Virgola la legge alla fine)</label><textarea id="desc">${esc(s.descrizione || '')}</textarea>
+          <span class="aiuto">Scrivila con almeno 12 parole importanti e con le parole segrete, così vale per tutti i livelli.</span></div></div>
       <p class="errore" id="err" role="alert"></p>
       <div class="riga-pulsanti">
         <button class="btn" type="submit" id="salva">Salva scena</button>
@@ -171,7 +173,8 @@ export function editorScena(app, scena, alTermine) {
         elementi,
         distrattori: [...diBox.querySelectorAll('[data-distrattore]')].map((r) => ({ tipo: r.querySelector('[data-f="tipo"]').value, testo: r.querySelector('[data-f="testo"]').value.trim() })).filter((x) => x.testo),
         vocabolario: lista(app.querySelector('#voc').value),
-        parolaSegreta: lista(app.querySelector('#seg').value)
+        parolaSegreta: lista(app.querySelector('#seg').value),
+        descrizione: app.querySelector('#desc').value.trim()
       };
       nuova.immagine = await sel.valore(elementi.map((x) => x.accettate[0] || x.testo).map((x) => x.replace('*', '')));
       const i = S.scene.scene.findIndex((x) => x.id === nuova.id);

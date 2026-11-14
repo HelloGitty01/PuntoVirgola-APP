@@ -5,6 +5,7 @@ import { puntiScelta, INCORAGGIAMENTI } from '../punteggi.js';
 import { normalizza, paroleContenuto, contiene } from '../match.js';
 import { parla } from '../tts.js';
 import { collegaMicrofono, htmlMic, htmlRegistrazione, collegaRegistrazione, messaggioErroreVoce } from './dillo.js';
+import { htmlContatore, aggiornaContatore } from './descrivi.js';
 
 const caso = (a) => a[Math.floor(Math.random() * a.length)];
 const minuscolaIniziale = (t) => t.charAt(0).toLowerCase() + t.slice(1);
@@ -164,14 +165,16 @@ export function trasforma(area, { voce, fine }) {
 }
 
 // ---------- Finisci tu / Cosa succede dopo (risposte libere a voce) ----------
-function rispostaLibera(area, { sinistra, intro, minimo, fine, valuta, chiusura }) {
+function rispostaLibera(area, { sinistra, intro, obiettivo, conta, fine, valuta, chiusura }) {
   const leggi = impostazioni().letturaAutomatica;
   const frasi = [];
   let finito = false;
   area.innerHTML = `<div class="due-colonne">
     <div class="colonna">${sinistra}
-      <div class="card morbida"><span style="color:var(--tenue)">Hai detto:</span><div class="trascrizione" id="trascr"></div></div></div>
+      <div class="card morbida"><span style="color:var(--tenue)">Hai detto:</span><div class="trascrizione" id="trascr"></div>
+        <button class="link nascosto" id="togli-ultima">Cancella l’ultima frase</button></div></div>
     <div class="colonna">${virgolaDice(intro)}
+      ${htmlContatore(obiettivo, `Prova a usare almeno ${obiettivo} parole`)}
       <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px;align-items:center">
         ${htmlMic()}
         <div class="riga-pulsanti" style="justify-content:center">${htmlRegistrazione()}<button class="btn arancio" id="finito" disabled>Ho finito</button></div>
@@ -180,20 +183,30 @@ function rispostaLibera(area, { sinistra, intro, minimo, fine, valuta, chiusura 
   collegaFumetti(area);
   if (leggi) setTimeout(() => parla(intro), 400);
   const reg = collegaRegistrazione(area);
+  const mostra = (corrente = '') => {
+    const testo = [...frasi, corrente].filter(Boolean).join(' ');
+    const p = conta(testo);
+    aggiornaContatore(area, p, obiettivo);
+    area.querySelector('#trascr').textContent = testo;
+    area.querySelector('#togli-ultima').classList.toggle('nascosto', !frasi.length || !!corrente);
+    area.querySelector('#finito').disabled = !frasi.length;
+    return p.length;
+  };
   const fermaMic = collegaMicrofono(area, {
-    suTesto: (t) => { area.querySelector('#trascr').textContent = [...frasi, t].join(' '); },
+    suTesto: (t) => mostra(t),
+    suAnnulla: () => mostra(),
     suErrore: (e) => aggiornaFumetto(area, messaggioErroreVoce(e), { leggi }),
     suFine: ({ testo, audio }) => {
       reg.imposta(audio);
-      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); return; }
+      if (!testo) { aggiornaFumetto(area, 'Non ho sentito bene. Riprova!', { leggi }); mostra(); return; }
       frasi.push(testo);
-      area.querySelector('#trascr').textContent = frasi.join(' ');
-      area.querySelector('#finito').disabled = false;
-      const n = paroleContenuto(frasi.join(' ')).length;
-      if (n < minimo) aggiornaFumetto(area, 'Bello! Puoi aggiungere ancora qualcosa? Tocca di nuovo il microfono.', { leggi });
+      const n = mostra();
+      const m = obiettivo - n;
+      if (m > 0) aggiornaFumetto(area, `Bello! Te ne ${m === 1 ? 'manca' : 'mancano'} ancora ${m}: tocca di nuovo il microfono e aggiungi qualcosa.`, { leggi });
       else aggiornaFumetto(area, 'Che bella frase! Tocca “Ho finito” oppure aggiungi altro.', { leggi, allegro: true });
     }
   });
+  area.querySelector('#togli-ultima').onclick = () => { frasi.pop(); mostra(); aggiornaFumetto(area, 'Ho cancellato l’ultima frase. Riprova!', { leggi }); };
   area.querySelector('#finito').onclick = async () => {
     if (finito) return;
     finito = true;
@@ -216,10 +229,11 @@ export function finisci(area, { voce, fine }) {
       <div class="parola-grande" style="text-align:left;font-size:clamp(30px,3.6vw,44px)">${esc(inizio)}</div></div>
       <img src="img/punto.png" alt="Punto" style="width:min(200px,45%);align-self:center">`,
     intro: `Finisci tu la frase: ${inizio.replace('…', '')}... Dillo a voce, comincia proprio così!`,
-    minimo: 3,
+    obiettivo: 4,
+    conta: (t) => [...new Set(paroleContenuto(t).filter((p) => !paroleInizio.has(p)))],
     valuta: (t) => {
-      const nuove = paroleContenuto(t).filter((p) => !paroleInizio.has(p)).length;
-      return nuove ? Math.min(10, 4 + 2 * nuove) : 0;
+      const nuove = new Set(paroleContenuto(t).filter((p) => !paroleInizio.has(p))).size;
+      return nuove ? Math.min(10, 2 + 2 * nuove) : 0;
     },
     chiusura: (t, p) => (p >= 8 ? 'Che frase lunga e ricca! Bravissima!' : p > 0 ? 'Bella frase! La prossima volta prova ad aggiungere un perché.' : 'Riproviamo un’altra volta!'),
     fine
@@ -235,9 +249,10 @@ export function dopo(area, { voce, fine }) {
       <div class="posto" style="border-color:var(--viola)"><span class="parola-grande">?</span></div></div>
       <div class="card morbida" style="font-size:20px">${mostrate.map((v) => esc(v.testo)).join('. ')}…</div>`,
     intro: `${voce.titolo ? voce.titolo + '. ' : ''}${mostrate.map((v) => v.testo).join('. ')}. E poi? Inventa tu cosa succede dopo! Usa almeno due frasi.`,
-    minimo: 6,
+    obiettivo: 8,
+    conta: (t) => [...new Set(paroleContenuto(t))],
     valuta: (t) => {
-      const n = paroleContenuto(t).length;
+      const n = new Set(paroleContenuto(t)).size;
       const ponti = CONNETTIVI.filter((c) => contiene(t, c)).length;
       return Math.min(10, Math.round(6 * Math.min(1, n / 8)) + Math.min(4, 2 * ponti));
     },

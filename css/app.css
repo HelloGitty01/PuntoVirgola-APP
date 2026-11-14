@@ -447,6 +447,7 @@ video.scanner { width: min(100%, 420px); border-radius: 16px; border: 3px solid 
 .riga-campo { display: flex; gap: 10px; align-items: flex-start; }
 .riga-campo textarea { flex: 1; }
 .riga-campo .btn { flex: none; }
+.riga-campo { flex-wrap: wrap; }
 [data-detta].ascolta { background: var(--arancio); color: #fff; }
 .lista-elementi { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .lista-elementi li { display: flex; gap: 12px; align-items: flex-start; font-size: 20px; padding: 10px 12px; border-radius: 16px; }
@@ -463,3 +464,9 @@ video.scanner { width: min(100%, 420px); border-radius: 16px; border: 3px solid 
 .btn-musica svg { width: 26px; height: 26px; }
 .btn-musica.spenta { color: #9A93A6; }
 .btn-musica:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--inchiostro); }
+.conta-grande { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-family: var(--font-titoli); font-size: 22px; font-weight: 600; }
+.conta-grande b { font-size: 40px; color: var(--viola); }
+.conta-grande .mancano { color: #8A3500; background: var(--arancio-chiaro); padding: 4px 14px; border-radius: 999px; }
+.conta-grande .mancano.fatto { color: #335A14; background: var(--verde-chiaro); }
+.parole-contate { display: flex; flex-wrap: wrap; gap: 6px; min-height: 8px; }
+.parole-contate span { padding: 4px 10px; border-radius: 10px; background: var(--viola-chiaro); color: #4E2A93; font-weight: 700; font-size: 16px; animation: entra .25s; }

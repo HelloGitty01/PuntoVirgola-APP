@@ -1,5 +1,5 @@
 {
- "versione": 2,
+ "versione": 3,
  "scene": [
   {
    "id": "l1-cane",
@@ -55,7 +55,8 @@
    "parolaSegreta": [
     "coda",
     "zampe"
-   ]
+   ],
+   "descrizione": "Il cane corre veloce sul prato verde. Muove la coda e salta con le zampe, perché è felice di giocare."
   },
   {
    "id": "l1-bambina-dorme",
@@ -112,7 +113,8 @@
    "parolaSegreta": [
     "cuscino",
     "coperta"
-   ]
+   ],
+   "descrizione": "La bambina dorme nel letto. Ha la testa sul cuscino e una coperta calda. È notte e fa un sogno bellissimo."
   },
   {
    "id": "l1-gatto",
@@ -170,7 +172,8 @@
    "parolaSegreta": [
     "ciotola",
     "baffi"
-   ]
+   ],
+   "descrizione": "Il gatto mangia i croccantini dalla ciotola rossa. Ha tanta fame, muove i baffi lunghi e la coda soffice."
   },
   {
    "id": "l1-bambino-legge",
@@ -226,7 +229,8 @@
    "parolaSegreta": [
     "libro",
     "pagine"
-   ]
+   ],
+   "descrizione": "Il bambino è seduto sul tappeto e legge un libro. Gira le pagine piano e guarda le figure colorate della storia."
   },
   {
    "id": "l1-mamma-cucina",
@@ -283,7 +287,8 @@
    ],
    "parolaSegreta": [
     "pentola"
-   ]
+   ],
+   "descrizione": "La mamma cucina il pranzo per tutta la famiglia. Mescola la pentola sul fornello acceso e la cucina profuma di sugo buono."
   },
   {
    "id": "l1-papa-guida",
@@ -340,7 +345,8 @@
    "parolaSegreta": [
     "volante",
     "macchina"
-   ]
+   ],
+   "descrizione": "Il papà guida la macchina sulla strada. Tiene il volante con due mani e partiamo per un viaggio lungo."
   },
   {
    "id": "l1-uccello",
@@ -397,7 +403,8 @@
    "parolaSegreta": [
     "ali",
     "becco"
-   ]
+   ],
+   "descrizione": "L’uccellino vola nel cielo azzurro. Apre le ali piene di piume, ha il becco giallo e torna al nido sull’albero."
   },
   {
    "id": "l1-pesce",
@@ -452,7 +459,8 @@
    "parolaSegreta": [
     "pinne",
     "bolle"
-   ]
+   ],
+   "descrizione": "Il pesce nuota nell’acqua del mare. Muove le pinne e la coda e fa tante bolle piccole."
   },
   {
    "id": "l1-bambina-canta",
@@ -507,7 +515,8 @@
    "parolaSegreta": [
     "canzone",
     "musica"
-   ]
+   ],
+   "descrizione": "La bambina canta una canzone allegra. Ascolta la musica e la sua voce fa tante note felici."
   },
   {
    "id": "l1-nonno",
@@ -565,7 +574,8 @@
    "parolaSegreta": [
     "bastone",
     "cappello"
-   ]
+   ],
+   "descrizione": "Il nonno cammina piano per la strada con il bastone. Porta il cappello e fa una passeggiata lenta al sole."
   },
   {
    "id": "l1-bambino-beve",
@@ -620,7 +630,8 @@
    "parolaSegreta": [
     "bicchiere",
     "sete"
-   ]
+   ],
+   "descrizione": "Il bambino beve l’acqua fresca dal bicchiere, perché ha tanta sete dopo aver giocato in giardino."
   },
   {
    "id": "l1-rana",
@@ -676,7 +687,8 @@
    "parolaSegreta": [
     "stagno",
     "verde"
-   ]
+   ],
+   "descrizione": "La rana verde salta nello stagno. Spinge con le zampe, poi atterra su una foglia vicino all’acqua."
   },
   {
    "id": "l2-gatto-cucina",
@@ -742,7 +754,8 @@
    "parolaSegreta": [
     "ciotola",
     "tavolo"
-   ]
+   ],
+   "descrizione": "Il gatto mangia in cucina. La ciotola è sul pavimento, vicino al tavolo e alla sedia, e il cibo è buono."
   },
   {
    "id": "l2-palla",
@@ -808,7 +821,8 @@
    "parolaSegreta": [
     "pallone",
     "prato"
-   ]
+   ],
+   "descrizione": "La bambina gioca a palla nel prato del parco. Tira il pallone in alto e corre a prenderlo con le mani."
   },
   {
    "id": "l2-mela",
@@ -876,7 +890,8 @@
    "parolaSegreta": [
     "frutta",
     "merenda"
-   ]
+   ],
+   "descrizione": "Il bambino mangia una mela rossa per merenda. La frutta è buona e succosa, e lui sorride contento."
   },
   {
    "id": "l2-libro",
@@ -944,7 +959,8 @@
    "parolaSegreta": [
     "pagine",
     "occhiali"
-   ]
+   ],
+   "descrizione": "La mamma legge un libro sul divano. Porta gli occhiali e gira le pagine di una storia avventurosa."
   },
   {
    "id": "l2-cuccia",
@@ -1012,7 +1028,8 @@
    "parolaSegreta": [
     "osso",
     "casetta"
-   ]
+   ],
+   "descrizione": "Il cane dorme nella cuccia, la sua casetta di legno. È stanco, è notte e vicino al cuscino c’è il suo osso."
   },
   {
    "id": "l2-mare",
@@ -1079,7 +1096,8 @@
    "parolaSegreta": [
     "onde",
     "conchiglia"
-   ]
+   ],
+   "descrizione": "Il pesce nuota nel mare tra le onde. Sotto, sulla sabbia, ci sono alghe verdi e una conchiglia bianca."
   },
   {
    "id": "l2-macchina",
@@ -1150,7 +1168,8 @@
    "parolaSegreta": [
     "spugna",
     "secchio"
-   ]
+   ],
+   "descrizione": "Il papà lava la macchina con la spugna. Nel secchio c’è acqua e sapone, e la schiuma copre tutto."
   },
   {
    "id": "l2-latte",
@@ -1216,7 +1235,8 @@
    "parolaSegreta": [
     "tazza",
     "biscotti"
-   ]
+   ],
+   "descrizione": "La mattina la bambina beve il latte bianco nella tazza. A colazione inzuppa anche due biscotti buonissimi."
   },
   {
    "id": "l2-parco",
@@ -1285,7 +1305,8 @@
    "parolaSegreta": [
     "casco",
     "ruote"
-   ]
+   ],
+   "descrizione": "Il bambino va in bicicletta al parco. Porta il casco, spinge i pedali e le ruote girano veloci tra gli alberi."
   },
   {
    "id": "l2-lavagna",
@@ -1350,7 +1371,8 @@
    "parolaSegreta": [
     "gesso",
     "classe"
-   ]
+   ],
+   "descrizione": "La maestra scrive alla lavagna con il gesso bianco. In classe i bambini leggono le lettere e le parole nuove."
   },
   {
    "id": "l2-divano",
@@ -1419,7 +1441,8 @@
    "parolaSegreta": [
     "salotto",
     "cuscino"
-   ]
+   ],
+   "descrizione": "Il nonno dorme sul divano del salotto. Ha la testa sul cuscino, una coperta sulle gambe, ed è stanco: russa forte!"
   },
   {
    "id": "l2-fiore",
@@ -1487,7 +1510,8 @@
    "parolaSegreta": [
     "matite",
     "petali"
-   ]
+   ],
+   "descrizione": "La bambina disegna un fiore sul foglio. Usa le matite colorate per fare i petali rossi e lo stelo verde, seduta al tavolo."
   },
   {
    "id": "l3-gatto-latte",
@@ -1568,7 +1592,8 @@
    "parolaSegreta": [
     "lingua",
     "ciotola"
-   ]
+   ],
+   "descrizione": "Il gatto beve il latte in cucina. Lecca con la lingua dalla ciotola sul pavimento e si sporca i baffi bianchi."
   },
   {
    "id": "l3-torta",
@@ -1649,7 +1674,8 @@
    "parolaSegreta": [
     "forno",
     "farina"
-   ]
+   ],
+   "descrizione": "La mamma prepara la torta in cucina per il compleanno. Mescola farina, uova e zucchero, poi mette tutto nel forno caldo."
   },
   {
    "id": "l3-calcio",
@@ -1732,7 +1758,8 @@
    "parolaSegreta": [
     "porta",
     "squadra"
-   ]
+   ],
+   "descrizione": "Il bambino gioca a calcio al parco con la squadra. Corre sul prato, calcia il pallone verso la porta e fa goal!"
   },
   {
    "id": "l3-estate",
@@ -1820,7 +1847,8 @@
    "parolaSegreta": [
     "ombrellone",
     "costume"
-   ]
+   ],
+   "descrizione": "D’estate i bambini nuotano nel mare tra le onde. Sulla spiaggia c’è l’ombrellone, il sole scalda la sabbia e loro indossano il costume."
   },
   {
    "id": "l3-sera",
@@ -1904,7 +1932,8 @@
    "parolaSegreta": [
     "lampada",
     "pigiama"
-   ]
+   ],
+   "descrizione": "La sera la bambina legge un libro nel letto. Ha il pigiama, la lampada accesa e dalla finestra si vede la luna."
   },
   {
    "id": "l3-ombrello",
@@ -1985,7 +2014,8 @@
    "parolaSegreta": [
     "gocce",
     "stivali"
-   ]
+   ],
+   "descrizione": "Il papà apre l’ombrello perché piove forte. Le nuvole sono grigie, le gocce cadono e lui porta gli stivali per non bagnarsi."
   },
   {
    "id": "l3-gelato",
@@ -2063,7 +2093,8 @@
    "parolaSegreta": [
     "cono",
     "cioccolato"
-   ]
+   ],
+   "descrizione": "La bambina mangia il gelato perché fa caldo. Il cono ha due palline, fragola e cioccolato, e il sole splende d’estate."
   },
   {
    "id": "l3-albero",
@@ -2143,7 +2174,8 @@
    "parolaSegreta": [
     "pala",
     "buca"
-   ]
+   ],
+   "descrizione": "Il nonno pianta un albero in giardino. Scava una buca nella terra con la pala e poi sistema le radici con cura."
   },
   {
    "id": "l3-denti",
@@ -2231,7 +2263,8 @@
    "parolaSegreta": [
     "spazzolino",
     "dentifricio"
-   ]
+   ],
+   "descrizione": "Al mattino il bambino si lava i denti in bagno. Mette il dentifricio sullo spazzolino, apre l’acqua del lavandino e si guarda allo specchio."
   },
   {
    "id": "l3-cappotto",
@@ -2311,7 +2344,8 @@
    "parolaSegreta": [
     "sciarpa",
     "guanti"
-   ]
+   ],
+   "descrizione": "La bambina mette il cappotto perché fa freddo. È inverno, fuori c’è la neve e indossa anche sciarpa, cappello e guanti."
   },
   {
    "id": "l4-pizza",
@@ -2400,7 +2434,8 @@
    "parolaSegreta": [
     "mozzarella",
     "forno"
-   ]
+   ],
+   "descrizione": "Ieri il papà ha preparato la pizza in cucina. Ha steso l’impasto, ha messo pomodoro e mozzarella e l’ha cotta nel forno per cena."
   },
   {
    "id": "l4-cane-palla",
@@ -2491,7 +2526,8 @@
    "parolaSegreta": [
     "erba",
     "coda"
-   ]
+   ],
+   "descrizione": "Il cane prende la palla nel prato perché vuole giocare. Corre sull’erba, fa un salto altissimo e scodinzola con la coda."
   },
   {
    "id": "l4-maestra",
@@ -2584,7 +2620,8 @@
    "parolaSegreta": [
     "banchi",
     "bambini"
-   ]
+   ],
+   "descrizione": "Stamattina la maestra legge una storia in classe. I bambini sono seduti ai banchi e ascoltano attenti il libro di avventure."
   },
   {
    "id": "l4-pupazzo",
@@ -2679,7 +2716,8 @@
    "parolaSegreta": [
     "carota",
     "sciarpa"
-   ]
+   ],
+   "descrizione": "D’inverno i bambini costruiscono un pupazzo di neve in giardino. Gli mettono una carota per naso, una sciarpa rossa e un cappello."
   },
   {
    "id": "l5-mani",
@@ -2768,7 +2806,8 @@
    "parolaSegreta": [
     "sapone",
     "forchetta"
-   ]
+   ],
+   "descrizione": "La bambina si lava le mani con acqua e sapone e poi mangia la pasta. Seduta a tavola, usa la forchetta e svuota il piatto del pranzo."
   },
   {
    "id": "l5-nonno",
@@ -2871,7 +2910,8 @@
    "parolaSegreta": [
     "occhiali",
     "lampada"
-   ]
+   ],
+   "descrizione": "Dopo cena il nonno legge il giornale sul divano perché è stanco. Porta gli occhiali e accende la lampada per riposare un po’."
   },
   {
    "id": "l5-mare",
@@ -2962,7 +3002,8 @@
    "parolaSegreta": [
     "asciugamano",
     "ombrellone"
-   ]
+   ],
+   "descrizione": "Al mare la mamma mette la crema alla bambina perché c’è il sole. Sotto l’ombrellone c’è l’asciugamano, e la bambina ha il costume nuovo."
   }
  ],
  "storie": [

@@ -16,12 +16,25 @@ export function messaggioErroreVoce(e) {
 }
 
 // Tasto microfono riutilizzabile: gestisce preparazione del modello, ascolto e stop.
-export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscoltare, grammatica }) {
+export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscoltare, grammatica, suAnnulla }) {
   const bt = area.querySelector('#mic');
   const etich = area.querySelector('#mic-testo');
+  const annulla = area.querySelector('#mic-annulla');
   let ascolto = null;
   let timer = null;
-  const statoRiposo = () => { bt.classList.remove('ascolta'); bt.innerHTML = ICONE.mic; bt.setAttribute('aria-label', 'Tocca e parla'); etich.textContent = 'Tocca e parla'; bt.disabled = false; };
+  // "Cancella": durante la dettatura butta via quello che è stato riconosciuto finora, senza valutarlo.
+  if (annulla) annulla.onclick = async () => {
+    if (!ascolto) return;
+    clearTimeout(timer);
+    const a = ascolto; ascolto = null;
+    annulla.classList.add('nascosto');
+    bt.disabled = true;
+    await a.ferma();
+    statoRiposo();
+    if (suAnnulla) suAnnulla(); else suTesto('');
+    etich.textContent = 'Cancellato! Tocca e riprova';
+  };
+  const statoRiposo = () => { if (annulla) annulla.classList.add('nascosto'); bt.classList.remove('ascolta'); bt.innerHTML = ICONE.mic; bt.setAttribute('aria-label', 'Tocca e parla'); etich.textContent = 'Tocca e parla'; bt.disabled = false; };
   statoRiposo();
   bt.onclick = async () => {
     if (ascolto) {
@@ -48,6 +61,7 @@ export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscol
       bt.innerHTML = ICONE.stop;
       bt.setAttribute('aria-label', 'Ho finito');
       etich.textContent = 'Ti ascolto… tocca quando hai finito';
+      if (annulla) annulla.classList.remove('nascosto');
       timer = setTimeout(() => { if (ascolto) bt.click(); }, 20000);
     } catch (e) {
       ascolto = null;
@@ -59,7 +73,8 @@ export function collegaMicrofono(area, { suTesto, suFine, suErrore, primaDiAscol
 }
 
 export function htmlMic() {
-  return `<div class="mic-zona"><button class="mic" id="mic"></button><span class="mic-testo" id="mic-testo">Tocca e parla</span></div>`;
+  return `<div class="mic-zona"><button class="mic" id="mic"></button><span class="mic-testo" id="mic-testo">Tocca e parla</span>
+    <button class="btn secondario piccolo nascosto" id="mic-annulla">✕ Cancella e ricomincia</button></div>`;
 }
 
 export function collegaRegistrazione(area) {

@@ -83,7 +83,22 @@ export function valutaRiassunto(racconto, testo) {
 // ---------- Dettatura dentro un campo di testo ----------
 function collegaDettatura(btn, campo, area, alCambio) {
   let a = null, base = '';
-  const riposo = () => { btn.classList.remove('ascolta'); btn.innerHTML = `${ICONE.dillo} Detta`; };
+  // tasto per cancellare quello che è stato dettato finora (torna al testo di prima)
+  const canc = document.createElement('button');
+  canc.type = 'button';
+  canc.className = 'btn secondario piccolo nascosto';
+  canc.textContent = '✕ Cancella';
+  btn.insertAdjacentElement('afterend', canc);
+  canc.onclick = async () => {
+    if (!a) return;
+    const ascolto = a; a = null;
+    canc.classList.add('nascosto');
+    await ascolto.ferma();
+    campo.value = base;
+    riposo();
+    alCambio();
+  };
+  const riposo = () => { canc.classList.add('nascosto'); btn.classList.remove('ascolta'); btn.innerHTML = `${ICONE.dillo} Detta`; };
   riposo();
   btn.onclick = async () => {
     if (a) {
@@ -108,6 +123,7 @@ function collegaDettatura(btn, campo, area, alCambio) {
       await a.avvia();
       btn.classList.add('ascolta');
       btn.innerHTML = `${ICONE.stop} Ho finito di dettare`;
+      canc.classList.remove('nascosto');
     } catch (e) {
       a = null; btn.disabled = false; riposo();
       aggiornaFumetto(area, messaggioErroreVoce(e), { leggi: true });
