@@ -1,7 +1,9 @@
 // Gestione della partita: scelta delle scene, avanzamento, registrazione.
 import { vai } from '../nav.js';
 import { S, loc, impostazioni } from '../state.js';
-import { mescola, ICONE, esc, contatoreCaramelle, finestra } from '../ui.js';
+import { mescola, ICONE, esc, contatoreCaramelle, finestra, caramella } from '../ui.js';
+
+const caramellaIcona = `<span style="width:44px;display:inline-flex">${caramella(true)}</span>`;
 import { GIOCHI } from '../punteggi.js';
 import { componi } from './componi.js';
 import { dillo } from './dillo.js';
@@ -103,10 +105,22 @@ export function gioco(app, param = {}) {
     if (P.esercizi.length) vai('finePartita', { interrotta: true });
     else { P = null; vai('home'); }
   };
+  // A fine esercizio non si cambia pagina da soli: compare un pulsante, così Virgola finisce di parlare
+  // e la bambina può ancora riascoltarsi prima di vedere le caramelle.
+  let concluso = false;
   const fine = (esito) => {
+    if (concluso) return;
+    concluso = true;
     P.esercizi.push({ gioco: P.gioco, id: P.elementi[P.i].id, livello: P.livello, quando: new Date().toISOString(), ...esito });
     P.i++;
-    vai('risultato', { esito, ultimo: P.i >= P.elementi.length });
+    const ultimo = P.i >= P.elementi.length;
+    const mic = area.querySelector('#mic');
+    if (mic) { mic.disabled = true; const t = area.querySelector('#mic-testo'); if (t) t.textContent = 'Esercizio finito!'; }
+    const barra = document.createElement('div');
+    barra.className = 'barra-fine';
+    barra.innerHTML = `<button class="btn grande arancio" id="vai-caramelle">${caramellaIcona} Vedi le caramelle!</button>`;
+    app.querySelector('main').appendChild(barra);
+    barra.querySelector('button').onclick = () => vai('risultato', { esito, ultimo });
   };
   pulizia = ESERCIZI[P.gioco](area, { voce: P.elementi[P.i], fine, livello: P.livello });
   return () => { if (typeof pulizia === 'function') pulizia(); };

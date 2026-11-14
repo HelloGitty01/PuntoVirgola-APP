@@ -56,10 +56,10 @@ export function parla(testo, opz = {}) {
     const frasi = String(testo).replace(/\s+/g, ' ').match(/[^.!?…]+[.!?…]*/g) || [testo];
     let finito = false;
     const fine = () => { if (!finito) { finito = true; ok(); } };
-    setTimeout(fine, Math.max(5000, testo.length * 140));
-    frasi.forEach((f, i) => {
-      const t = f.trim();
-      if (!t) return;
+    // rete di sicurezza se il browser non segnala la fine (tempo largo, basato sulle parole)
+    setTimeout(fine, 4000 + String(testo).split(/\s+/).length * 900);
+    const pulite = frasi.map((f) => f.trim()).filter(Boolean);
+    pulite.forEach((t, i) => {
       const u = new SpeechSynthesisUtterance(t);
       u.lang = 'it-IT';
       if (voce) u.voice = voce;
@@ -67,7 +67,7 @@ export function parla(testo, opz = {}) {
       const domanda = t.endsWith('?');
       u.pitch = Math.min(2, pref.tono + (esclama ? 0.12 : domanda ? 0.08 : 0));
       u.rate = pref.velocita * (esclama ? 1.04 : 1);
-      if (i === frasi.length - 1) { u.onend = fine; u.onerror = fine; }
+      if (i === pulite.length - 1) { u.onend = fine; u.onerror = fine; }
       speechSynthesis.speak(u);
     });
   });
