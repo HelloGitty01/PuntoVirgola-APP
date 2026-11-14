@@ -59,20 +59,32 @@ class Musica {
     this.filtro = this.ctx.createBiquadFilter();
     this.filtro.type = 'lowpass';
     this.filtro.frequency.value = 5200;
-    this.riverbero = this.creaEco();
     this.master.connect(this.filtro);
     this.filtro.connect(this.ctx.destination);
     this.avvia(this.richiesto);
   }
 
-  creaEco() {
-    // un'eco leggera rende il suono più morbido
+  // Ogni brano suona su un suo canale con la sua eco: quando si cambia brano il vecchio canale
+  // sfuma in fretta e viene staccato, così le note già programmate non si sovrappongono al nuovo.
+  creaCanale() {
+    const bus = this.ctx.createGain();
+    bus.gain.value = 1;
+    bus.connect(this.master);
     const d = this.ctx.createDelay();
     d.delayTime.value = 0.28;
     const g = this.ctx.createGain();
     g.gain.value = 0.22;
-    d.connect(g); g.connect(d); g.connect(this.master);
-    return d;
+    d.connect(g); g.connect(d); g.connect(bus);
+    return { bus, eco: d, ritorno: g };
+  }
+
+  chiudiCanale(c) {
+    if (!c) return;
+    const t = this.ctx.currentTime;
+    c.bus.gain.cancelScheduledValues(t);
+    c.bus.gain.setValueAtTime(c.bus.gain.value, t);
+    c.bus.gain.linearRampToValueAtTime(0, t + 0.25);
+    setTimeout(() => { try { c.ritorno.disconnect(); c.eco.disconnect(); c.bus.disconnect(); } catch {} }, 400);
   }
 
   imposta(nome) {
@@ -85,7 +97,9 @@ class Musica {
     this.brano = nome;
     clearInterval(this.timer);
     this.timer = null;
+    if (this.ctx) { this.chiudiCanale(this.canale); this.canale = null; }
     if (!nome || !this.ctx) { this.aggiornaVolume(); return; }
+    this.canale = this.creaCanale();
     this.passo = 0;
     this.prossimo = this.ctx.currentTime + 0.15;
     this.timer = setInterval(() => this.programma(), 80);
@@ -121,7 +135,7 @@ class Musica {
     g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     o.connect(g); o2.connect(g2); g2.connect(g);
-    g.connect(this.master); g.connect(this.riverbero);
+    g.connect(this.canale.bus); g.connect(this.canale.eco);
     o.start(t); o2.start(t); o.stop(t + dur + 0.05); o2.stop(t + dur + 0.05);
   }
 
@@ -132,7 +146,7 @@ class Musica {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(this.master); g.connect(this.riverbero);
+    o.connect(g); g.connect(this.canale.bus); g.connect(this.canale.eco);
     o.start(t); o.stop(t + dur + 0.05);
   }
 
@@ -144,7 +158,7 @@ class Musica {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.linearRampToValueAtTime(vol, t + dur * 0.3);
     g.gain.linearRampToValueAtTime(0.0001, t + dur);
-    lp.connect(g); g.connect(this.master);
+    lp.connect(g); g.connect(this.canale.bus);
     note.forEach((n) => {
       [-4, 4].forEach((det) => {
         const o = c.createOscillator();
@@ -161,13 +175,13 @@ class Musica {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(vol, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(this.master);
+    o.connect(g); g.connect(this.canale.bus);
     o.start(t); o.stop(t + dur + 0.05);
   }
 
   // ---------- sequencer ----------
   programma() {
-    if (!this.brano || !this.ctx) return;
+    if (!this.brano || !this.ctx || !this.canale) return;
     const b = BRANI[this.brano];
     const croma = 60 / b.bpm / 2;
     while (this.prossimo < this.ctx.currentTime + 0.4) {
