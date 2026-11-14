@@ -1,5 +1,6 @@
 // Navigazione tra le schermate.
 import { zitto } from './tts.js';
+import { musicaPerSchermata } from './musica.js';
 
 const registro = {};
 let pulizia = null;
@@ -17,6 +18,7 @@ export function vai(nome, param) {
   vecchio.replaceWith(app);
   window.scrollTo(0, 0);
   corrente = nome;
+  musicaPerSchermata(nome);
   const r = registro[nome](app, param);
   if (typeof r === 'function') pulizia = r;
   else if (r && typeof r.then === 'function') r.then((f) => { if (typeof f === 'function' && corrente === nome) pulizia = f; }).catch((e) => console.error(e));

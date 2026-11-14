@@ -8,9 +8,10 @@ import { normalizza } from '../match.js';
 import { CREDITI_ARASAAC } from '../arasaac.js';
 import { preparaVosk, modelloInCache, PERCORSO_MODELLO } from '../speech.js';
 import { editorScena, editorStoria, editorRacconto } from './editor.js';
+import { musica } from '../musica.js';
 import { vociItaliane, voceCorrente, aggiornaVoce, parla, PREDEFINITE } from '../tts.js';
 
-const VERSIONE = '1.4.0';
+const VERSIONE = '1.5.0';
 const SCHEDE = [
   ['riepilogo', 'Riepilogo'], ['attivita', 'Attività'], ['scene', 'Scene'], ['storie', 'Storie'], ['racconti', 'Racconti'], ['esercizi', 'Altri esercizi'], ['rivedere', 'Da rivedere'],
   ['impostazioni', 'Impostazioni'], ['dispositivi', 'Dispositivi'], ['info', 'Info']
@@ -217,6 +218,11 @@ async function impostazioniScheda(cont) {
       <div class="riga-pulsanti"><button type="button" class="btn secondario piccolo" id="voce-prova">${ICONE.altoparlante} Prova la voce</button>
         <button type="button" class="link" id="voce-reset">Valori consigliati</button></div>
     </div>
+    <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Musica di sottofondo (su questo dispositivo)</h3>
+      <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="mus-on" style="width:22px;height:22px" ${musica.muto ? '' : 'checked'}> Musica accesa</label>
+      <div class="campo"><label for="mus-vol">Volume</label><input id="mus-vol" type="range" min="0.1" max="1" step="0.05" value="${musica.volume}"></div>
+      <span class="aiuto">Nella home è allegra, durante le attività è calma. Si abbassa quando parla Virgola e si spegne quando il microfono ascolta. Il pulsante con la nota, in basso a sinistra, la spegne in ogni schermata.</span>
+    </div>
     <div class="card morbida" style="display:flex;flex-direction:column;gap:12px"><h3>Riconoscimento vocale</h3>
       <div class="campo"><label for="motore">Motore</label><select id="motore">
         <option value="vosk" ${imp.motoreVoce === 'vosk' ? 'selected' : ''}>Vosk, sul dispositivo (consigliato, l’audio non esce)</option>
@@ -234,6 +240,8 @@ async function impostazioniScheda(cont) {
     <p class="errore" id="err" role="alert"></p>
     <button class="btn" type="submit" id="salva" style="align-self:flex-start">Salva impostazioni</button>
   </form>`;
+  cont.querySelector('#mus-on').addEventListener('change', (e) => musica.setMuto(!e.target.checked));
+  cont.querySelector('#mus-vol').addEventListener('input', (e) => musica.setVolume(Number(e.target.value)));
   // Voce di Virgola: preferenze salvate solo su questo dispositivo
   const pv = { ...PREDEFINITE, ...loc.get('voce', {}) };
   const selV = cont.querySelector('#voce-nome');

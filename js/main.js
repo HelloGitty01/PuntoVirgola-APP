@@ -3,6 +3,7 @@ import { registra, vai } from './nav.js';
 import { dispositivo, loc, nomeBambina, scollegaDispositivo } from './state.js';
 import { inizializza, caricaTutto, sincronizza } from './data.js';
 import { esc, attendi } from './ui.js';
+import { installaMusica } from './musica.js';
 import * as setup from './screens/setup.js';
 import { home } from './screens/home.js';
 import { gioco } from './screens/gioco.js';
@@ -33,6 +34,8 @@ registra('errore', (app, { messaggio }) => {
   app.querySelector('#riprova').onclick = () => location.reload();
   app.querySelector('#scollega').onclick = () => { if (confirm('Vuoi scollegare questo dispositivo?')) { scollegaDispositivo(); location.reload(); } };
 });
+
+installaMusica();
 
 function splash() {
   const s = document.createElement('div');

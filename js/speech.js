@@ -115,7 +115,8 @@ export class Ascolto {
   }
 
   async avvia() {
-    this.stream = await microfono();
+    window.dispatchEvent(new CustomEvent('pv-microfono', { detail: true }));
+    try { this.stream = await microfono(); } catch (e) { window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false })); throw e; }
     this.reg = registratore(this.stream);
     this.attivo = true;
     if (this.motore === 'vosk') await this.avviaVosk();
@@ -211,6 +212,7 @@ export class Ascolto {
     }
     const audio = this.reg ? await this.reg.ferma() : null;
     this.stream.getTracks().forEach((t) => t.stop());
+    window.dispatchEvent(new CustomEvent('pv-microfono', { detail: false }));
     return { testo: testo.trim(), audio, parole: this.paroleConf };
   }
 

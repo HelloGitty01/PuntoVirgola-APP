@@ -43,8 +43,11 @@ export function aggiornaVoce() { voce = scegliVoce(); return voce; }
 export function voceCorrente() { return voce; }
 export function disponibile() { return 'speechSynthesis' in window; }
 
+const segnala = (v) => window.dispatchEvent(new CustomEvent('pv-parla', { detail: v }));
+
 export function zitto() {
   if ('speechSynthesis' in window) speechSynthesis.cancel();
+  segnala(false);
 }
 
 // Divide il testo in frasi e varia il tono: più alto per esclamazioni e domande, così suona più viva.
@@ -55,7 +58,8 @@ export function parla(testo, opz = {}) {
     const pref = { ...PREDEFINITE, ...loc.get('voce', {}), ...opz };
     const frasi = String(testo).replace(/\s+/g, ' ').match(/[^.!?…]+[.!?…]*/g) || [testo];
     let finito = false;
-    const fine = () => { if (!finito) { finito = true; ok(); } };
+    segnala(true);
+    const fine = () => { if (!finito) { finito = true; segnala(false); ok(); } };
     // rete di sicurezza se il browser non segnala la fine (tempo largo, basato sulle parole)
     setTimeout(fine, 4000 + String(testo).split(/\s+/).length * 900);
     const pulite = frasi.map((f) => f.trim()).filter(Boolean);

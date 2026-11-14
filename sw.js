@@ -1,8 +1,8 @@
 // Service worker di Punto e Virgola: app disponibile anche offline.
-const VERSIONE = 'pv-v1.4.0';
+const VERSIONE = 'pv-v1.5.0';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
-  'js/main.js', 'js/nav.js', 'js/state.js', 'js/github.js', 'js/data.js', 'js/speech.js', 'js/tts.js',
+  'js/main.js', 'js/nav.js', 'js/musica.js', 'js/state.js', 'js/github.js', 'js/data.js', 'js/speech.js', 'js/tts.js',
   'js/match.js', 'js/arasaac.js', 'js/ui.js', 'js/punteggi.js',
   'js/screens/setup.js', 'js/screens/home.js', 'js/screens/gioco.js', 'js/screens/componi.js',
   'js/screens/dillo.js', 'js/screens/racconta.js', 'js/screens/descrivi.js',
